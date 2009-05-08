@@ -57,7 +57,7 @@ sub _get_field_values
 
   while (defined (my $row = $rs->next())) {
     my $option = { value => $row->$table_id_column(),
-                   label => $row->$field_name };
+                   label => $row->$field_name() };
 
     if (defined $select_value && $row->$table_id_column() eq $select_value) {
       $option->{attributes} = { selected => 't' };
@@ -83,10 +83,13 @@ sub _initialise_form
   for my $field_info (@field_infos) {
     my $field_name = $field_info->{field_name};
 
+    my $display_field_name = $field_name;
+    $display_field_name =~ s/_/ /g;
+
     next unless $field_info->{editable};
 
     my $elem = {
-      name => $field_name, label => $field_name
+      name => $field_name, label => $display_field_name
     };
 
     my $class_name = SmallRNA::DB::class_name_of_table($type);
