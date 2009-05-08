@@ -1,0 +1,34 @@
+<%args>
+$type
+$object
+$collection_name
+$collection_title => undef
+</%args>
+
+% if ($error) {
+  <% $error %>
+% } else {
+  <& list.mhtml, type => $collection_table_name, rs => $rs, list_title => $collection_title &></td>
+% }
+
+<%init>
+my $error;
+my $collection_table_name;
+my $rs;
+
+eval {
+  my $collection_type = 
+    SmallRNA::DB::class_name_of_relationship($object, $collection_name);
+  $collection_table_name = SmallRNA::DB::table_name_of_class($collection_type);
+  $rs = $object->$collection_name();
+
+  if (! defined $collection_title) {
+    $collection_title = ucfirst $collection_name;
+  }
+};
+if ($@) {
+  $error = qq(Can't find a collection named "$collection_name" )
+    . qq(in object of type "$type" - $@);
+}
+
+</%init>

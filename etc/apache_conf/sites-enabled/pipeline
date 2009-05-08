@@ -1,0 +1,44 @@
+NameVirtualHost *
+
+<VirtualHost *>
+    <Directory />
+         Options FollowSymLinks
+         AllowOverride None
+         Order Deny,Allow
+         Deny from All
+    </Directory>
+    <Directory /var/www/>
+         Options Indexes FollowSymLinks MultiViews
+         AllowOverride None
+         Order deny,allow
+         deny from all
+    </Directory>
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+         AllowOverride None
+         Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+         Order allow,deny
+         Allow from all
+    </Directory>
+
+    ServerName pipeline.plantsci.cam.ac.uk
+    DocumentRoot /var/www
+
+    ServerAdmin webmaster@localhost
+
+    DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.shtml
+
+    LogLevel info
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature On
+
+# ExpiresActive On
+# ExpiresByType text/css A2592000
+# ExpiresByType application/javascript A2592000
+# ExpiresByType image/gif A2592000
+# ExpiresByType image/jpeg A2592000
+# ExpiresByType image/png A2592000
+
+</VirtualHost>

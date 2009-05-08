@@ -1,0 +1,8 @@
+<%args>
+$type
+$rs
+</%args>
+
+<div class="list_page">
+  <& /view/list.mhtml, type => $type, rs => $rs, list_title => '' &>
+</div>

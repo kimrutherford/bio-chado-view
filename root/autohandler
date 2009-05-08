@@ -1,0 +1,70 @@
+<%args>
+$title
+$error => undef
+$message => undef
+</%args>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <title><% $c->config()->{long_name} %> - <% $title %></title>
+    <link href="<% $c->uri_for('/style.css') %>" type="text/css" 
+          rel="stylesheet" />
+  </head>
+  <body>
+    <div id="heading">
+      <a href="<% $c->uri_for('/') %>"><img src="<% $c->uri_for('/static/images/header.png') %>" border="0" id="logo"/>
+        <span id="heading_text"> <% $c->config->{long_name} %> </span> </a>
+    </div>
+
+% if (0) {
+% if ($c->user_exists()) {
+    <div id="logout">
+      Logged in as: <% $c->user()->username() %>
+      <form name="logout" method="get" action="/logout">
+        <input id="submit" name="submit" type="submit" value="logout"/>
+      </form>
+    </div>
+
+% } else {
+    <div id="login">
+      <form name="login" method="get" action="/login">
+        <div>
+          User ID: <input id="username" name="username" maxlength="20" size="20"/>
+        </div>
+        <div>
+          Password: <input type=password id="password" name="password"/>
+        </div>
+        <input type="hidden" name="return_path" value="<% $c->req->uri() %>"/>
+        <input id="submit" name="submit" type="submit" value="login"/>
+      </form>
+    </div>
+% }
+% }
+
+<div id="errorsDiv">
+% if (defined $error) {
+<div class="errors">
+<% $error %>
+</div>
+% }
+</div>
+
+<div id="messageDiv">
+% if (defined $message) {
+<div class="message">
+<% $message %>
+</div>
+% }
+</div>
+      <div class="content">
+        <div>
+          <span class="page_description">
+            <% $title %>
+          </span>
+        </div>
+% $m->call_next;
+      </div>
+    </div>
+  </body>
+</html>

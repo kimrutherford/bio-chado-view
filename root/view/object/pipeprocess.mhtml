@@ -1,0 +1,22 @@
+<%args>
+$object
+$type
+</%args>
+
+<div>
+<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
+  [qw(description job_identifier time_queued time_started time_finished )] &>
+</div>
+<div>
+  <& /view/list.mhtml, type => 'pipedata', rs => $input_pipedata_rs,
+  list_title => 'Input data' &></td>
+</div>
+<div>
+  <& /view/collection.mhtml, type => $type, object => $object, collection_name => 'pipedatas',
+    collection_title => 'Output data' &></td>
+</div>
+
+<%init>
+my $input_pipedata_rs =
+  $object->pipeprocess_in_pipedatas()->search_related('pipedata');
+</%init>

@@ -1,0 +1,121 @@
+body
+{
+  padding: 0;
+  margin: 0;
+}
+
+a:link { color:#049; text-decoration:none }
+a:visited { color:#049; text-decoration:none }
+a:link:hover { color:#CF4D23; text-decoration:underline }
+a:visited:hover { color:#CF4D23; text-decoration:underline }
+a:link:active { color:#58e; text-decoration:none }
+
+#heading a {
+    color: white;
+}
+#heading {
+    background-color: #227;
+    color: white;
+    font-size: 150%;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+#logo {
+    width: 64px;
+    height: 32px;
+    float: left;
+}
+#heading_text {
+    margin: 10px;
+}
+
+.errors {
+    padding: 2px;
+    margin: 0px;
+    border: 2px solid red;
+    background-color: #fff;
+}
+
+.message {
+    padding: 2px;
+    margin: 0px;
+    border: 2px solid green;
+    background-color: #fff;
+}
+
+.content {
+    margin: 10px;
+}
+
+.page_description {
+    background-color: #449;
+    color: white;
+    font-size: 110%;
+    font-weight: bold;
+    padding: 1px 5px 1px 5px;
+}
+
+.field_list {
+    padding-bottom: 20px;
+}
+
+table.list {
+    margin: 10px;
+    width: 90%;
+    border-width: 1px;
+    border-spacing: 5px;
+    border-style: outset;
+    border-color: gray;
+    border-collapse: collapse;
+}
+table.list thead tr td {
+    padding: 3px;
+    background-color: #e0e0c6;
+    color: black;
+    font-weight: bold;
+}
+table.list tr.odd {
+    background-color: #f5f5e5;
+}
+table.list tr td {
+    border-width: 1px;
+    padding: 3px;
+    border-style: solid;
+    border-color: #bbb;
+}
+
+.attribute_field {
+    font-weight: bold;
+}
+
+.rs_list {
+    padding: 8px 0px 8px 0px;
+}
+
+.rs_list table.list {
+    font-size: 80%;
+}
+
+.rs_list .title {
+    background-color: #449;
+    color: white;
+    font-size: 110%;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 1px 5px 1px 5px;
+}
+
+.this_id_field {
+    whitespace: nowrap;
+}
+
+
+// editing:
+div.submit {
+    float:right;
+}
+
+div.edit_link {
+    float:right;
+}

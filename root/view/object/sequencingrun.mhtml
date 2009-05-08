@@ -1,0 +1,22 @@
+<%args>
+$object
+$type
+</%args>
+
+<div>
+<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
+  [qw(identifier initial_pipedata sequencing_centre initial_pipeprocess 
+      submission_date run_date data_received_date quality sequencing_type
+      multiplexing_type)] &>
+</div>
+<div>
+  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
+    list_title => "The sample$plu sequenced by this run" &></td>
+</div>
+
+<%init>
+my $samples_rs =
+  $object->sampleruns()->search_related('sample');
+my $samples_count = $samples_rs->count();
+my $plu = $samples_count != 0 ? 's' : '';
+</%init>

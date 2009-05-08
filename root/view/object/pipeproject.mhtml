@@ -1,0 +1,12 @@
+<%args>
+$object
+$type
+</%args>
+
+<div>
+<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
+  [qw(name description type owner funder)] &>
+</div>
+<div>
+  <& /view/collection.mhtml, type => $type, object => $object, collection_name => 'samples' &></td>
+</div>

@@ -1,0 +1,87 @@
+name: SmallRNA::Web
+long_name: SmallRNA Tracking
+pipeline_directory: /data/pipeline
+data_sub_directory: process
+authentication:
+  default_realm: 'friends'
+  realms:
+    friends:
+      credential:
+        class: 'Password'
+        password_field: 'password'
+        password_type: 'clear'
+      store:
+        class: DBIx::Class
+        user_class: DB::Person
+        id_field: identifier
+class_info:
+  cv:
+    display_field: name
+  cvterm:
+    display_field: name
+  organisation:
+    display_field: name
+  organism:
+    display_field: full_name
+  person:
+    display_field: user_name
+  sample:
+    editable: 1
+    display_field: name
+    field_infos:
+      - field_name: name
+        editable: 1
+      - field_name: description
+        editable: 1
+      - field_name: ecotype
+        editable: 1
+      - field_name: pipeproject
+        editable: 1
+      - field_name: ecotype
+        editable: 1
+      - field_name: genotype
+        editable: 1
+      - field_name: protocol
+        editable: 1
+      - field_name: molecule_type
+        editable: 1
+      - field_name: treatment_type
+        editable: 1
+      - field_name: frationation_type
+        editable: 1
+      - field_name: tissue
+        editable: 1
+  ecotype:
+    display_field: long_description
+  genotype:
+    display_field: description
+  tissue:
+    display_field: description
+  pipeproject:
+    display_field: name
+  process_conf:
+    display_field: type
+  pipeprocess:
+    display_field: description
+  barcode:
+    display_field: identifier
+  pipedata:
+    display_field: file_name
+  sequencingrun:
+    display_field: identifier
+  samplerun:
+    display_field: description
+"Model::SmallRNAModel":
+  schema_class: 'SmallRNA::DB'
+  connect_info:
+     - "dbi:Pg:dbname=pipeline-dev-kmr44;host=hydrogen"
+     - 'kmr44'
+     - 'kmr'
+programs:
+  ssaha:
+    path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
+    root: /data/public_data
+    organisms:
+      Arabidopsis_thaliana:
+        database_files:
+          nuclear_genome: arabidopsis/TAIR_8/arabidopsis_nuclear_genome

@@ -1,0 +1,34 @@
+<%args>
+</%args>
+
+<div>
+  <ul>
+    <li>
+      <a href="<% $c->uri_for('/view/list/person') %>">People</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/samplerun') %>">Sample runs</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
+    </li>
+    <li>
+      <a href="<% $c->uri_for('/view/list/process_conf') %>">Pipeline project configuration</a>
+    </li>
+  </ul>
+<p>

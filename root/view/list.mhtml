@@ -1,0 +1,55 @@
+<%args>
+$type
+$rs
+$list_title
+</%args>
+
+<div class="rs_list">
+% if ($list_title ne '') {
+  <div>
+    <span class="title"> <% $list_title %> </span>
+  </div>
+% }
+% if (@field_names == 0) {
+  No results
+% } else {
+  <table class="list">
+    <thead>
+      <tr>
+%   for my $head_col (@field_names) {
+        <td><span class="field_name"><% $head_col %></span></td>
+%   }
+      <td>&nbsp;</td>
+      </tr>
+    </thead>
+%   my $row_count = 0;
+%   for my $object (@rows) {
+    <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
+%     for my $field_name (@field_names) {
+        <td><& field.mhtml, type => $type, object => $object, field_name => $field_name &></td>
+%     }
+     <td><& field.mhtml, type => $type, object => $object, field_name => "${type}_id" &></td>
+    </tr>
+%     $row_count++;
+%   }
+  </table>
+% }
+</div>
+
+<%init>
+my @field_names = ();
+my @rows = ();
+my $first = 1;
+
+while (my $obj = $rs->next) {
+  if ($first) {
+    for my $column_name ($obj->columns()) {
+      next if $column_name eq 'created_stamp' or $column_name eq "${type}_id";
+      push @field_names, $column_name;
+    }
+    $first = 0;
+  }
+  push @rows, $obj;
+}
+
+</%init>

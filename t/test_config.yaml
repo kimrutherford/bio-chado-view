@@ -1,0 +1,17 @@
+name: SmallRNA::Web
+long_name: SmallRNA tracking
+pipeline_directory: /tmp/pipeline-test
+"Model::SmallRNAModel":
+    schema_class: 'SmallRNA::DB'
+    connect_info:
+       - "dbi:Pg:dbname=pipeline-test;host=localhost"
+       - 'kmr44'
+       - 'kmr'
+programs:
+  ssaha:
+    path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
+    root: t/data
+    organisms:
+      Arabidopsis_thaliana:
+        database_files:
+          nuclear_genome: test_genome.fasta

@@ -1,0 +1,28 @@
+<%args>
+$object
+$type
+</%args>
+
+<div>
+<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
+  [qw(name description pipeproject ecotype genotype protocol molecule_type
+      treatment_type frationation_type tissue)] &></td>
+</div>
+<div>
+  <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
+    list_title => "The sequencing run$seqruns_plu for this sample" &></td>
+</div>
+<div>
+  <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
+    list_title => "The file$pipedata_plu for this sample" &></td>
+</div>
+  
+<%init>
+my $seqruns_rs = $object->sampleruns()->search_related('sequencingrun');
+my $seqruns_count = $seqruns_rs->count();
+my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
+my $pipedatas_rs = $object->pipedatas();
+my $pipedatas_count = $pipedatas_rs->count();
+my $pipedata_plu = ($pipedatas_count != 1) ? 's' : '';
+</%init>
+

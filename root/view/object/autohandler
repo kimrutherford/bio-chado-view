@@ -1,0 +1,19 @@
+<%args>
+$type
+$object
+</%args>
+
+% if ($editable) {
+<div class="edit_link">
+  <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">edit ...</a>
+</div>
+% }
+
+% $m->call_next;
+
+<%init>
+my $id_field_name = $type . '_id';
+my $object_id = $object->$id_field_name();
+
+my $editable = $c->config()->{class_info}->{$type}->{editable};
+</%init>
