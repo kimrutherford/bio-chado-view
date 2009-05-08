@@ -113,9 +113,14 @@ table.list tr td {
 
 // editing:
 div.submit {
-    float:right;
+    float: right;
 }
 
 div.edit_link {
-    float:right;
+    float: right;
+}
+
+span.error_constraint_required {
+    color: red;
+    font-size: 90%;
 }

@@ -123,6 +123,8 @@ sub _initialise_form
 
     my $class_name = SmallRNA::DB::class_name_of_table($type);
     my $info_ref = $class_name->relationship_info($field_name);
+    my $db_source = $c->schema()->source($class_name);
+    my $field_is_nullable = $db_source->column_info($field_name)->{is_nullable};
 
     if (defined $info_ref) {
       my %info = %{$info_ref};
@@ -140,25 +142,28 @@ sub _initialise_form
       my $table_id_column = $referenced_table . '_id';
 
       my $current_value = undef;
-      if (defined $object->$field_name()) {
+      if (defined $object && defined $object->$field_name()) {
         $current_value = $object->$field_name()->$table_id_column();
-      } 
+      }
 
       $elem->{options} = [_get_field_values($c, $referenced_table,
                                             $referenced_class_name, $display_field,
                                             $current_value, $field_info)];
 
-      my $db_source = $c->schema()->source($class_name);
-
-      if ($db_source->column_info('treatment_type')->{is_nullable}) {
-        # add a blank if this field can be null
+      if ($field_is_nullable) {
+        # add a blank to the select list if this field can be null
         unshift @{$elem->{options}}, [0, ''];
       }
     } else {
       $elem->{type} = 'Text';
+      if (!$field_is_nullable) {
+        $elem->{constraints} = [ { type => 'Length',  min => 1 },
+                                'Required' ];
+        if (defined $object) {
+          $elem->{value} = $object->$field_name();
+        }
+      }
     }
-
-    $elem->{value} = $object->$field_name();
 
     push @elements, $elem;
   }
@@ -166,24 +171,61 @@ sub _initialise_form
   $form->auto_fieldset(1);
   $form->elements([
                     @elements,
-                    map { { 
+                    map { {
                       name => $_, type => 'Submit', value => ucfirst $_
                     } } @INPUT_BUTTON_NAMES,
                   ]);
+}
+
+sub _create_object {
+  my $schema = shift;
+  my $table_name = shift;
+  my $form = shift;
+
+  my $class_name = SmallRNA::DB::class_name_of_table($table_name);
+
+  my %form_params = %{$form->params()};
+  my %object_params = ();
+
+  for my $name (keys %form_params) {
+    if (grep { $_ eq $name } @INPUT_BUTTON_NAMES) {
+      next;
+    }
+
+    my $value = $form_params{$name};
+
+    my $info_ref = $class_name->relationship_info($name);
+
+    if (defined $info_ref && $value == 0) {
+      # special case for undefined references which are represented in the form
+      # as a 0
+      $value = undef;
+    }
+
+
+    if ($value =~ /^\s*$/) {
+      # if the user doesn't enter anything, use undef
+      $value = undef;
+    }
+
+    $object_params{$name} = $value;
+  }
+
+  return $schema->create_with_type($class_name, { %object_params });
 }
 
 sub _update_object {
   my $object = shift;
   my $form = shift;
 
-  my %params = %{$form->params()};
+  my %form_params = %{$form->params()};
 
-  for my $name (keys %params) {
+  for my $name (keys %form_params) {
     if (grep { $_ eq $name } @INPUT_BUTTON_NAMES) {
       next;
     }
 
-    my $value = $params{$name};
+    my $value = $form_params{$name};
 
     my $info_ref = $object->relationship_info($name);
 
@@ -195,21 +237,30 @@ sub _update_object {
 
     $object->$name($value);
   }
-  
+
   $object->update();
 }
 
-sub object : Regex('edit/object/([^/]+)/([^/]+)') {
+sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
   my ($self, $c) = @_;
 
-  my ($type, $object_id) = @{$c->req->captures()};
+  my ($req_type, $type, $object_id) = @{$c->req->captures()};
 
-  my $object =
-    $c->schema()->find_with_type(ucfirst $type, "${type}_id" => $object_id);
+  my $object = undef;
+
+  if (defined $object_id) {
+    my $class_name = SmallRNA::DB::class_name_of_table($type);
+    $object = $c->schema()->find_with_type($class_name, "${type}_id" => $object_id);
+  }
 
   my $st = $c->stash;
 
-  $st->{title} = "Edit $type $object_id";
+  if ($req_type eq 'new') {
+    $st->{title} = "New $type";
+  } else {
+    $st->{title} = "Edit $type $object_id";
+  }
+
   $st->{template} = "edit.mhtml";
 
   my $form = $self->form;
@@ -220,9 +271,28 @@ sub object : Regex('edit/object/([^/]+)/([^/]+)') {
 
   $c->stash->{form} = $form;
 
+  if ($form->submitted() && defined $c->req->param('cancel')) {
+    if ($req_type eq 'new') {
+      $c->res->redirect($c->uri_for("/"));
+      $c->detach();
+    } else {
+      $c->res->redirect($c->uri_for("/view/object/$type/$object_id"));
+      $c->detach();
+    }
+    die;
+  }
+
   if ($form->submitted_and_valid()) {
-    if (defined $c->req->param('submit')) {
-      $c->schema()->txn_do(sub { _update_object($object, $form); });
+    if ($req_type eq 'new') {
+      $c->schema()->txn_do(sub {
+                             my $object = _create_object($c->schema(), $type, $form);
+                             my $table_id_column = $type . '_id';
+                             $object_id = $object->$table_id_column();
+                           });
+    } else {
+      $c->schema()->txn_do(sub {
+                             _update_object($object, $form);
+                           });
     }
 
     $c->res->redirect($c->uri_for("/view/object/$type/$object_id"));
