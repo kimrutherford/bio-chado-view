@@ -35,13 +35,21 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
 
 # Start the application
 __PACKAGE__->setup();
+
+my $config = __PACKAGE__->config();
   
-__PACKAGE__->config()->{data_directory} = 
-  __PACKAGE__->config()->{pipeline_directory} . '/' .
-  __PACKAGE__->config()->{data_sub_directory};
+$config->{data_directory} = 
+  $config->{pipeline_directory} . '/' .
+  $config->{data_sub_directory};
 
-bless __PACKAGE__->config(), 'SmallRNA::Config';
+# this is hacky, but allow us to call methods on the config object
+bless $config, 'SmallRNA::Config';
 
+use SmallRNA::Config;
+
+$config->setup();
+
+# shortcut to the schema
 sub schema
 {
   my $self = shift;

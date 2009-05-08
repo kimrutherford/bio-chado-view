@@ -28,29 +28,39 @@ class_info:
   sample:
     editable: 1
     display_field: name
-    field_infos:
+    field_info_list:
       - field_name: name
+        display_title: name
         editable: 1
       - field_name: description
+        display_title: description
         editable: 1
       - field_name: ecotype
+        display_title: ecotype
         editable: 1
       - field_name: pipeproject
+        display_title: pipeproject
         editable: 1
       - field_name: genotype
+        display_title: genotype
         editable: 1
       - field_name: protocol
+        display_title: protocol
         editable: 1
       - field_name: molecule_type
+        display_title: molecule_type
         editable: 1
         values_constraint: 'cv->name = "tracking molecule types"'
       - field_name: treatment_type
+        display_title: treatment_type
         editable: 1
         values_constraint: 'cv->name = "tracking treatment types"'
       - field_name: frationation_type
+        display_title: frationation_type
         editable: 1
         values_constraint: 'cv->name = "tracking fractionation types"'
       - field_name: tissue
+        display_title: tissue
         editable: 1
   ecotype:
     display_field: long_description

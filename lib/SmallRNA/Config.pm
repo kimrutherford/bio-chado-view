@@ -74,7 +74,33 @@ sub new
     croak "can't find config file: $config_file_name in @config_dirs\n";
   }
 
-  return bless $self, $class;
+  bless $self, $class;
+
+  $self->setup();
+
+  return $self;
+}
+
+=head2 setup
+
+ Usage   : $config->setup();
+ Function: perform initialisation for this object
+
+=cut
+sub setup
+{
+  my $self = shift;
+
+  my %field_info_hash = ();
+
+  for my $class_name (keys %{$self->{class_info}}) {
+    my $class_info = $self->{class_info}->{$class_name};
+    for my $field_info (@{$class_info->{field_info_list}}) {
+      my $field_name = $field_info->{field_name};
+      $self->{class_info}->{$class_name}->{field_infos}->{$field_name} =
+        $field_info;
+    }
+  }
 }
 
 =head2 data_directory
