@@ -45,10 +45,13 @@ class_info:
         editable: 1
       - field_name: molecule_type
         editable: 1
+        values_constraint: 'cv->name = "tracking molecule types"'
       - field_name: treatment_type
         editable: 1
+        values_constraint: 'cv->name = "tracking treatment types"'
       - field_name: frationation_type
         editable: 1
+        values_constraint: 'cv->name = "tracking fractionation types"'
       - field_name: tissue
         editable: 1
   ecotype:

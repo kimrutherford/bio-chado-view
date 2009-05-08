@@ -41,6 +41,8 @@ use strict;
 
 use base 'Catalyst::Controller::HTML::FormFu';
 
+use SmallRNA::DBLayer::Path;
+
 sub _get_field_values
 {
   my $c = shift;
@@ -48,6 +50,24 @@ sub _get_field_values
   my $class_name = shift;
   my $field_name = shift;
   my $select_value = shift;
+  my $field_info = shift;
+
+  my $values_constraint = $field_info->{values_constraint};
+
+  my $constraint_path = undef;
+  my $constraint_value = undef;
+
+  # constrain the possible values shown in the list by using the
+  # values_constraint from the config file
+  if (defined $values_constraint) {
+    my $pattern = qr|^\s*(.*?)\s*=\s*"(.*)"\s*$|;
+    if ($values_constraint =~ /$pattern/) {
+      $constraint_path = SmallRNA::DBLayer::Path->new(path_string => $1);
+      $constraint_value = $2;
+    } else {
+      die "values_constraint '$values_constraint' doesn't match pattern: $pattern\n";
+    }
+  }
 
   my $rs = $c->schema()->resultset($class_name);
 
@@ -56,6 +76,11 @@ sub _get_field_values
   my $table_id_column = $table_name . '_id';
 
   while (defined (my $row = $rs->next())) {
+    if (defined $values_constraint) {
+      my $this_constrain_value = $constraint_path->resolve($row);
+      next unless $constraint_value eq $this_constrain_value;
+    }
+
     my $option = { value => $row->$table_id_column(),
                    label => $row->$field_name() };
 
@@ -69,6 +94,8 @@ sub _get_field_values
   return @res;
 }
 
+# Initialise the form using the list of field_infos in the config file.
+# Attributes will be rendered as text areas, references as pop ups.
 sub _initialise_form
 {
   my $c = shift;
@@ -117,7 +144,7 @@ sub _initialise_form
 
       $elem->{options} = [_get_field_values($c, $referenced_table,
                                             $referenced_class_name, $display_field,
-                                            $current_value)];
+                                            $current_value, $field_info)];
 
       my $db_source = $c->schema()->source($class_name);
 
