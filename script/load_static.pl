@@ -143,8 +143,8 @@ my %terms = (
               'biological replicate' => 'biological replicate/re-run',
               'failure re-run' => 're-run because of failure'
              },
-             'tracking treatment types' => { 'no treatment' },
-             'tracking fractionation types' => { 'no fractionation' },
+             'tracking treatment types' => { 'no treatment' => 'no treatment' },
+             'tracking fractionation types' => { 'no fractionation' => 'no fractionation' },
             );
 
 my %cvterm_objs = ();
