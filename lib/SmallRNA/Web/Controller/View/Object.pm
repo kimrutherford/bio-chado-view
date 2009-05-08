@@ -64,10 +64,12 @@ sub set_template : Private {
     $c->stash()->{title} = 'Details for sample ' . $object->name();
   } elsif ($type eq 'sequencingrun') {
     $c->stash()->{title} = 'Details for sequencing run ' . $object->identifier();
+  } elsif ($type eq 'ecotype') {
+    $c->stash()->{title} = 'Details for ecotype ' . $object->long_description();
   }
 }
 
-sub object_with_template : LocalRegex('^(person|pipe[^/]+|sample|sequencingrun|organism)/(.*)') {
+sub object_with_template : LocalRegex('^(person|pipe[^/]+|sample|sequencingrun|organism|ecotype)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_id) = @{$c->req()->captures()};
   set_template($self, $c, $type, $object_id);
