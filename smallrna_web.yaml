@@ -37,8 +37,6 @@ class_info:
         editable: 1
       - field_name: pipeproject
         editable: 1
-      - field_name: ecotype
-        editable: 1
       - field_name: genotype
         editable: 1
       - field_name: protocol
