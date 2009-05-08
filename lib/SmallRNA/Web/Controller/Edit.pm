@@ -94,6 +94,8 @@ sub _get_field_values
   return @res;
 }
 
+my @INPUT_BUTTON_NAMES = qw(submit cancel);
+
 # Initialise the form using the list of field_infos in the config file.
 # Attributes will be rendered as text areas, references as pop ups.
 sub _initialise_form
@@ -164,9 +166,37 @@ sub _initialise_form
   $form->auto_fieldset(1);
   $form->elements([
                     @elements,
-                   { name => 'cancel', type => 'Submit', value => 'Cancel'},
-                   { name => 'submit', type => 'Submit', value => 'Submit'},
+                    map { { 
+                      name => $_, type => 'Submit', value => ucfirst $_
+                    } } @INPUT_BUTTON_NAMES,
                   ]);
+}
+
+sub _update_object {
+  my $object = shift;
+  my $form = shift;
+
+  my %params = %{$form->params()};
+
+  for my $name (keys %params) {
+    if (grep { $_ eq $name } @INPUT_BUTTON_NAMES) {
+      next;
+    }
+
+    my $value = $params{$name};
+
+    my $info_ref = $object->relationship_info($name);
+
+    if (defined $info_ref && $value == 0) {
+      # special case for undefined references which are represented in the form
+      # as a 0
+      $value = undef;
+    }
+
+    $object->$name($value);
+  }
+  
+  $object->update();
 }
 
 sub object : Regex('edit/object/([^/]+)/([^/]+)') {
@@ -191,11 +221,12 @@ sub object : Regex('edit/object/([^/]+)/([^/]+)') {
   $c->stash->{form} = $form;
 
   if ($form->submitted_and_valid()) {
-    if ($c->req->param('cancel') eq 'Cancel') {
-      $c->res->redirect($c->uri_for("/view/object/$type/$object_id"));
-      $c->detach();
+    if (defined $c->req->param('submit')) {
+      $c->schema()->txn_do(sub { _update_object($object, $form); });
     }
-    die $form->params()->{foo};
+
+    $c->res->redirect($c->uri_for("/view/object/$type/$object_id"));
+    $c->detach();
   }
 }
 
