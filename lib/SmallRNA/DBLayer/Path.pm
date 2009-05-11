@@ -81,7 +81,12 @@ sub resolve
   my $current_value = shift;
 
   for my $bit ($self->bits()) {
-    $current_value = $current_value->$bit();
+    if ($current_value->has_column($bit . '_id')) {
+      my $bit_with_id = $bit . '_id';
+      $current_value = $current_value->$bit_with_id();
+    } else {
+      $current_value = $current_value->$bit();
+    }
   }
 
   return $current_value;
