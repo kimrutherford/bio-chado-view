@@ -107,7 +107,7 @@ sub _initialise_form
 
   my @elements = ();
 
-  my @field_infos = @{$c->config()->{class_info}->{$type}->{field_infos}};
+  my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
 
   for my $field_info (@field_infos) {
     my $field_name = $field_info->{field_name};
