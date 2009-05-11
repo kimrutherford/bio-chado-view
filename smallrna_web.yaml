@@ -87,7 +87,7 @@ class_info:
   pipeproject:
     display_field: name
   process_conf:
-    display_field: type
+    display_field: long_description
   pipeprocess:
     display_field: description
   barcode:
@@ -102,16 +102,16 @@ class_info:
     field_info_list:
       - field_label: description
         editable: 1
-      - field_label: samplerun_type
-        field_conf: type
+      - field_label: run type
+        field_conf: samplerun_type
         values_constraint: 'cv->name = "tracking samplerun types"'
         editable: 1
       - field_label: sample
         editable: 1
       - field_label: barcode
         editable: 1
-      - field_label: sequencingrun
-        field_conf: sequencing run
+      - field_label: sequencing run
+        field_conf: sequencingrun
         editable: 1
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'

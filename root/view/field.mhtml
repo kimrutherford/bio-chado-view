@@ -19,7 +19,7 @@ $field_label
 %   if ($field_type eq 'foreign_key' && $field_value && defined $ref_display_key) {
   <span class="ref_field">
   <a href='<% $c->uri_for("/view/object", $referenced_object->table(), SmallRNA::DB::id_of_object($field_value)) %>'>
-    <% $ref_display_key %>
+    <& field.mhtml, object => $referenced_object, field_label => $ref_display_key &>
   </a>
   </span>
 %   } else {

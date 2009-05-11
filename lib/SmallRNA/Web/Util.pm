@@ -59,6 +59,8 @@ use SmallRNA::DB;
                             'attribute': this is a plain attribute field
                             'key_field': this is the attribute field that is the
                                natural primary key for this class
+           $ref_display_key - the natural primary key (display key) of the
+                              referenced object
 
 =cut
 sub get_field_value
@@ -118,7 +120,7 @@ sub get_field_value
 
         warn $field_db_column, " \t :  $primary_key_name  :: ", $object->$field_db_column()->$primary_key_name(), "\n";
 
-        return ($field_value, 'foreign_key', $object->$field_db_column()->$primary_key_name());
+        return ($field_value, 'foreign_key', $primary_key_name);
       } else {
         return (undef, 'foreign_key');
       }
