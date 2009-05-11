@@ -126,17 +126,5 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:R8mQUcmQe23niPWv5D9ypQ
 
-sub cv
-{
-  my $self = shift;
-  return $self->cv_id();
-}
-
-sub dbxref
-{
-  my $self = shift;
-  return $self->dbxref_id();
-}
-
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

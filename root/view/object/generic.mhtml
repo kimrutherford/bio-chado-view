@@ -8,11 +8,12 @@ $object
 % for my $column_name ($object->columns()) {
 %   next if $column_name eq 'created_stamp';
 <tr>
+%   my $display_column_name = $column_name;
 %   if ($column_name =~ /(.*)_id$/) {
 %     next if $1 eq $type;
-%     $column_name = $1;
+%     $display_column_name = $1;
 %   }
-<td><span class="field_name"><% $column_name %></span>:</td>
+<td><span class="field_name"><% $display_column_name %></span>:</td>
 <td><& ../field.mhtml, type => $type, object => $object, field_name => $column_name &></td>
 </tr>
 % }
