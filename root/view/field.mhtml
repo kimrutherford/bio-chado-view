@@ -6,28 +6,27 @@ it will be rendered as a 'details' link.
 </%doc>
 
 <%args>
-$type
 $object
-$field_name
+$field_label
 </%args>
 
 <span class="field_value">
-% if ($is_table_id_field) {
+% if ($field_type eq 'table_id') {
   <span class="this_id_field">
-    <a href="<% $c->uri_for('/view/object', $type, $object->$table_id_field()) %>">[details&nbsp;...]</a>
+    <a href='<% $c->uri_for("/view/object", $type, SmallRNA::DB::id_of_object($object)) %>'>[details&nbsp;...]</a>
   </span>
 % } else {
-%   if ($is_reference && $referenced_object) {
+%   if ($field_type eq 'foreign_key' && $field_value && defined $ref_display_key) {
   <span class="ref_field">
-  <a href="<% $c->uri_for('/view/object/', $referenced_object_id) %>">
-    <& field.mhtml, type => $referenced_table, object => $referenced_object, field_name => $primary_key_name &>
+  <a href='<% $c->uri_for("/view/object", $referenced_object->table(), SmallRNA::DB::id_of_object($field_value)) %>'>
+    <% $ref_display_key %>
   </a>
   </span>
 %   } else {
-%     if ($is_key_field) {
+%     if ($field_type eq 'key_field') {
   <span class="attribute_field">
     <span class="display_key">
-      <a href='<% $c->uri_for("/view/object", $type, $object->$table_id_field()) %>'>
+      <a href='<% $c->uri_for("/view/object", $type, SmallRNA::DB::id_of_object($object)) %>'>
         <% $field_value %>
       </a>
     </span>
@@ -41,56 +40,22 @@ $field_name
 
 <%init>
 use SmallRNA::DB;
+use SmallRNA::Web::Util;
 
-die "field_name undefined\n" unless defined $field_name;
+die "field_label undefined\n" unless defined $field_label;
 
-my $parent_class_name = SmallRNA::DB::class_name_of_table($type);
-my $table_id_field = "${type}_id";
+my ($field_value, $field_type, $ref_display_key) =
+  SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
 
-my $field_value = $object->$field_name();
+my $type = $object->table();
 
-# set if this field is a reference:
-my $primary_key_name = undef;
 my $referenced_object = undef;
-my $referenced_object_id = undef;
-my $referenced_table = undef;
+
+if ($field_type eq 'foreign_key') {
+  $referenced_object = $field_value;
+}
 
 if (!defined $field_value) {
   $field_value = '';
-}
-
-my $is_table_id_field = 0;
-my $is_reference = 0;
-my $is_key_field = 0;
-
-if ($field_name =~ /$table_id_field$/) {
-  $is_table_id_field = 1;
-} else {
-  my $info_ref = $parent_class_name->relationship_info($field_name);
-  if (defined $info_ref) {
-    $is_reference = 1;
-    my %info = %{$info_ref};
-    my $referenced_class_name = $info{class};
-    $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
-
-    $primary_key_name = $c->config()->{class_info}->{$referenced_table}->{display_field};
-
-    if (!defined $primary_key_name) {
-      die "no display_key_fields configuration for $referenced_table\n";
-    }
-
-    $referenced_object = $object->$field_name();
-
-    my $primary_key = $referenced_table . '_id';
-    if (defined $referenced_object) {
-      $referenced_object_id = $referenced_object->$primary_key();
-    }
-  } else {
-    my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
-
-    if (defined $display_key_field && $field_name eq $display_key_field) {
-      $is_key_field = 1;
-    }
-  }
 }
 </%init>

@@ -1,22 +1,23 @@
 <%args>
 $object
-$type
-@field_names
+@field_labels
 </%args>
 
 <div class="field_list">
   <table>
-% for my $field_name (@field_names) {
+% for my $field_label (@field_labels) {
     <tr>
-      <td><% $_get_display_name_code->($field_name) %>:</td>
+      <td><% $_get_display_name_code->($field_label) %>:</td>
       <td>
-      <td><& /view/field.mhtml, type => $type, object => $object, field_name => $field_name &></td>
+      <td><& /view/field.mhtml, object => $object, field_label => $field_label &></td>
     </tr>
 % }
   </table>
 </div>
 
 <%init>
+
+my $type = $object->table();
 
 my %field_infos = ();
 
@@ -25,20 +26,20 @@ if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
 }
 
 my $_get_display_name_code = sub {
-  my $field_name = shift;
+  my $field_label = shift;
 
-  my $display_field_name = undef;
+  my $display_field_label = undef;
 
-  if (defined $field_infos{$field_name}) {
-    if (defined $field_infos{$field_name}->{display_title}) {
-      $display_field_name = $field_infos{$field_name}->{display_title};
+  if (defined $field_infos{$field_label}) {
+    if (defined $field_infos{$field_label}->{display_title}) {
+      $display_field_label = $field_infos{$field_label}->{display_title};
     }
   }
 
-  if (!defined $display_field_name) {
-    ($display_field_name = $field_name) =~ s/_/ /g;
+  if (!defined $display_field_label) {
+    ($display_field_label = $field_label) =~ s/_/ /g;
   }
 
-  return ucfirst $display_field_name;
+  return ucfirst $display_field_label;
 };
 </%init>

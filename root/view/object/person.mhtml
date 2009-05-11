@@ -3,7 +3,7 @@ $object
 </%args>
 
 <div>
-<& /view/field_list.mhtml, type => 'person', object => $object, field_names => ['user_name'] &>
+<& /view/field_list.mhtml, object => $object, field_labels => ['user_name'] &>
 </div>
 <div>
   <& /view/collection.mhtml, type => 'person', object => $object, collection_name => 'pipeprojects' &>

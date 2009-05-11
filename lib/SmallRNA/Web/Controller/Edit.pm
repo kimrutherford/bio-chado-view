@@ -110,21 +110,27 @@ sub _initialise_form
   my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
 
   for my $field_info (@field_infos) {
-    my $field_name = $field_info->{field_name};
+    my $field_label = $field_info->{field_label};
 
-    my $display_field_name = $field_name;
-    $display_field_name =~ s/_/ /g;
+    my $display_field_label = $field_label;
+    $display_field_label =~ s/_/ /g;
 
     next unless $field_info->{editable};
 
+    my $field_db_column = $field_label;
+
+    if (defined $field_info->{field_conf}) {
+      $field_db_column = $field_info->{field_conf};
+    }
+
     my $elem = {
-      name => $field_name, label => $display_field_name
+      name => $field_db_column, label => $display_field_label
     };
 
     my $class_name = SmallRNA::DB::class_name_of_table($type);
-    my $info_ref = $class_name->relationship_info($field_name);
+    my $info_ref = $class_name->relationship_info($field_db_column);
     my $db_source = $c->schema()->source($class_name);
-    my $field_is_nullable = $db_source->column_info($field_name)->{is_nullable};
+    my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
 
     if (defined $info_ref) {
       my %info = %{$info_ref};
@@ -142,8 +148,8 @@ sub _initialise_form
       my $table_id_column = $referenced_table . '_id';
 
       my $current_value = undef;
-      if (defined $object && defined $object->$field_name()) {
-        $current_value = $object->$field_name()->$table_id_column();
+      if (defined $object && defined $object->$field_db_column()) {
+        $current_value = $object->$field_db_column()->$table_id_column();
       }
 
       $elem->{options} = [_get_field_values($c, $referenced_table,
@@ -159,9 +165,9 @@ sub _initialise_form
       if (!$field_is_nullable) {
         $elem->{constraints} = [ { type => 'Length',  min => 1 },
                                 'Required' ];
-        if (defined $object) {
-          $elem->{value} = $object->$field_name();
-        }
+      }
+      if (defined $object) {
+        $elem->{value} = $object->$field_db_column();
       }
     }
 

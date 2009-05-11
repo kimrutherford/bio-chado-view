@@ -2,6 +2,7 @@
 $type
 $rs
 $list_title
+@columns => ()
 </%args>
 
 <div class="rs_list">
@@ -10,14 +11,14 @@ $list_title
     <span class="title"> <% $list_title %> </span>
   </div>
 % }
-% if (@field_names == 0) {
+% if (@field_labels == 0) {
   No results
 % } else {
   <table class="list">
     <thead>
       <tr>
 %   for my $head_col (@column_headings) {
-        <td><span class="field_name"><% ucfirst $head_col %></span></td>
+        <td><span class="field_label"><% ucfirst $head_col %></span></td>
 %   }
       <td>&nbsp;</td>
       </tr>
@@ -25,10 +26,10 @@ $list_title
 %   my $row_count = 0;
 %   for my $object (@rows) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
-%     for my $field_name (@field_names) {
-        <td><& field.mhtml, type => $type, object => $object, field_name => $field_name &></td>
+%     for my $field_label (@field_labels) {
+        <td><& field.mhtml, object => $object, field_label => $field_label &></td>
 %     }
-     <td><& field.mhtml, type => $type, object => $object, field_name => "${type}_id" &></td>
+     <td><& field.mhtml, object => $object, field_label => "${type}_id" &></td>
     </tr>
 %     $row_count++;
 %   }
@@ -37,7 +38,7 @@ $list_title
 </div>
 
 <%init>
-my @field_names = ();
+my @field_labels = ();
 my @column_headings = ();
 my @rows = ();
 my $first = 1;
@@ -50,9 +51,13 @@ if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
 
 while (my $obj = $rs->next) {
   if ($first) {
-    for my $column_name ($obj->columns()) {
+    if (!@columns) {
+      @columns = $obj->columns();
+    }
+
+    for my $column_name (@columns) {
       next if $column_name eq 'created_stamp' or $column_name eq "${type}_id";
-      push @field_names, $column_name;
+      push @field_labels, $column_name;
       my $column_heading = undef;
       if (defined $field_infos{$column_name}) {
         if (defined $field_infos{$column_name}->{display_title}) {

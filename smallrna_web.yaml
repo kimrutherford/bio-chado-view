@@ -14,6 +14,28 @@ authentication:
         class: DBIx::Class
         user_class: DB::Person
         id_field: identifier
+# There needs to be a class_info entry for each class that will be displayed.
+# Class flags:
+#   editable: an edit link and edit page will be created for this class
+#   display_field: if provided, the value in this field will be used whenever
+#                  objects of this class need to be displayed as a name, eg.
+#                  in a select box
+#   field_info_list: a list of field_infos for this class
+# Field infomation:
+#   The field_info_list, if provided is used to decide which columns to
+#   display when listing a class or showing an object.
+#   Field flags:
+#     field_label: the description to display for the field
+#     editable: if set and true, the field is editable
+#     field_conf:
+#       - if set, and the value matches /^\w[\w\d]+$/, use this value instead
+#         of the field_label as the database column to retrieve the data from
+#       - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
+#         perl code for each object / row to be displayed.  During evaluation,
+#         $object will be set to the current row.  Any HTML characters will be
+#         passed through to the user
+#       - if not set, the field_label is used to choose the database
+#         column that holds the value for this field
 class_info:
   cv:
     display_field: name
@@ -29,33 +51,32 @@ class_info:
     editable: 1
     display_field: name
     field_info_list:
-      - field_name: name
+      - field_label: name
         editable: 1
-      - field_name: description
+      - field_label: description
         editable: 1
-      - field_name: ecotype
+      - field_label: ecotype
         editable: 1
-      - field_name: pipeproject
-        display_title: project
+      - field_label: project
+        field_conf: pipeproject
         editable: 1
-      - field_name: genotype
-        display_title: genotype
+      - field_label: genotype
         editable: 1
-      - field_name: protocol
+      - field_label: protocol
         editable: 1
-      - field_name: molecule_type
-        display_title: molecule
+      - field_label: molecule
+        field_conf: molecule_type
         editable: 1
         values_constraint: 'cv->name = "tracking molecule types"'
-      - field_name: treatment_type
-        display_title: treatment
+      - field_label: treatment
+        field_conf: treatment_type
         editable: 1
         values_constraint: 'cv->name = "tracking treatment types"'
-      - field_name: frationation_type
-        display_title: frationation
+      - field_label: frationation
+        field_conf: frationation_type
         editable: 1
         values_constraint: 'cv->name = "tracking fractionation types"'
-      - field_name: tissue
+      - field_label: tissue
         editable: 1
   ecotype:
     display_field: long_description
@@ -79,18 +100,18 @@ class_info:
     editable: 1
     display_field: description
     field_info_list:
-      - field_name: description
+      - field_label: description
         editable: 1
-      - field_name: samplerun_type
-        display_title: type
+      - field_label: samplerun_type
+        field_conf: type
         values_constraint: 'cv->name = "tracking samplerun types"'
         editable: 1
-      - field_name: sample
+      - field_label: sample
         editable: 1
-      - field_name: barcode
+      - field_label: barcode
         editable: 1
-      - field_name: sequencingrun
-        display_title: sequencing run
+      - field_label: sequencingrun
+        field_conf: sequencing run
         editable: 1
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'

@@ -4,7 +4,7 @@ $type
 </%args>
 
 <div>
-<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
+<& /view/field_list.mhtml, object => $object, field_labels =>
   [qw(name description type owner funder)] &>
 </div>
 <div>

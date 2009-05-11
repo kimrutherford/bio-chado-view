@@ -4,8 +4,8 @@ $type
 </%args>
 
 <div>
-<& /view/field_list.mhtml, type => $type, object => $object, field_names =>
-  [qw(description job_identifier time_queued time_started time_finished )] &>
+<& /view/field_list.mhtml, object => $object, field_labels =>
+  [qw(description process_conf status job_identifier time_queued time_started time_finished )] &>
 </div>
 <div>
   <& /view/list.mhtml, type => 'pipedata', rs => $input_pipedata_rs,

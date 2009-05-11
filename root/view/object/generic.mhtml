@@ -13,8 +13,8 @@ $object
 %     next if $1 eq $type;
 %     $display_column_name = $1;
 %   }
-<td><span class="field_name"><% $display_column_name %></span>:</td>
-<td><& ../field.mhtml, type => $type, object => $object, field_name => $column_name &></td>
+<td><span class="field_label"><% $display_column_name %></span>:</td>
+<td><& ../field.mhtml, object => $object, field_label => $column_name &></td>
 </tr>
 % }
 </table>

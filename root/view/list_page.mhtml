@@ -4,5 +4,16 @@ $rs
 </%args>
 
 <div class="list_page">
-  <& /view/list.mhtml, type => $type, rs => $rs, list_title => '' &>
+  <& /view/list.mhtml, type => $type, rs => $rs, list_title => '', columns => [@columns] &>
 </div>
+
+<%init>
+my @field_info_list = ();
+
+if (defined $c->config()->{class_info}->{$type}->{field_info_list}) {
+  @field_info_list = @{$c->config()->{class_info}->{$type}->{field_info_list}};
+}
+
+my @columns = map { $_->{field_label} } @field_info_list;
+
+</%init>

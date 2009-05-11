@@ -3,7 +3,7 @@ $object
 </%args>
 
 <div>
-<& /view/field_list.mhtml, type => 'ecotype', object => $object, field_names
+<& /view/field_list.mhtml, object => $object, field_labels
   => [qw|description organism|] &>
 </div>
 
