@@ -123,9 +123,9 @@ table.list tr td {
     padding: 3px;
 }
 
-.actionlist li {
-    padding: 0px;
-    margin:0px;
+.actionlist ul {
+    padding: 8px;
+    margin: 2px;
     list-style: none;
     list-style-type: none;
 }
