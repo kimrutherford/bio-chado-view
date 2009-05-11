@@ -39,12 +39,15 @@
     <td class="actionlist" width="50%" valign="top">
       <div>
         <div class="label">
-          Editing options
+          Edit
         </div>
         <div>
           <ul>
             <li>
-              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample</a>
+              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample to the database</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/samplerun') %>">Add a sample to a sequencing run</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Add a person</a>

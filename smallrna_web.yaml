@@ -81,7 +81,22 @@ class_info:
   sequencingrun:
     display_field: identifier
   samplerun:
+    editable: 1
     display_field: description
+    field_info_list:
+      - field_name: description
+        editable: 1
+      - field_name: samplerun_type
+        display_title: type
+        values_constraint: 'cv->name = "tracking samplerun types"'
+        editable: 1
+      - field_name: sample
+        editable: 1
+      - field_name: barcode
+        editable: 1
+      - field_name: sequencingrun
+        display_title: sequencing run
+        editable: 1
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
