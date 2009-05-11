@@ -30,8 +30,12 @@ my $_get_display_name_code = sub {
   my $display_field_name = undef;
 
   if (defined $field_infos{$field_name}) {
-    $display_field_name = $field_infos{$field_name}->{display_title}
-  } else {
+    if (defined $field_infos{$field_name}->{display_title}) {
+      $display_field_name = $field_infos{$field_name}->{display_title};
+    }
+  }
+
+  if (!defined $display_field_name) {
     ($display_field_name = $field_name) =~ s/_/ /g;
   }
 

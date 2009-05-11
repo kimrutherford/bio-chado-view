@@ -55,11 +55,16 @@ while (my $obj = $rs->next) {
       push @field_names, $column_name;
       my $column_heading = undef;
       if (defined $field_infos{$column_name}) {
-        $column_heading = $field_infos{$column_name}->{display_title}
-      } else {
+        if (defined $field_infos{$column_name}->{display_title}) {
+          $column_heading = $field_infos{$column_name}->{display_title};
+        }
+      }
+
+      if (!defined $column_heading) {
         $column_heading = $column_name;
         $column_heading =~ s/_/ /g;
       }
+
       push @column_headings, $column_heading;
     }
     $first = 0;
