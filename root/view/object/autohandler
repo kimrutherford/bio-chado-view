@@ -4,8 +4,17 @@ $object
 </%args>
 
 % if ($editable) {
-<div class="edit_link">
-  <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">edit ...</a>
+<div class="actionlist" style="float: right">
+  <div class="label">
+    Actions
+  </div>
+  <div>
+    <ul>
+      <li>
+        <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">edit ...</a>
+      </li>
+    </ul>
+  </div>
 </div>
 % }
 

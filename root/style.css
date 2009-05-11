@@ -123,6 +123,13 @@ table.list tr td {
     padding: 3px;
 }
 
+.actionlist li {
+    padding: 0px;
+    margin:0px;
+    list-style: none;
+    list-style-type: none;
+}
+
 
 /* editing: */
 div.submit {
