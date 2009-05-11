@@ -188,4 +188,22 @@ sub class_name_of_relationship
   return $info{class};
 }
 
+=head2 id_of_object
+
+ Usage   : my $id = SmallRNA::DB::id_of_object($object);
+ Function: Return the database id of the object, eg. for a sample, return the 
+           value in the sample_id column
+ Args    : $object - an object
+
+=cut
+sub id_of_object
+{
+  my $object = shift;
+
+  my $table_name = $object->table();
+  my $table_id_field = $table_name . '_id';
+
+  return $object->$table_id_field();
+}
+
 1;
