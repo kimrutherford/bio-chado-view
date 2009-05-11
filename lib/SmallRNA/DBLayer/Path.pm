@@ -74,6 +74,16 @@ sub bits
   return split /->/, $self->{path_string};
 }
 
+=head2 
+
+ Usage   : my $object_or_value = $path->resolve($object);
+ Function: Follow a path from the given object, returning the object or value
+           at the end.  eg. From a sample object, for path "ecotype->organism"
+           we might get the arabidopsis row from the organism table.  The path
+           "ecotype->organism->species" might give us "thaliana"
+ Args    : $object - an object
+
+=cut
 sub resolve
 {
   my $self = shift;
@@ -91,6 +101,5 @@ sub resolve
 
   return $current_value;
 }
-
 
 1;
