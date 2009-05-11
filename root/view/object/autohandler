@@ -11,7 +11,7 @@ $object
   <div>
     <ul>
       <li>
-        <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">edit ...</a>
+        <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">Edit</a>
       </li>
     </ul>
   </div>
