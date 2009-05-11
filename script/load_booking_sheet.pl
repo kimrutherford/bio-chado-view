@@ -141,6 +141,8 @@ sub get_project
   my $owner = shift;
   my $molecule_type = shift;
 
+  $project_name = 'P_' . $project_name;
+
   my $project_type;
 
   if ($molecule_type eq 'RNA') {
@@ -235,6 +237,8 @@ sub create_sequencing_run
   my $multiplexed = shift;
   my $date_submitted = shift;
   my $date_received = shift;
+
+  $run_identifier = 'R_' . $run_identifier;
 
   my $multiplexing_type_name;
 
