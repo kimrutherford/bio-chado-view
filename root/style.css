@@ -53,7 +53,8 @@ a:link:active { color:#58e; text-decoration:none }
     color: white;
     font-size: 110%;
     font-weight: bold;
-    padding: 1px 5px 1px 5px;
+    padding: 2px 5px 1px 5px;
+
 }
 
 .field_list {
@@ -110,8 +111,20 @@ table.list tr td {
     whitespace: nowrap;
 }
 
+/* front page: */
+.actionlist {
+    margin: 5px;
+    border: 1px solid #999;
+}
 
-// editing:
+.actionlist .label {
+    font-size: 110%;
+    background-color: #eef;
+    padding: 3px;
+}
+
+
+/* editing: */
 div.submit {
     float: right;
 }

@@ -1,34 +1,57 @@
-<%args>
-</%args>
-
-<div>
-  <ul>
-    <li>
-      <a href="<% $c->uri_for('/view/list/person') %>">People</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/samplerun') %>">Sample runs</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
-    </li>
-    <li>
-      <a href="<% $c->uri_for('/view/list/process_conf') %>">Pipeline project configuration</a>
-    </li>
-  </ul>
-<p>
+<table>
+  <tr>
+    <td class="actionlist" width="50%" valign="top">
+      <div>
+        <div class="label">
+          View
+        </div>
+        <ul>
+          <li>
+            <a href="<% $c->uri_for('/view/list/person') %>">People</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/samplerun') %>">Sample runs</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/process_conf') %>">Pipeline project configuration</a>
+          </li>
+        </ul>
+      </div>
+    </td>
+    <td class="actionlist" width="50%" valign="top">
+      <div>
+        <div class="label">
+          Editing options
+        </div>
+        <div>
+          <ul>
+            <li>
+              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/person') %>">Add a person</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
