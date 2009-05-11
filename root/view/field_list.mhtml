@@ -7,12 +7,34 @@ $type
 <div class="field_list">
   <table>
 % for my $field_name (@field_names) {
-%   (my $display_field_name = $field_name) =~ s/_/ /g;
     <tr>
-      <td><% $display_field_name %>:</td>
+      <td><% $_get_display_name_code->($field_name) %>:</td>
       <td>
       <td><& /view/field.mhtml, type => $type, object => $object, field_name => $field_name &></td>
     </tr>
 % }
   </table>
 </div>
+
+<%init>
+
+my %field_infos = ();
+
+if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
+  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
+}
+
+my $_get_display_name_code = sub {
+  my $field_name = shift;
+
+  my $display_field_name = undef;
+
+  if (defined $field_infos{$field_name}) {
+    $display_field_name = $field_infos{$field_name}->{display_title}
+  } else {
+    ($display_field_name = $field_name) =~ s/_/ /g;
+  }
+
+  return ucfirst $display_field_name;
+};
+</%init>

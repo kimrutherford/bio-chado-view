@@ -48,15 +48,15 @@ class_info:
         display_title: protocol
         editable: 1
       - field_name: molecule_type
-        display_title: molecule_type
+        display_title: molecule
         editable: 1
         values_constraint: 'cv->name = "tracking molecule types"'
       - field_name: treatment_type
-        display_title: treatment_type
+        display_title: treatment
         editable: 1
         values_constraint: 'cv->name = "tracking treatment types"'
       - field_name: frationation_type
-        display_title: frationation_type
+        display_title: frationation
         editable: 1
         values_constraint: 'cv->name = "tracking fractionation types"'
       - field_name: tissue

@@ -16,8 +16,8 @@ $list_title
   <table class="list">
     <thead>
       <tr>
-%   for my $head_col (@field_names) {
-        <td><span class="field_name"><% $head_col %></span></td>
+%   for my $head_col (@column_headings) {
+        <td><span class="field_name"><% ucfirst $head_col %></span></td>
 %   }
       <td>&nbsp;</td>
       </tr>
@@ -38,14 +38,29 @@ $list_title
 
 <%init>
 my @field_names = ();
+my @column_headings = ();
 my @rows = ();
 my $first = 1;
+
+my %field_infos = ();
+
+if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
+  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
+}
 
 while (my $obj = $rs->next) {
   if ($first) {
     for my $column_name ($obj->columns()) {
       next if $column_name eq 'created_stamp' or $column_name eq "${type}_id";
       push @field_names, $column_name;
+      my $column_heading = undef;
+      if (defined $field_infos{$column_name}) {
+        $column_heading = $field_infos{$column_name}->{display_title}
+      } else {
+        $column_heading = $column_name;
+        $column_heading =~ s/_/ /g;
+      }
+      push @column_headings, $column_heading;
     }
     $first = 0;
   }
