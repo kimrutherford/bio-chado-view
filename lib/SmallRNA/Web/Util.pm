@@ -118,8 +118,6 @@ sub get_field_value
           die "no class_info/display_field configuration for $referenced_table\n";
         }
 
-        warn $field_db_column, " \t :  $primary_key_name  :: ", $object->$field_db_column()->$primary_key_name(), "\n";
-
         return ($field_value, 'foreign_key', $primary_key_name);
       } else {
         return (undef, 'foreign_key');
