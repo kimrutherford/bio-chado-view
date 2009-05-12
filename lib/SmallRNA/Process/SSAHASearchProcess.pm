@@ -54,9 +54,9 @@ sub _write
   my $count = shift;
   my $strand;
   if ($match->{forward_match}) {
-    $strand = 1;
+    $strand = '+';
   } else {
-    $strand = -1;
+    $strand = '-';
   }
 
   my $attributes = "ID=$match->{qid}";
