@@ -172,7 +172,7 @@ CREATE TABLE sample (
        protocol text, -- there should be a protocol text, or ref to cvterm
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),
-       frationation_type integer REFERENCES cvterm(cvterm_id),
+       fractionation_type integer REFERENCES cvterm(cvterm_id),
        tissue integer REFERENCES tissue(tissue_id)
 );
 CREATE TABLE pipedata (

@@ -72,8 +72,8 @@ class_info:
         field_conf: treatment_type
         editable: 1
         values_constraint: 'cv->name = "tracking treatment types"'
-      - field_label: frationation
-        field_conf: frationation_type
+      - field_label: fractionation
+        field_conf: fractionation_type
         editable: 1
         values_constraint: 'cv->name = "tracking fractionation types"'
       - field_label: tissue

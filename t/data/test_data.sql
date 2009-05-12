@@ -29,7 +29,7 @@ ALTER TABLE ONLY public.sample_pipedata DROP CONSTRAINT sample_pipedata_sample_f
 ALTER TABLE ONLY public.sample_pipedata DROP CONSTRAINT sample_pipedata_pipedata_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_molecule_type_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_genotype_fkey;
-ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_frationation_type_fkey;
+ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_fractionation_type_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_ecotype_fkey;
 ALTER TABLE ONLY public.process_conf DROP CONSTRAINT process_conf_type_fkey;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_process_conf_fkey;
@@ -443,7 +443,7 @@ CREATE TABLE sample (
     protocol text,
     molecule_type integer NOT NULL,
     treatment_type integer,
-    frationation_type integer,
+    fractionation_type integer,
     tissue integer
 );
 
@@ -1449,7 +1449,7 @@ COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, for
 -- Data for Name: sample; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
-COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, description, protocol, molecule_type, treatment_type, frationation_type, tissue) FROM stdin;
+COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, description, protocol, molecule_type, treatment_type, fractionation_type, tissue) FROM stdin;
 1	2009-05-08 13:49:46.292221	SL54	1	2	\N	Chlamy total DNA (mononuc)	\N	27	\N	\N	\N
 2	2009-05-08 13:49:46.292221	SL55	2	2	\N	Chlamy methylated DNA IP (mononuc)	\N	27	\N	\N	\N
 3	2009-05-08 13:49:46.292221	SL234_B	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	28	\N	\N	\N
@@ -1892,11 +1892,11 @@ ALTER TABLE ONLY sample
 
 
 --
--- Name: sample_frationation_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+-- Name: sample_fractionation_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
 --
 
 ALTER TABLE ONLY sample
-    ADD CONSTRAINT sample_frationation_type_fkey FOREIGN KEY (frationation_type) REFERENCES cvterm(cvterm_id);
+    ADD CONSTRAINT sample_fractionation_type_fkey FOREIGN KEY (fractionation_type) REFERENCES cvterm(cvterm_id);
 
 
 --
