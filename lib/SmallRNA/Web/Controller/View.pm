@@ -94,6 +94,9 @@ sub list : Local {
     $st->{rs} = $c->schema->resultset($class_name)->search(undef,
                                                              { order_by => $type . '_id' }
                                                            );
+
+    $st->{page} = $c->req->param('page') || 1;
+    $st->{numrows} = $c->req->param('numrows') || 20;
   };
   if ($@) {
     $c->stash->{error} = qq(No objects with type: $type - $@);

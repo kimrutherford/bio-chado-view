@@ -144,3 +144,15 @@ span.error_constraint_required {
     color: red;
     font-size: 90%;
 }
+
+/* page navigation */
+.page_nav_summary {
+    font-size: 90%;
+}
+.page_nav_links {
+    font-size: 90%;
+}
+.page_nav_current {
+    font-weight: bold;
+    font-size: 110%;
+}

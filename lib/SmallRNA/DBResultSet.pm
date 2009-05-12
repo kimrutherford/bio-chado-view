@@ -47,7 +47,7 @@ use strict;
 use warnings;
 use Carp;
 
-use base qw/DBIx::Class::ResultSet/;
+use base qw/DBIx::Class::ResultSet::Data::Pageset/;
 
 sub create
 {
