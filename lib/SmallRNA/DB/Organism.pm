@@ -36,7 +36,7 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 255,
   },
-  "commonname",
+  "common_name",
   {
     data_type => "character varying",
     default_value => undef,
@@ -71,7 +71,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:j8xAuoopExRBN7q17n0F1Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1CA4dqROOB7M6yN8A6J6kg
 
 # the genus and species, used when displaying organisms
 sub full_name {

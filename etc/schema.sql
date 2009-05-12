@@ -75,7 +75,7 @@ CREATE TABLE organism (
        abbreviation character varying(255),
        genus character varying(255) NOT NULL,
        species character varying(255) NOT NULL,
-       commonname character varying(255),
+       common_name character varying(255),
        comment text
 );
 
