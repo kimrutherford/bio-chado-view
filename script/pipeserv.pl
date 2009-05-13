@@ -45,6 +45,8 @@ while (my $pipeprocess = $conf_rs->next()) {
       die "failed to read the job id from qsub command: $!\n";
     }
 
+    chomp $qsub_handle;
+
     # finish reading everything from the pipe so that qsub doesn't get a SIGPIPE
     1 while (<$qsub_handle>);
 
