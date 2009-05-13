@@ -428,13 +428,6 @@ sub process
 
       my $proj = get_project($solexa_library, $person_obj, $molecule_type);
 
-      my $sample_name;
-      if (defined $replicate_identifier) {
-        $sample_name = $sample_prefix . '_' . $replicate_identifier;
-      } else {
-        $sample_name = $sample_prefix;
-      }
-
       my $multiplexed;
 
       if (defined $barcodes) {
@@ -488,7 +481,11 @@ sub process
           for my $barcode_identifier (@barcode_identifiers) {
             my $barcode = find('Barcode', identifier => $barcode_identifier);
 
-            my $new_sample_name = $sample_name . '_' . $barcode_identifier;
+            my $new_sample_name = $sample_prefix . '_' . $barcode_identifier;
+
+            if (defined $replicate_identifier) {
+              $new_sample_name .=  '_' . $replicate_identifier;
+      }
             my $sample = create_sample($proj, $new_sample_name, $description,
                                        $sequencing_run, $molecule_type,
                                        $ecotype);
@@ -497,6 +494,12 @@ sub process
             $pipedata->add_to_samples($sample);
           }
         } else {
+          my $sample_name = $sample_prefix;
+
+          if (defined $replicate_identifier) {
+            $sample_name .= '_' . $replicate_identifier;
+          }
+
           my $sample = create_sample($proj, $sample_name, $description,
                                      $sequencing_run, $molecule_type,
                                      $ecotype);
