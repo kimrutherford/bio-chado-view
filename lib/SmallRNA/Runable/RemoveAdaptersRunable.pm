@@ -204,7 +204,7 @@ sub run
         if (defined $sample) {
           my $sample_name = $sample->name();
           mkpath($output_dir . '/' . $sample_name);
-          if (!($new_file_name =~ s|(?:$sequencingrun_identifier\.)?(.*?)(?:\.$code_name)\.fasta$|$sample_name/$sample_name.$1.$kept_term_name.fasta|)) {
+          if (!($new_file_name =~ s|(?:$sequencingrun_identifier\.)?(.*?)(?:\.$code_name)\.fasta$|$sample_name/$sample_name.$kept_term_name.fasta|)) {
             croak "pattern match failed for $new_file_name\n";
           }
           $content_type_name = $kept_term_name;
@@ -241,7 +241,7 @@ sub run
       # the directory is just the sample name
       my $sample_name = $sample->name();
       my $new_output_name = $output;
-      $new_output_name =~ s|(.*)\.fasta$|$sample_name/$1.$kept_term_name.fasta|;
+      $new_output_name =~ s|(.*)\.fasta$|$sample_name/$sample_name.$kept_term_name.fasta|;
 
       mkpath("$data_dir/$sample_name");
       move($temp_dir_output_file_name, "$data_dir/$new_output_name");
