@@ -407,10 +407,10 @@ sub process
     }
 
     # match SL + (_num)? + (_letters)?
-    if ($solexa_library =~ /(?:(SL\d+)(?:_(\d+))?)(?:_(\w+))?/) {
+    if ($solexa_library =~ /(SL\d+)(?:_([A-Z]+))?(?:_(\d+))?/) {
       my $sample_prefix = $1;
-      my $replicate_identifier = $2;
-      my $barcodes = $3;
+      my $barcodes = $2;
+      my $replicate_identifier = $3;
 
       my $is_replicate = 0;
 
@@ -437,7 +437,7 @@ sub process
 
       my $multiplexed;
 
-      if (defined $barcodes && length $barcodes > 1) {
+      if (defined $barcodes) {
         $multiplexed = 1;
       } else {
         $multiplexed = 0;
