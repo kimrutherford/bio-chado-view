@@ -172,7 +172,7 @@ $schema->txn_do(sub {
 
 $schema->txn_commit();
 
-my @orgs = ({ name => "dcb",
+my @orgs = ({ name => "DCB",
               description => "David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences" },
             { name => 'CRUK CRI',
               description => 'Cancer Research UK, Cambridge Research Institute' },
