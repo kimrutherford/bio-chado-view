@@ -30,6 +30,8 @@ while (defined (my $sample = $sample_rs->next())) {
     my $first_name = $owner->first_name();
     my $last_name = $owner->last_name();
 
+    my $org_name = $owner->organisation()->name();
+
     if (0) {
       $database_config .= <<"DATABASE";
 
@@ -52,7 +54,7 @@ fgcolor      = \\&fgcolor
 linewidth    = \\&abundance
 description  = 1
 key          = $sample_name
-category     = $first_name $last_name
+category     = $org_name - $first_name $last_name
 
 TRACK
 
