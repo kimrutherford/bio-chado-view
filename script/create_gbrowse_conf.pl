@@ -81,7 +81,17 @@ INIT_CODE
 print <<"END";
 [GENERAL]
 description   = Arabidopsis thaliana TAIR8
-database      = arabidopsis_gff3
+db_adaptor    = Bio::DB::SeqFeature::Store
+db_args       = -adaptor        DBI::mysql
+                -dsn    dbi:mysql:database=arabidopsis_tair_8_all:host=localhost
+                -user   pipe
+                -pass   pipe
+
+gbrowse root = gbrowse-1.69
+stylesheet   = gbrowse.css
+buttons      = images/buttons
+js           = js
+tmpimages   = /gbrowse-1.69
 
 initial landmark = Chr1:1504365..1514364
 
@@ -98,6 +108,40 @@ plugins = FastaDumper
 automatic classes = chromosome gene five_prime_UTR mRNA exon three_prime_UTR
 
 init_code = $init_code
+
+max segment = 50000
+default segment = 5000
+
+# Default glyph settings
+glyph       = generic
+height      = 8
+bgcolor     = cyan
+fgcolor     = cyan
+label density = 25
+bump density  = 100
+
+# where to link to when user clicks in detaild view
+#link          = http://atidb.org/
+link = AUTO
+
+# what image widths to offer
+image widths  = 450 640 800 1024
+
+# default width of detailed view (pixels)
+default width = 1024
+default features = ncRNA
+                   DNA
+                   Col_combined
+
+
+# max and default segment sizes for detailed view
+max segment     = 500000
+default segment = 50000
+
+# zoom levels
+zoom levels    = 100 200 1000 2000 5000 10000 20000 40000 100000 200000 500000 1000000
+low res = 200000
+
 
 #################################
 # database definitions
