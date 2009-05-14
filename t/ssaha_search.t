@@ -31,5 +31,5 @@ my $res = SmallRNA::Process::SSAHASearchProcess::run(
 
 ok(-s $output_gff_file_name, 'has gff output');
 
-ok(compare($output_gff_file_name, "t/results/ssaha_search_gff.results") == 0,
+ok(compare($output_gff_file_name, "t/data/ssaha_search_gff.results") == 0,
   'gff results comparison');
