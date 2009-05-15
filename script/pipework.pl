@@ -53,6 +53,9 @@ $pipeprocess->time_started(DateTime->now());
 $pipeprocess->status($started_status);
 $pipeprocess->update();
 
+use POSIX ();
+POSIX::nice(19);
+
 $schema->txn_do(sub { 
                   SmallRNA::PipeWork::run_process(schema => $schema, 
                                                   config => $config,
