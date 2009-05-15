@@ -51,6 +51,7 @@ my %terms = (
               'fs' => 'FASTA format with an empty description line',
               'fasta' => 'FASTA format',
               'gff3' => 'GFF3 format',
+              'seq_offset_index' => 'An index of a GFF3 format file',
               'text' => 'A human readable text file with summaries or statistics'
              },
              'tracking file content types' =>
@@ -81,6 +82,8 @@ my %terms = (
                 'A summary of the first base composition of sequences from a fasta file',
               'genome_aligned_srna_reads' =>
                 'Small RNA reads that have been aligned against the genome',
+              'gff3_index' =>
+                'An index of a gff3 file that has the read sequence as the key',
              },
              'tracking sequencing method' =>
              {
@@ -134,7 +137,9 @@ my %terms = (
                 'Read a fasta file of short sequences, remove redundant reads '
                   . 'and add a count to the header',
               'ssaha alignment' =>
-                'Align reads against a sequence database with SSAHA'
+                'Align reads against a sequence database with SSAHA',
+              'gff3 index' =>
+                'Create an index of GFF3 file',
              },
              'tracking samplerun types' =>
              {
@@ -328,6 +333,16 @@ my @analyses = (
                      {
                        format_type => 'fasta',
                        content_type => 'small_rna_seq',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'gff3 index',
+                 runable_name => 'SmallRNA::Runable::CreateIndexRunable',
+                 inputs => [
+                     {
+                       format_type => 'gff3',
+                       content_type => 'genome_aligned_srna_reads',
                      }
                     ]
                 },
