@@ -6,7 +6,7 @@ SmallRNA::Index::Manager - Code for maintaining and searching small rna files.
 
 =head1 SYNOPSIS
 
-This is code for managing a indexing a GFF3 and looking up using the note.
+This is code for managing and indexing a GFF3 and looking up using the sequence.
 The format of the index file is:
  <note> <offset1>,<offset2>...
 sorted by the <note> column.
