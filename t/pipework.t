@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 17;
+use Test::More tests => 21;
 use DateTime;
 
 BEGIN {
@@ -47,11 +47,9 @@ for (my $i = 0; $i < 4; $i++) {
 
   $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
 
-  if ($i == 0) {
-    is($pipeprocess_rs->count(), 6, 'process count');
-  } else {
-    is($pipeprocess_rs->count(), 12, 'process count');
-  }
+  my %count_exp = (0 => 6, 1 => 12, 2 => 15, 3 => 15);
+
+  is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
   # fake what pipework.pl does to test the runables
   while (my $pipeprocess = $pipeprocess_rs->next()) {
@@ -80,7 +78,7 @@ for (my $i = 0; $i < 4; $i++) {
         # no barcodes:
         my $prefix = "SL236.090227.311F6AAXX.s_1";
 
-        my $out_file_name = $config->data_directory() . "/SL236/$prefix.$small_rna_seq_string.fasta";
+        my $out_file_name = $config->data_directory() . "/SL236/SL236.$small_rna_seq_string.fasta";
         my $rej_file_name = $config->data_directory() . "/$remove_adapters_string/$prefix.$remove_adapters_string.fasta";
 
         ok(-e $out_file_name, 'looking for output file');
@@ -89,8 +87,8 @@ for (my $i = 0; $i < 4; $i++) {
         if ($pipedata->file_name() =~ /SL234/) {
           my $common = "090202.30W8NAAXX.s_1";
 
-          my $b_out_file_name = $config->data_directory() . "/SL234_B/SL234_B.$common.$small_rna_seq_string.fasta";
-          my $c_out_file_name = $config->data_directory() . "/SL234_C/SL234_C.$common.$small_rna_seq_string.fasta";
+          my $b_out_file_name = $config->data_directory() . "/SL234_B/SL234_B.$small_rna_seq_string.fasta";
+          my $c_out_file_name = $config->data_directory() . "/SL234_C/SL234_C.$small_rna_seq_string.fasta";
           my $rej_file_name = $config->data_directory() . "/$remove_adapters_string/SL234_BCF.$common.$remove_adapters_string.fasta";
 
           ok(-s $b_out_file_name, "look for $b_out_file_name");
