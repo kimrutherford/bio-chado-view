@@ -61,12 +61,7 @@ use Params::Validate qw(:all);
            the key
  Returns : nothing - either succeeds or calls die()
 
- $manager->create_index(input_file_name => $in_file_name,
-                        index_file_name =>
-
-
 =cut
-
 sub create_index
 {
   use Bio::SeqFeature::Generic;
