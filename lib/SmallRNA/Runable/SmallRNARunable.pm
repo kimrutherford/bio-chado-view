@@ -103,6 +103,8 @@ sub store_pipedata
 
   my $data_dir = $self->config()->data_directory();
 
+  $file_name =~ s|$data_dir/*||;
+
   if (!-e "$data_dir/$file_name") {
     croak "error: tried to store a file that doesn't exist: $file_name\n";
   }
