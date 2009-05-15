@@ -59,10 +59,15 @@ sub _write
     $strand = '-';
   }
 
-  my $attributes = "ID=$match->{qid}";
+  my $start = $match->{sstart};
+  my $end = $match->{send};
 
-  my $line = "$match->{sid}\t$source_name\tssaha\t$match->{sstart}\t" .
-    "$match->{send}\t$count\t$strand\t.\t$attributes";
+  my $id = "ID=$match->{qid}-$start-$end";
+
+  my $attributes = "$id;Note=$match->{qid}";
+
+  my $line = "$match->{sid}\t$source_name\tssaha\t$start\t" .
+    "$end\t$count\t$strand\t.\t$attributes";
   print $gff_file "$line\n";
 }
 

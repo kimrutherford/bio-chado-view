@@ -372,7 +372,7 @@ sub process
     }
 
     # XXX TEMP
-    if ($solexa_library !~ /SL234_BCF|SL236|SL5[45]/ && $test_mode) {
+    if ($solexa_library !~ /SL247|SL234|SL236|SL5[45]/ && $test_mode) {
       next;
     }
 

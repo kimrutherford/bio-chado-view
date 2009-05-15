@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More tests => 3;
 use File::Temp qw(tempfile);
-use File::Compare;
+use Test::Files;
 
 use YAML;
 
@@ -31,5 +31,5 @@ my $res = SmallRNA::Process::SSAHASearchProcess::run(
 
 ok(-s $output_gff_file_name, 'has gff output');
 
-ok(compare($output_gff_file_name, "t/data/ssaha_search_results.gff") == 0,
-  'gff results comparison');
+compare_ok($output_gff_file_name, "t/data/ssaha_search_results.gff",
+           'gff results comparison');
