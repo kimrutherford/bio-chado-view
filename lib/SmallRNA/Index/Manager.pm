@@ -83,7 +83,7 @@ sub create_index
 
     if ($line =~ /Note=([atgc]+)/i) {
       my $name = $1;
-      push @{$name_hash{$name}}, $current_offset;
+      push @{$name_hash{uc $name}}, $current_offset;
     } else {
       croak "can't parse Note=(.*) from: $line\n";
     }
@@ -121,12 +121,14 @@ sub search
                               index_file_name => 1,
                               search_sequence => 1 });
 
+  my $search_sequence = uc $params{search_sequence};
+
   my @results = ();
 
   open my $index_file, '<', $params{index_file_name}
     or croak "can't open $params{index_file_name}: $!\n";
 
-  my $look = look $index_file, $params{search_sequence};
+  my $look = look $index_file, uc $search_sequence;
 
   if (defined $look) {
     seek $index_file, $look, SEEK_SET
@@ -136,7 +138,7 @@ sub search
 
     my ($seq, $offsets_string) = split (/\s+/, $line);
 
-    if ($seq eq $params{search_sequence}) {
+    if ($seq eq $search_sequence) {
       my @offsets = split (/,/, $offsets_string);
 
       open my $gff_file, '<', $params{gff_file_name}
@@ -149,7 +151,7 @@ sub search
         my $gff_line = <$gff_file>;
 
         # sanity check
-        if ($gff_line =~ /Note=$params{search_sequence}\b/) {
+        if ($gff_line =~ /Note=$search_sequence\b/) {
           push @results, $gff_line;
         } else {
           croak "index doesn't match GFF file: $params{search_sequence} not " .
