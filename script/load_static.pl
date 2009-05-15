@@ -84,6 +84,8 @@ my %terms = (
                 'Small RNA reads that have been aligned against the genome',
               'gff3_index' =>
                 'An index of a gff3 file that has the read sequence as the key',
+              'fasta_index' =>
+                'An index of a fasta file that has the sequence as the key',
              },
              'tracking sequencing method' =>
              {
@@ -140,6 +142,8 @@ my %terms = (
                 'Align reads against a sequence database with SSAHA',
               'gff3 index' =>
                 'Create an index of GFF3 file',
+              'fasta index' =>
+                'Create an index of FASTA file',
              },
              'tracking samplerun types' =>
              {
@@ -343,6 +347,16 @@ my @analyses = (
                      {
                        format_type => 'gff3',
                        content_type => 'genome_aligned_srna_reads',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'fasta index',
+                 runable_name => 'SmallRNA::Runable::CreateIndexRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna_seq',
                      }
                     ]
                 },
