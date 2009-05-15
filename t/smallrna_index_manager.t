@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 
 use File::Temp qw(tempfile);
 use File::Compare;
@@ -23,3 +23,9 @@ ok(-s $output_index_file_name, 'has index output');
 
 ok(compare($output_index_file_name, "t/data/smallrna_gff_index.results") == 0,
   'result comparison');
+
+my @gff_results = $manager->search(gff_file_name => 't/data/ssaha_search_results.gff',
+                                   index_file_name => 't/data/smallrna_gff_index.results',
+                                   search_sequence => 'ACAAAGAGCTCGCCGCAGATAGGA');
+
+is(@gff_results, 3);

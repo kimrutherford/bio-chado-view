@@ -52,6 +52,9 @@ use Moose;
 
 use Params::Validate qw(:all);
 
+use Search::Dict;
+use POSIX;
+
 =head2
 
  Usage   :  my $manager = $SmallRNA::Index::Manager();
@@ -59,12 +62,11 @@ use Params::Validate qw(:all);
                                    index_file_name => '...');
  Function: Create an index from a GFF3 file, with the Name (read sequence) as
            the key
- Returns : nothing - either succeeds or calls die()
+ Returns : nothing - either succeeds or calls croak()
 
 =cut
 sub create_index
 {
-  use Bio::SeqFeature::Generic;
   my $self = shift;
   my %params = validate(@_, { input_file_name => 1,
                               index_file_name => 1 });
@@ -72,7 +74,7 @@ sub create_index
   my %name_hash = ();
 
   open my $input_file, '<', $params{input_file_name}
-    or die "can't open $params{input_file_name}: $!\n";
+    or croak "can't open $params{input_file_name}: $!\n";
 
   my $current_offset = 0;
 
@@ -83,23 +85,90 @@ sub create_index
       my $name = $1;
       push @{$name_hash{$name}}, $current_offset;
     } else {
-      die "can't parse Note=(.*) from: $line\n";
+      croak "can't parse Note=(.*) from: $line\n";
     }
   } continue {
     $current_offset = tell $input_file;
   }
 
-  close $input_file or die "can't close $params{input_file_name}: $!\n";
+  close $input_file or croak "can't close $params{input_file_name}: $!\n";
 
   open my $index_file, '>', $params{index_file_name}
-    or die "can't open $params{index_file_name} for writing: $!\n";
+    or croak "can't open $params{index_file_name} for writing: $!\n";
 
   for my $name (sort keys %name_hash) {
     print $index_file "$name ", (join ',', @{$name_hash{$name}}), "\n";
   }
 
-  close $index_file or die "can't close $params{index_file_name}: $!\n";
+  close $index_file or croak "can't close $params{index_file_name}: $!\n";
 }
 
-1;
+=head2
 
+ Usage   : my @gff_lines = $manager->search(gff_file_name => '...',
+                                            index_file_name => '...',
+                                            search_sequence => 'ATGC...');
+ Function: Use an index to search a gff3 file lines that have a Note containing
+           the given sequence.  The index is created by the
+           SmallRNA::Index::Manager::create_index() function.
+ Returns : The lines from the GFF3 file
+
+=cut
+sub search
+{
+  my $self = shift;
+  my %params = validate(@_, { gff_file_name => 1,
+                              index_file_name => 1,
+                              search_sequence => 1 });
+
+  my @results = ();
+
+  open my $index_file, '<', $params{index_file_name}
+    or croak "can't open $params{index_file_name}: $!\n";
+
+  my $look = look $index_file, $params{search_sequence};
+
+  if (defined $look) {
+    seek $index_file, $look, SEEK_SET
+      or croak "can't seek to $look in $params{index_file_name}";
+
+    my $line = <$index_file>;
+
+    my ($seq, $offsets_string) = split (/\s+/, $line);
+
+    if ($seq eq $params{search_sequence}) {
+      my @offsets = split (/,/, $offsets_string);
+
+      open my $gff_file, '<', $params{gff_file_name}
+        or croak "can't open $params{gff_file_name}: $!\n";
+
+      for my $offset (@offsets) {
+        seek $gff_file, $offset, SEEK_SET
+          or croak "can't seek to $look in $params{gff_file_name}";
+
+        my $gff_line = <$gff_file>;
+
+        # sanity check
+        if ($gff_line =~ /Note=$params{search_sequence}\b/) {
+          push @results, $gff_line;
+        } else {
+          croak "index doesn't match GFF file: $params{search_sequence} not " .
+            "found at line: $gff_line\n";
+        }
+      }
+
+      close $gff_file or croak "can't close $params{gff_file_name}: $!\n";
+    } else {
+      # not an exact match
+    }
+  } else {
+    # no results
+  }
+
+  close $index_file or croak "can't close $params{index_file_name}: $!\n";
+
+  return @results;
+}
+
+
+1;
