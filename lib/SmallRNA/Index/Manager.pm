@@ -136,30 +136,34 @@ sub search
 
     my $line = <$index_file>;
 
-    my ($seq, $offsets_string) = split (/\s+/, $line);
+    if (defined $line) {
+      my ($seq, $offsets_string) = split (/\s+/, $line);
 
-    if ($seq eq $search_sequence) {
-      my @offsets = split (/,/, $offsets_string);
+      if ($seq eq $search_sequence) {
+        my @offsets = split (/,/, $offsets_string);
 
-      open my $gff_file, '<', $params{gff_file_name}
-        or croak "can't open $params{gff_file_name}: $!\n";
+        open my $gff_file, '<', $params{gff_file_name}
+          or croak "can't open $params{gff_file_name}: $!\n";
 
-      for my $offset (@offsets) {
-        seek $gff_file, $offset, SEEK_SET
-          or croak "can't seek to $look in $params{gff_file_name}";
+        for my $offset (@offsets) {
+          seek $gff_file, $offset, SEEK_SET
+            or croak "can't seek to $look in $params{gff_file_name}";
 
-        my $gff_line = <$gff_file>;
+          my $gff_line = <$gff_file>;
 
-        # sanity check
-        if ($gff_line =~ /Note=$search_sequence\b/) {
-          push @results, $gff_line;
-        } else {
-          croak "index doesn't match GFF file: $params{search_sequence} not " .
-            "found at line: $gff_line\n";
+          # sanity check
+          if ($gff_line =~ /Note=$search_sequence\b/) {
+            push @results, $gff_line;
+          } else {
+            croak "index doesn't match GFF file: $params{search_sequence} not " .
+              "found at line: $gff_line\n";
+          }
         }
-      }
 
-      close $gff_file or croak "can't close $params{gff_file_name}: $!\n";
+        close $gff_file or croak "can't close $params{gff_file_name}: $!\n";
+      } else {
+        # empty index file / empty GFF file
+      }
     } else {
       # not an exact match
     }
