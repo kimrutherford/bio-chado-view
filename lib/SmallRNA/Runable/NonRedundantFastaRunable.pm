@@ -71,7 +71,7 @@ sub run
     my $input_pipedata = $input_pipedatas[0];
 
     my $input_type = $input_pipedata->content_type()->name();
-    my $output_type = 'non_redundant_small_rna_seq';
+    my $output_type = 'non_redundant_small_rna';
     my $data_dir = $self->config()->data_directory();
 
     my $input_file_name = $input_pipedata->file_name();

@@ -1256,7 +1256,7 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 14	2	genomic_dna_tags	DNA reads that have been trimmed to a fixed number of bases	\N	0	0
 15	2	gff3_index	An index of a gff3 file that has the read sequence as the key	\N	0	0
 16	2	multiplexed_small_rna_reads	Raw small RNA sequence with quality scores from a multiplexed sequencing run	\N	0	0
-17	2	non_redundant_small_rna_seq	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
+17	2	non_redundant_small_rna	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
 18	2	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	\N	0	0
 19	2	raw_small_rna_reads	Raw small RNA sequence with quality scores from a non-multiplexed sequencing run	\N	0	0
 20	2	remove_adapters_rejected_reads	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
@@ -1264,7 +1264,7 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 22	2	small_rna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	\N	0	0
 23	2	small_rna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	\N	0	0
 24	2	small_rna_reads_nuclear_alignment	Small RNA to genome alignments	\N	0	0
-25	2	small_rna_seq	Small RNA sequence reads that have been processed to remove adapters	\N	0	0
+25	2	small_rna	Small RNA sequence reads that have been processed to remove adapters	\N	0	0
 26	3	fasta	FASTA format	\N	0	0
 27	3	fastq	FastQ format file	\N	0	0
 28	3	fs	FASTA format with an empty description line	\N	0	0

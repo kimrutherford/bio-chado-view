@@ -72,13 +72,13 @@ for (my $i = 0; $i < 4; $i++) {
 
     if ($process_type_name =~ /^remove adapters/) {
       my $remove_adapters_string = 'remove_adapters_rejected_reads';
-      my $small_rna_seq_string = 'small_rna_seq';
+      my $small_rna_string = 'small_rna';
 
       if ($pipedata->file_name() =~ /SL236/) {
         # no barcodes:
         my $prefix = "SL236.090227.311F6AAXX.s_1";
 
-        my $out_file_name = $config->data_directory() . "/SL236/SL236.$small_rna_seq_string.fasta";
+        my $out_file_name = $config->data_directory() . "/SL236/SL236.$small_rna_string.fasta";
         my $rej_file_name = $config->data_directory() . "/$remove_adapters_string/$prefix.$remove_adapters_string.fasta";
 
         ok(-e $out_file_name, 'looking for output file');
@@ -87,8 +87,8 @@ for (my $i = 0; $i < 4; $i++) {
         if ($pipedata->file_name() =~ /SL234/) {
           my $common = "090202.30W8NAAXX.s_1";
 
-          my $b_out_file_name = $config->data_directory() . "/SL234_B/SL234_B.$small_rna_seq_string.fasta";
-          my $c_out_file_name = $config->data_directory() . "/SL234_C/SL234_C.$small_rna_seq_string.fasta";
+          my $b_out_file_name = $config->data_directory() . "/SL234_B/SL234_B.$small_rna_string.fasta";
+          my $c_out_file_name = $config->data_directory() . "/SL234_C/SL234_C.$small_rna_string.fasta";
           my $rej_file_name = $config->data_directory() . "/$remove_adapters_string/SL234_BCF.$common.$remove_adapters_string.fasta";
 
           ok(-s $b_out_file_name, "look for $b_out_file_name");

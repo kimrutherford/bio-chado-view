@@ -62,9 +62,9 @@ my %terms = (
                 'Raw small RNA sequence with quality scores from a multiplexed sequencing run',
               'raw_genomic_dna_reads' =>
                 'Raw DNA sequence reads with quality scores',
-              'small_rna_seq' =>
+              'small_rna' =>
                 'Small RNA sequence reads that have been processed to remove adapters',
-              'non_redundant_small_rna_seq' =>
+              'non_redundant_small_rna' =>
                 'Small RNA sequence reads without adapters with redundant sequences removed',
               'genomic_dna_tags' =>
                 'DNA reads that have been trimmed to a fixed number of bases',
@@ -326,7 +326,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'small_rna_seq',
+                       content_type => 'small_rna',
                      }
                     ]
                 },
@@ -336,7 +336,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'small_rna_seq',
+                       content_type => 'small_rna',
                      }
                     ]
                 },
@@ -356,7 +356,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna_seq',
+                       content_type => 'non_redundant_small_rna',
                      }
                     ]
                 },
@@ -367,7 +367,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna_seq',
+                       content_type => 'non_redundant_small_rna',
                      }
                     ]
                 },
@@ -378,7 +378,7 @@ my @analyses = (
                 #  inputs => [
                 #      {
                 #        format_type => 'fasta',
-                #        content_type => 'small_rna_seq',
+                #        content_type => 'small_rna',
                 #      }
                 #     ]
                 # }

@@ -96,7 +96,7 @@ sub run
       my $input_file_name = $input_pipedata->file_name();
       my $gff_file_name = $input_file_name;
 
-      $gff_file_name =~ s/\.non_redundant_small_rna_seq\.fasta/.v_$versus.gff3/;
+      $gff_file_name =~ s/\.non_redundant_small_rna\.fasta/.v_$versus.gff3/;
 
       SmallRNA::Process::SSAHASearchProcess::run(input_file_name =>
                                                    "$data_dir/" . $input_file_name,

@@ -129,7 +129,7 @@ sub run
 
   my $schema = $self->schema();
 
-  my $kept_term_name = 'small_rna_seq';
+  my $kept_term_name = 'small_rna';
   my $reject_term_name = 'remove_adapters_rejected_reads';
   my $unknown_barcode_term_name = 'remove_adapters_unknown_barcode';
 
