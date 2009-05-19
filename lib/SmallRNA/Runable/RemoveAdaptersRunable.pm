@@ -130,8 +130,8 @@ sub run
   my $schema = $self->schema();
 
   my $kept_term_name = 'small_rna';
-  my $reject_term_name = 'remove_adapters_rejected_reads';
-  my $unknown_barcode_term_name = 'remove_adapters_unknown_barcode';
+  my $reject_term_name = 'remove_adapter_rejects';
+  my $unknown_barcode_term_name = 'remove_adapter_unknown_barcode';
 
   _check_terms($schema, $kept_term_name, $reject_term_name,
                $unknown_barcode_term_name);

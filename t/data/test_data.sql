@@ -1259,8 +1259,8 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 17	2	non_redundant_small_rna	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
 18	2	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	\N	0	0
 19	2	raw_small_rna_reads	Raw small RNA sequence with quality scores from a non-multiplexed sequencing run	\N	0	0
-20	2	remove_adapters_rejected_reads	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
-21	2	remove_adapters_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	\N	0	0
+20	2	remove_adapter_rejects	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
+21	2	remove_adapter_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	\N	0	0
 22	2	small_rna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	\N	0	0
 23	2	small_rna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	\N	0	0
 24	2	small_rna_reads_nuclear_alignment	Small RNA to genome alignments	\N	0	0

@@ -71,7 +71,7 @@ for (my $i = 0; $i < 4; $i++) {
                                     pipeprocess => $pipeprocess);
 
     if ($process_type_name =~ /^remove adapters/) {
-      my $remove_adapters_string = 'remove_adapters_rejected_reads';
+      my $remove_adapters_string = 'remove_adapter_rejects';
       my $small_rna_string = 'small_rna';
 
       if ($pipedata->file_name() =~ /SL236/) {

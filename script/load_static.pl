@@ -74,9 +74,9 @@ my %terms = (
                 'Small RNA to mitochondrial dna alignments',
               'small_rna_reads_chloroplast_alignment' =>
                 'Small RNA to chloroplast dna alignments',
-              'remove_adapters_rejected_reads' =>
+              'remove_adapter_rejects' =>
                 'Small RNA sequence reads that were rejected by the remove adapters step',
-              'remove_adapters_unknown_barcode' =>
+              'remove_adapter_unknown_barcode' =>
                 'Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode',
               'first_base_summary' =>
                 'A summary of the first base composition of sequences from a fasta file',
