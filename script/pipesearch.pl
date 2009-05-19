@@ -69,10 +69,6 @@ if ($options{search_fasta}) {
   $file_format = 'seq_offset_index';
 }
 
-print scalar(localtime), "\n";
-
-for my $zz (1 .. 100) {
-
 my $rs = $schema->resultset('Cvterm')->search({
   name => $file_format
 })->search_related('pipedata_format_types');
@@ -110,8 +106,4 @@ while (defined (my $pipedata = $rs->next())) {
       print $maybe_file_name, "$res\n";
     }
   }
-}
-
-print scalar(localtime), "\n";
-
 }
