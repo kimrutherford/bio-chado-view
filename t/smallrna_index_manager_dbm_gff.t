@@ -22,7 +22,8 @@ my ($index_fh, $output_index_file_name) =
 
 $manager->create_index(input_file_name => $input_file_name,
                        index_file_name => $output_index_file_name,
-                       input_file_type => 'gff3');
+                       input_file_type => 'gff3',
+                       index_type => 'sorted');
 
 ok(-s $output_index_file_name, 'has index output');
 
