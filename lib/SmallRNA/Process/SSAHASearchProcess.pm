@@ -64,7 +64,7 @@ sub _write
 
   my $id = "ID=$match->{qid}-$start-$end";
 
-  my $attributes = "$id;Note=$match->{qid}";
+  my $attributes = "$id;Name=$match->{qid};Note=$match->{qid}";
 
   my $line = "$match->{sid}\t$source_name\tssaha\t$start\t" .
     "$end\t$count\t$strand\t.\t$attributes";
