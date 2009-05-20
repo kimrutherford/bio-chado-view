@@ -56,5 +56,7 @@ while (my $pipeprocess = $conf_rs->next()) {
     $pipeprocess->time_queued(DateTime->now());
     $pipeprocess->status($queued_status);
     $pipeprocess->update();
+
+    sleep(1);
   }
 }
