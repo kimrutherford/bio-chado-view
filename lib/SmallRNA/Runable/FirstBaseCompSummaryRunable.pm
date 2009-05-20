@@ -74,7 +74,7 @@ sub run
     my $input_file_name = $input_pipedata->file_name();
     my $out_file_name = $input_file_name;
 
-    $input_file_name =~ s/(\.fasta)?$/.first_sum/;
+    $out_file_name =~ s/(\.fasta)?$/.first_sum/;
 
     SmallRNA::Process::FirstBaseCompSummary::run(input_file_name =>
                                                    "$data_dir/" . $input_file_name,
