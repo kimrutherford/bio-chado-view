@@ -201,7 +201,11 @@ sub run
 
         my $content_type_name;
 
+        my @samples = ();
+
         if (defined $sample) {
+          push @samples, $sample;
+
           my $sample_name = $sample->name();
           mkpath($output_dir . '/' . $sample_name);
           if (!($new_file_name =~ s|(?:$sequencingrun_identifier\.)?(.*?)(?:\.$code_name)\.fasta$|$sample_name/$sample_name.$kept_term_name.fasta|)) {
@@ -220,7 +224,7 @@ sub run
                               file_name => $new_file_name,
                               format_type_name => 'fasta',
                               content_type_name => $content_type_name,
-                              samples => [$sample]);
+                              samples => [@samples]);
       }
     } else {
       ($reject_file_name, $output) =
@@ -269,7 +273,8 @@ sub run
     $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
                           file_name => $new_reject_file_name,
                           format_type_name => 'fasta',
-                          content_type_name => $reject_term_name);
+                          content_type_name => $reject_term_name,
+                          samples => []);
   };
   $self->schema->txn_do($code);
 }

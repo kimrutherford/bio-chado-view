@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 27;
+use Test::More tests => 34;
 use DateTime;
 
 BEGIN {
@@ -27,11 +27,9 @@ my $process_manager = SmallRNA::ProcessManager->new(schema => $schema);
 my $queued_status = $schema->find_with_type('Cvterm', name => 'queued');
 my $started_status = $schema->find_with_type('Cvterm', name => 'started');
 
-for (my $i = 0; $i < 4; $i++) {
+for (my $i = 0; $i < 6; $i++) {
   # this is a faked version of pipeserv.pl
   #  - queue each not_started pipeprocess
-
-  # create pipeprocesses for adapter removal
   my @processes = $process_manager->create_new_pipeprocesses();
 
   my $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
@@ -47,7 +45,7 @@ for (my $i = 0; $i < 4; $i++) {
 
   $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
 
-  my %count_exp = (0 => 6, 1 => 12, 2 => 18, 3 => 21);
+  my %count_exp = (0 => 6, 1 => 12, 2 => 18, 3 => 24, 4 => 24, 5 => 24);
 
   is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
@@ -64,7 +62,7 @@ for (my $i = 0; $i < 4; $i++) {
     my $process_type_name = $pipeprocess->process_conf()->type()->name();
 
     my @pipedatas = $pipeprocess->input_pipedatas();
-    ok(@pipedatas == 1, 'one pipedata as input to the pipeprocess');
+    ok(@pipedatas >= 1, 'at least one pipedata as input to the pipeprocess');
     my $pipedata = $pipedatas[0];
 
     SmallRNA::PipeWork::run_process(schema => $schema, config => $config,
@@ -73,6 +71,8 @@ for (my $i = 0; $i < 4; $i++) {
     if ($process_type_name =~ /^remove adapters/) {
       my $remove_adapters_string = 'remove_adapter_rejects';
       my $small_rna_string = 'small_rna';
+
+      ok(@pipedatas == 1, 'one pipedata as input to the pipeprocess');
 
       if ($pipedata->file_name() =~ /SL236/) {
         # no barcodes:

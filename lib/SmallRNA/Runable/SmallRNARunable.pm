@@ -117,9 +117,11 @@ sub store_pipedata
                       };
   my $pipedata = $schema->create_with_type('Pipedata', $pipedata_args);
 
-  if (defined $params{sample}) {
-    $pipedata->add_to_samples(@{$params{samples}});
-    $pipedata->update();
+  if (defined $params{samples}) {
+    if (@{$params{samples}} > 0) {
+      $pipedata->add_to_samples(@{$params{samples}});
+      $pipedata->update();
+    }
   } else {
     my @prev_pipedata =
       $params{generating_pipeprocess}->pipeprocess_in_pipedatas()->search_related('pipedata');
