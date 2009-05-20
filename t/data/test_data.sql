@@ -228,7 +228,7 @@ ALTER TABLE public.cvterm_cvterm_id_seq OWNER TO kmr44;
 -- Name: cvterm_cvterm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('cvterm_cvterm_id_seq', 52, true);
+SELECT pg_catalog.setval('cvterm_cvterm_id_seq', 55, true);
 
 
 --
@@ -911,7 +911,7 @@ ALTER SEQUENCE process_conf_input_process_conf_input_id_seq OWNED BY process_con
 -- Name: process_conf_input_process_conf_input_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('process_conf_input_process_conf_input_id_seq', 7, true);
+SELECT pg_catalog.setval('process_conf_input_process_conf_input_id_seq', 9, true);
 
 
 --
@@ -938,7 +938,7 @@ ALTER SEQUENCE process_conf_process_conf_id_seq OWNED BY process_conf.process_co
 -- Name: process_conf_process_conf_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('process_conf_process_conf_id_seq', 10, true);
+SELECT pg_catalog.setval('process_conf_process_conf_id_seq', 11, true);
 
 
 --
@@ -1201,17 +1201,17 @@ ALTER TABLE tissue ALTER COLUMN tissue_id SET DEFAULT nextval('tissue_tissue_id_
 --
 
 COPY barcode (barcode_id, created_stamp, identifier, code) FROM stdin;
-1	2009-05-15 17:49:04.432548	A	TACCT
-2	2009-05-15 17:49:04.432548	B	TACGA
-3	2009-05-15 17:49:04.432548	C	TAGCA
-4	2009-05-15 17:49:04.432548	D	TAGGT
-5	2009-05-15 17:49:04.432548	E	TCAAG
-6	2009-05-15 17:49:04.432548	F	TCATC
-7	2009-05-15 17:49:04.432548	G	TCTAC
-8	2009-05-15 17:49:04.432548	H	TCTTG
-9	2009-05-15 17:49:04.432548	I	TGAAC
-10	2009-05-15 17:49:04.432548	K	TGTTC
-11	2009-05-15 17:49:04.432548	J	TGTTG
+1	2009-05-20 15:27:46.87632	A	TACCT
+2	2009-05-20 15:27:46.87632	B	TACGA
+3	2009-05-20 15:27:46.87632	C	TAGCA
+4	2009-05-20 15:27:46.87632	D	TAGGT
+5	2009-05-20 15:27:46.87632	E	TCAAG
+6	2009-05-20 15:27:46.87632	F	TCATC
+7	2009-05-20 15:27:46.87632	G	TCTAC
+8	2009-05-20 15:27:46.87632	H	TCTTG
+9	2009-05-20 15:27:46.87632	I	TGAAC
+10	2009-05-20 15:27:46.87632	K	TGTTC
+11	2009-05-20 15:27:46.87632	J	TGTTG
 \.
 
 
@@ -1241,57 +1241,60 @@ COPY cv (cv_id, name, definition) FROM stdin;
 
 COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_relationshiptype) FROM stdin;
 1	1	fasta index	Create an index of FASTA file	\N	0	0
-2	1	gff3 index	Create an index of GFF3 file	\N	0	0
-3	1	multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, and uses multiplexing/barcodes	\N	0	0
-4	1	non-multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, with no multiplexing	\N	0	0
-5	1	remove adapters	Read FastQ files, process each read to remove the adapter	\N	0	0
-6	1	remove adapters and de-multiplex	Read FastQ files, process each read to remove the adapter and split the result based on the barcode	\N	0	0
-7	1	remove redundant reads	Read a fasta file of short sequences, remove redundant reads and add a count to the header	\N	0	0
-8	1	ssaha alignment	Align reads against a sequence database with SSAHA	\N	0	0
-9	1	summarise fasta first base	Read a fasta file of short sequences and summarise the first base composition	\N	0	0
-10	1	trim reads	Read FastQ files, trim each read to a fixed length and then create a fasta file	\N	0	0
-11	2	fasta_index	An index of a fasta file that has the sequence as the key	\N	0	0
-12	2	first_base_summary	A summary of the first base composition of sequences from a fasta file	\N	0	0
-13	2	genome_aligned_srna_reads	Small RNA reads that have been aligned against the genome	\N	0	0
-14	2	genomic_dna_tags	DNA reads that have been trimmed to a fixed number of bases	\N	0	0
-15	2	gff3_index	An index of a gff3 file that has the read sequence as the key	\N	0	0
-16	2	multiplexed_small_rna_reads	Raw small RNA sequence with quality scores from a multiplexed sequencing run	\N	0	0
-17	2	non_redundant_small_rna	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
-18	2	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	\N	0	0
-19	2	raw_small_rna_reads	Raw small RNA sequence with quality scores from a non-multiplexed sequencing run	\N	0	0
-20	2	remove_adapter_rejects	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
-21	2	remove_adapter_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	\N	0	0
-22	2	small_rna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	\N	0	0
-23	2	small_rna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	\N	0	0
-24	2	small_rna_reads_nuclear_alignment	Small RNA to genome alignments	\N	0	0
-25	2	small_rna	Small RNA sequence reads that have been processed to remove adapters	\N	0	0
-26	3	fasta	FASTA format	\N	0	0
-27	3	fastq	FastQ format file	\N	0	0
-28	3	fs	FASTA format with an empty description line	\N	0	0
-29	3	gff3	GFF3 format	\N	0	0
-30	3	seq_offset_index	An index of a GFF3 format file	\N	0	0
-31	3	text	A human readable text file with summaries or statistics	\N	0	0
-32	4	no fractionation	no fractionation	\N	0	0
-33	5	DNA	Deoxyribonucleic acid	\N	0	0
-34	5	RNA	Ribonucleic acid	\N	0	0
-35	6	DCB multiplexed	multiplexed sequencing run using DCB group barcodes	\N	0	0
-36	6	non-multiplexed	One sample per sequencing run	\N	0	0
-37	7	finished	Processing is done	\N	0	0
-38	7	not_started	Process has not been queued yet	\N	0	0
-39	7	queued	A job is queued to run this process	\N	0	0
-40	7	started	Processing has started	\N	0	0
-41	8	DNA tag sequencing	Sequencing of fragments of genomic DNA	\N	0	0
-42	8	small RNA sequencing	Small RNA sequencing	\N	0	0
-43	9	high	high quality	\N	0	0
-44	9	low	low quality	\N	0	0
-45	9	medium	medium quality	\N	0	0
-46	9	unknown	unknown quality	\N	0	0
-47	10	biological replicate	biological replicate/re-run	\N	0	0
-48	10	failure re-run	re-run because of failure	\N	0	0
-49	10	initial run	intial sequencing run	\N	0	0
-50	10	technical replicate	technical replicate/re-run	\N	0	0
-51	11	Illumina	Illumina sequencing method	\N	0	0
-52	12	no treatment	no treatment	\N	0	0
+2	1	genome aligned reads filter	Filter a fasta file, creating a file containing only genome aligned reads	\N	0	0
+3	1	gff3 index	Create an index of GFF3 file	\N	0	0
+4	1	multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, and uses multiplexing/barcodes	\N	0	0
+5	1	non-multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, with no multiplexing	\N	0	0
+6	1	remove adapters	Read FastQ files, process each read to remove the adapter	\N	0	0
+7	1	remove adapters and de-multiplex	Read FastQ files, process each read to remove the adapter and split the result based on the barcode	\N	0	0
+8	1	remove redundant reads	Read a fasta file of short sequences, remove redundant reads and add a count to the header	\N	0	0
+9	1	ssaha alignment	Align reads against a sequence database with SSAHA	\N	0	0
+10	1	summarise fasta first base	Read a fasta file of short sequences and summarise the first base composition	\N	0	0
+11	1	trim reads	Read FastQ files, trim each read to a fixed length and then create a fasta file	\N	0	0
+12	2	fasta_index	An index of a fasta file that has the sequence as the key	\N	0	0
+13	2	first_base_summary	A summary of the first base composition of sequences from a fasta file	\N	0	0
+14	2	genome_aligned_srna_reads	Small RNA reads that have been aligned against the genome	\N	0	0
+15	2	genome_matching_srna	Reads that match the genome with a 100% full-length match	\N	0	0
+16	2	genomic_dna_tags	DNA reads that have been trimmed to a fixed number of bases	\N	0	0
+17	2	gff3_index	An index of a gff3 file that has the read sequence as the key	\N	0	0
+18	2	multiplexed_small_rna_reads	Raw small RNA sequence with quality scores from a multiplexed sequencing run	\N	0	0
+19	2	non_redundant_small_rna	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
+20	2	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	\N	0	0
+21	2	raw_small_rna_reads	Raw small RNA sequence with quality scores from a non-multiplexed sequencing run	\N	0	0
+22	2	remove_adapter_rejects	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
+23	2	remove_adapter_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	\N	0	0
+24	2	small_rna	Small RNA sequence reads that have been processed to remove adapters	\N	0	0
+25	2	small_rna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	\N	0	0
+26	2	small_rna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	\N	0	0
+27	2	small_rna_reads_nuclear_alignment	Small RNA to genome alignments	\N	0	0
+28	3	fasta	FASTA format	\N	0	0
+29	3	fastq	FastQ format file	\N	0	0
+30	3	fs	FASTA format with an empty description line	\N	0	0
+31	3	gff3	GFF3 format	\N	0	0
+32	3	seq_offset_index	An index of a GFF3 or FASTA format file	\N	0	0
+33	3	text	A human readable text file with summaries or statistics	\N	0	0
+34	3	tsv	A file containing tab-separated value	\N	0	0
+35	4	no fractionation	no fractionation	\N	0	0
+36	5	DNA	Deoxyribonucleic acid	\N	0	0
+37	5	RNA	Ribonucleic acid	\N	0	0
+38	6	DCB multiplexed	multiplexed sequencing run using DCB group barcodes	\N	0	0
+39	6	non-multiplexed	One sample per sequencing run	\N	0	0
+40	7	finished	Processing is done	\N	0	0
+41	7	not_started	Process has not been queued yet	\N	0	0
+42	7	queued	A job is queued to run this process	\N	0	0
+43	7	started	Processing has started	\N	0	0
+44	8	DNA tag sequencing	Sequencing of fragments of genomic DNA	\N	0	0
+45	8	small RNA sequencing	Small RNA sequencing	\N	0	0
+46	9	high	high quality	\N	0	0
+47	9	low	low quality	\N	0	0
+48	9	medium	medium quality	\N	0	0
+49	9	unknown	unknown quality	\N	0	0
+50	10	biological replicate	biological replicate/re-run	\N	0	0
+51	10	failure re-run	re-run because of failure	\N	0	0
+52	10	initial run	intial sequencing run	\N	0	0
+53	10	technical replicate	technical replicate/re-run	\N	0	0
+54	11	Illumina	Illumina sequencing method	\N	0	0
+55	12	no treatment	no treatment	\N	0	0
 \.
 
 
@@ -1300,16 +1303,16 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 --
 
 COPY ecotype (ecotype_id, created_stamp, organism, description) FROM stdin;
-1	2009-05-15 17:49:04.587927	1	unspecified
-2	2009-05-15 17:49:04.587927	2	unspecified
-3	2009-05-15 17:49:04.587927	9	unspecified
-4	2009-05-15 17:49:04.587927	4	unspecified
-5	2009-05-15 17:49:04.587927	5	unspecified
-6	2009-05-15 17:49:04.587927	6	unspecified
-7	2009-05-15 17:49:04.587927	7	unspecified
-8	2009-05-15 17:49:04.587927	8	unspecified
-9	2009-05-15 17:49:04.587927	10	unspecified
-10	2009-05-15 17:49:04.587927	11	unspecified
+1	2009-05-20 15:27:47.027073	1	unspecified
+2	2009-05-20 15:27:47.027073	2	unspecified
+3	2009-05-20 15:27:47.027073	9	unspecified
+4	2009-05-20 15:27:47.027073	4	unspecified
+5	2009-05-20 15:27:47.027073	5	unspecified
+6	2009-05-20 15:27:47.027073	6	unspecified
+7	2009-05-20 15:27:47.027073	7	unspecified
+8	2009-05-20 15:27:47.027073	8	unspecified
+9	2009-05-20 15:27:47.027073	10	unspecified
+10	2009-05-20 15:27:47.027073	11	unspecified
 \.
 
 
@@ -1326,10 +1329,10 @@ COPY genotype (genotype_id, created_stamp, organism, type, description) FROM std
 --
 
 COPY organisation (organisation_id, created_stamp, name, description) FROM stdin;
-1	2009-05-15 17:49:04.557031	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
-2	2009-05-15 17:49:04.557031	CRUK CRI	Cancer Research UK, Cambridge Research Institute
-3	2009-05-15 17:49:04.557031	Sainsbury	The Sainsbury Laboratory
-4	2009-05-15 17:49:04.557031	JIC	The John Innes Centre
+1	2009-05-20 15:27:46.99312	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
+2	2009-05-20 15:27:46.99312	CRUK CRI	Cancer Research UK, Cambridge Research Institute
+3	2009-05-20 15:27:46.99312	Sainsbury	The Sainsbury Laboratory
+4	2009-05-20 15:27:46.99312	JIC	The John Innes Centre
 \.
 
 
@@ -1357,27 +1360,27 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 --
 
 COPY person (person_id, created_stamp, first_name, last_name, user_name, password, organisation) FROM stdin;
-1	2009-05-15 17:49:04.606955	Andy	Bassett	andy_bassett	andy_bassett	1
-2	2009-05-15 17:49:04.606955	David	Baulcombe	david_baulcombe	david_baulcombe	1
-3	2009-05-15 17:49:04.606955	Amy	Beeken	amy_beeken	amy_beeken	1
-4	2009-05-15 17:49:04.606955	Paola	Fedita	paola_fedita	paola_fedita	1
-5	2009-05-15 17:49:04.606955	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
-6	2009-05-15 17:49:04.606955	Jagger	Harvey	jagger_harvey	jagger_harvey	1
-7	2009-05-15 17:49:04.606955	Ericka	Havecker	ericka_havecker	ericka_havecker	1
-8	2009-05-15 17:49:04.606955	Ian	Henderson	ian_henderson	ian_henderson	1
-9	2009-05-15 17:49:04.606955	Charles	Melnyk	charles_melnyk	charles_melnyk	1
-10	2009-05-15 17:49:04.606955	Attila	Molnar	attila_molnar	attila_molnar	1
-11	2009-05-15 17:49:04.606955	Becky	Mosher	becky_mosher	becky_mosher	1
-12	2009-05-15 17:49:04.606955	Kanu	Patel	kanu_patel	kanu_patel	1
-13	2009-05-15 17:49:04.606955	Anna	Peters	anna_peters	anna_peters	1
-14	2009-05-15 17:49:04.606955	Kim	Rutherford	kim_rutherford	kim_rutherford	1
-15	2009-05-15 17:49:04.606955	Iain	Searle	iain_searle	iain_searle	1
-16	2009-05-15 17:49:04.606955	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
-17	2009-05-15 17:49:04.606955	Shuoya	Tang	shuoya_tang	shuoya_tang	1
-18	2009-05-15 17:49:04.606955	Laura	Taylor	laura_taylor	laura_taylor	1
-19	2009-05-15 17:49:04.606955	Craig	Thompson	craig_thompson	craig_thompson	1
-20	2009-05-15 17:49:04.606955	Natasha	Elina	natasha_elina	natasha_elina	1
-21	2009-05-15 17:49:04.606955	Hannes	V	hannes_v	hannes_v	1
+1	2009-05-20 15:27:47.043035	Andy	Bassett	andy_bassett	andy_bassett	1
+2	2009-05-20 15:27:47.043035	David	Baulcombe	david_baulcombe	david_baulcombe	1
+3	2009-05-20 15:27:47.043035	Amy	Beeken	amy_beeken	amy_beeken	1
+4	2009-05-20 15:27:47.043035	Paola	Fedita	paola_fedita	paola_fedita	1
+5	2009-05-20 15:27:47.043035	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
+6	2009-05-20 15:27:47.043035	Jagger	Harvey	jagger_harvey	jagger_harvey	1
+7	2009-05-20 15:27:47.043035	Ericka	Havecker	ericka_havecker	ericka_havecker	1
+8	2009-05-20 15:27:47.043035	Ian	Henderson	ian_henderson	ian_henderson	1
+9	2009-05-20 15:27:47.043035	Charles	Melnyk	charles_melnyk	charles_melnyk	1
+10	2009-05-20 15:27:47.043035	Attila	Molnar	attila_molnar	attila_molnar	1
+11	2009-05-20 15:27:47.043035	Becky	Mosher	becky_mosher	becky_mosher	1
+12	2009-05-20 15:27:47.043035	Kanu	Patel	kanu_patel	kanu_patel	1
+13	2009-05-20 15:27:47.043035	Anna	Peters	anna_peters	anna_peters	1
+14	2009-05-20 15:27:47.043035	Kim	Rutherford	kim_rutherford	kim_rutherford	1
+15	2009-05-20 15:27:47.043035	Iain	Searle	iain_searle	iain_searle	1
+16	2009-05-20 15:27:47.043035	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
+17	2009-05-20 15:27:47.043035	Shuoya	Tang	shuoya_tang	shuoya_tang	1
+18	2009-05-20 15:27:47.043035	Laura	Taylor	laura_taylor	laura_taylor	1
+19	2009-05-20 15:27:47.043035	Craig	Thompson	craig_thompson	craig_thompson	1
+20	2009-05-20 15:27:47.043035	Natasha	Elina	natasha_elina	natasha_elina	1
+21	2009-05-20 15:27:47.043035	Hannes	V	hannes_v	hannes_v	1
 \.
 
 
@@ -1386,10 +1389,10 @@ COPY person (person_id, created_stamp, first_name, last_name, user_name, passwor
 --
 
 COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name, generating_pipeprocess) FROM stdin;
-1	2009-05-15 17:49:05.595647	27	18	fastq/ID24_171007_FC5359.lane4.fq	1
-2	2009-05-15 17:49:05.595647	27	18	fastq/ID24_171007_FC5359.lane5.fq	2
-3	2009-05-15 17:49:05.595647	27	16	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	3
-4	2009-05-15 17:49:05.595647	27	19	fastq/SL236.090227.311F6AAXX.s_1.fq	4
+1	2009-05-20 15:27:47.990404	29	20	fastq/ID24_171007_FC5359.lane4.fq	1
+2	2009-05-20 15:27:47.990404	29	20	fastq/ID24_171007_FC5359.lane5.fq	2
+3	2009-05-20 15:27:47.990404	29	18	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	3
+4	2009-05-20 15:27:47.990404	29	21	fastq/SL236.090227.311F6AAXX.s_1.fq	4
 \.
 
 
@@ -1398,10 +1401,10 @@ COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name,
 --
 
 COPY pipeprocess (pipeprocess_id, created_stamp, description, process_conf, status, job_identifier, time_queued, time_started, time_finished) FROM stdin;
-1	2009-05-15 17:49:05.595647	Sequencing by Sainsbury for: SL54	1	37	\N	\N	\N	\N
-2	2009-05-15 17:49:05.595647	Sequencing by Sainsbury for: SL55	1	37	\N	\N	\N	\N
-3	2009-05-15 17:49:05.595647	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	37	\N	\N	\N	\N
-4	2009-05-15 17:49:05.595647	Sequencing by CRUK CRI for: SL236	2	37	\N	\N	\N	\N
+1	2009-05-20 15:27:47.990404	Sequencing by Sainsbury for: SL54	1	40	\N	\N	\N	\N
+2	2009-05-20 15:27:47.990404	Sequencing by Sainsbury for: SL55	1	40	\N	\N	\N	\N
+3	2009-05-20 15:27:47.990404	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	40	\N	\N	\N	\N
+4	2009-05-20 15:27:47.990404	Sequencing by CRUK CRI for: SL236	2	40	\N	\N	\N	\N
 \.
 
 
@@ -1418,10 +1421,10 @@ COPY pipeprocess_in_pipedata (pipeprocess_in_pipedata_id, created_stamp, pipepro
 --
 
 COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner, funder) FROM stdin;
-1	2009-05-15 17:49:05.595647	P_SL54	P_SL54	41	1	\N
-2	2009-05-15 17:49:05.595647	P_SL55	P_SL55	41	1	\N
-3	2009-05-15 17:49:05.595647	P_SL234_BCF	P_SL234_BCF	42	7	\N
-4	2009-05-15 17:49:05.595647	P_SL236	P_SL236	42	10	\N
+1	2009-05-20 15:27:47.990404	P_SL54	P_SL54	44	1	\N
+2	2009-05-20 15:27:47.990404	P_SL55	P_SL55	44	1	\N
+3	2009-05-20 15:27:47.990404	P_SL234_BCF	P_SL234_BCF	45	7	\N
+4	2009-05-20 15:27:47.990404	P_SL236	P_SL236	45	10	\N
 \.
 
 
@@ -1430,16 +1433,17 @@ COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner,
 --
 
 COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) FROM stdin;
-1	2009-05-15 17:49:04.67219	\N	Sainsbury	4
-2	2009-05-15 17:49:04.67219	\N	CRI	4
-3	2009-05-15 17:49:04.67219	\N	CRI	3
-4	2009-05-15 17:49:04.67219	SmallRNA::Runable::RemoveAdaptersRunable	\N	5
-5	2009-05-15 17:49:04.67219	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
-6	2009-05-15 17:49:04.67219	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	9
-7	2009-05-15 17:49:04.67219	SmallRNA::Runable::NonRedundantFastaRunable	\N	7
-8	2009-05-15 17:49:04.67219	SmallRNA::Runable::CreateIndexRunable	\N	2
-9	2009-05-15 17:49:04.67219	SmallRNA::Runable::CreateIndexRunable	\N	1
-10	2009-05-15 17:49:04.67219	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	8
+1	2009-05-20 15:27:47.093942	\N	Sainsbury	5
+2	2009-05-20 15:27:47.093942	\N	CRI	5
+3	2009-05-20 15:27:47.093942	\N	CRI	4
+4	2009-05-20 15:27:47.093942	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
+5	2009-05-20 15:27:47.093942	SmallRNA::Runable::RemoveAdaptersRunable	\N	7
+6	2009-05-20 15:27:47.093942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+7	2009-05-20 15:27:47.093942	SmallRNA::Runable::NonRedundantFastaRunable	\N	8
+8	2009-05-20 15:27:47.093942	SmallRNA::Runable::CreateIndexRunable	\N	3
+9	2009-05-20 15:27:47.093942	SmallRNA::Runable::CreateIndexRunable	\N	1
+10	2009-05-20 15:27:47.093942	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	9
+11	2009-05-20 15:27:47.093942	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	2
 \.
 
 
@@ -1448,13 +1452,15 @@ COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) F
 --
 
 COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, format_type, content_type) FROM stdin;
-1	2009-05-15 17:49:04.67219	4	27	19
-2	2009-05-15 17:49:04.67219	5	27	16
-3	2009-05-15 17:49:04.67219	6	26	25
-4	2009-05-15 17:49:04.67219	7	26	25
-5	2009-05-15 17:49:04.67219	8	29	13
-6	2009-05-15 17:49:04.67219	9	26	17
-7	2009-05-15 17:49:04.67219	10	26	17
+1	2009-05-20 15:27:47.093942	4	29	21
+2	2009-05-20 15:27:47.093942	5	29	18
+3	2009-05-20 15:27:47.093942	6	28	24
+4	2009-05-20 15:27:47.093942	7	28	24
+5	2009-05-20 15:27:47.093942	8	31	14
+6	2009-05-20 15:27:47.093942	9	28	19
+7	2009-05-20 15:27:47.093942	10	28	19
+8	2009-05-20 15:27:47.093942	11	28	19
+9	2009-05-20 15:27:47.093942	11	31	14
 \.
 
 
@@ -1463,12 +1469,12 @@ COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, for
 --
 
 COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, description, protocol, molecule_type, treatment_type, fractionation_type, tissue) FROM stdin;
-1	2009-05-15 17:49:05.595647	SL54	1	2	\N	Chlamy total DNA (mononuc)	\N	33	\N	\N	\N
-2	2009-05-15 17:49:05.595647	SL55	2	2	\N	Chlamy methylated DNA IP (mononuc)	\N	33	\N	\N	\N
-3	2009-05-15 17:49:05.595647	SL234_B	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	34	\N	\N	\N
-4	2009-05-15 17:49:05.595647	SL234_C	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	34	\N	\N	\N
-5	2009-05-15 17:49:05.595647	SL234_F	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	34	\N	\N	\N
-6	2009-05-15 17:49:05.595647	SL236	4	1	\N	grafting dcl234/dcl234	\N	34	\N	\N	\N
+1	2009-05-20 15:27:47.990404	SL54	1	2	\N	Chlamy total DNA (mononuc)	\N	36	\N	\N	\N
+2	2009-05-20 15:27:47.990404	SL55	2	2	\N	Chlamy methylated DNA IP (mononuc)	\N	36	\N	\N	\N
+3	2009-05-20 15:27:47.990404	SL234_B	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+4	2009-05-20 15:27:47.990404	SL234_C	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+5	2009-05-20 15:27:47.990404	SL234_F	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+6	2009-05-20 15:27:47.990404	SL236	4	1	\N	grafting dcl234/dcl234	\N	37	\N	\N	\N
 \.
 
 
@@ -1477,12 +1483,12 @@ COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, des
 --
 
 COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM stdin;
-1	2009-05-15 17:49:05.595647	1	1
-2	2009-05-15 17:49:05.595647	2	2
-3	2009-05-15 17:49:05.595647	3	3
-4	2009-05-15 17:49:05.595647	4	3
-5	2009-05-15 17:49:05.595647	5	3
-6	2009-05-15 17:49:05.595647	6	4
+1	2009-05-20 15:27:47.990404	1	1
+2	2009-05-20 15:27:47.990404	2	2
+3	2009-05-20 15:27:47.990404	3	3
+4	2009-05-20 15:27:47.990404	4	3
+5	2009-05-20 15:27:47.990404	5	3
+6	2009-05-20 15:27:47.990404	6	4
 \.
 
 
@@ -1491,12 +1497,12 @@ COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM 
 --
 
 COPY samplerun (samplerun_id, created_stamp, description, samplerun_type, sample, barcode, sequencingrun) FROM stdin;
-1	2009-05-15 17:49:05.595647	sample run for: SL54	49	1	\N	1
-2	2009-05-15 17:49:05.595647	sample run for: SL55	49	2	\N	2
-3	2009-05-15 17:49:05.595647	sample run for: SL234_B	49	3	2	3
-4	2009-05-15 17:49:05.595647	sample run for: SL234_C	49	4	3	3
-5	2009-05-15 17:49:05.595647	sample run for: SL234_F	49	5	6	3
-6	2009-05-15 17:49:05.595647	sample run for: SL236	49	6	\N	4
+1	2009-05-20 15:27:47.990404	sample run for: SL54	52	1	\N	1
+2	2009-05-20 15:27:47.990404	sample run for: SL55	52	2	\N	2
+3	2009-05-20 15:27:47.990404	sample run for: SL234_B	52	3	2	3
+4	2009-05-20 15:27:47.990404	sample run for: SL234_C	52	4	3	3
+5	2009-05-20 15:27:47.990404	sample run for: SL234_F	52	5	6	3
+6	2009-05-20 15:27:47.990404	sample run for: SL236	52	6	\N	4
 \.
 
 
@@ -1505,10 +1511,10 @@ COPY samplerun (samplerun_id, created_stamp, description, samplerun_type, sample
 --
 
 COPY sequencingrun (sequencingrun_id, created_stamp, identifier, initial_pipedata, sequencing_centre, initial_pipeprocess, submission_date, run_date, data_received_date, quality, sequencing_type, multiplexing_type) FROM stdin;
-1	2009-05-15 17:49:05.595647	R_SL54	1	3	1	\N	\N	\N	46	51	36
-2	2009-05-15 17:49:05.595647	R_SL55	2	3	2	\N	\N	\N	46	51	36
-3	2009-05-15 17:49:05.595647	R_SL234_BCF	3	2	3	2009-01-20	2009-02-10	2009-02-10	46	51	35
-4	2009-05-15 17:49:05.595647	R_SL236	4	2	4	2009-02-10	2009-03-09	2009-03-09	46	51	36
+1	2009-05-20 15:27:47.990404	R_SL54	1	3	1	\N	\N	\N	49	54	39
+2	2009-05-20 15:27:47.990404	R_SL55	2	3	2	\N	\N	\N	49	54	39
+3	2009-05-20 15:27:47.990404	R_SL234_BCF	3	2	3	2009-01-20	2009-02-10	2009-02-10	49	54	38
+4	2009-05-20 15:27:47.990404	R_SL236	4	2	4	2009-02-10	2009-03-09	2009-03-09	49	54	39
 \.
 
 

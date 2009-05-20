@@ -51,8 +51,9 @@ my %terms = (
               'fs' => 'FASTA format with an empty description line',
               'fasta' => 'FASTA format',
               'gff3' => 'GFF3 format',
-              'seq_offset_index' => 'An index of a GFF3 format file',
-              'text' => 'A human readable text file with summaries or statistics'
+              'seq_offset_index' => 'An index of a GFF3 or FASTA format file',
+              'text' => 'A human readable text file with summaries or statistics',
+              'tsv' => 'A file containing tab-separated value',
              },
              'tracking file content types' =>
              {
@@ -80,6 +81,8 @@ my %terms = (
                 'Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode',
               'first_base_summary' =>
                 'A summary of the first base composition of sequences from a fasta file',
+              'genome_matching_srna' =>
+                'Reads that match the genome with a 100% full-length match',
               'genome_aligned_srna_reads' =>
                 'Small RNA reads that have been aligned against the genome',
               'gff3_index' =>
@@ -140,6 +143,8 @@ my %terms = (
                   . 'and add a count to the header',
               'ssaha alignment' =>
                 'Align reads against a sequence database with SSAHA',
+              'genome aligned reads filter' =>
+                'Filter a fasta file, creating a file containing only genome aligned reads',
               'gff3 index' =>
                 'Create an index of GFF3 file',
               'fasta index' =>
@@ -370,6 +375,20 @@ my @analyses = (
                        content_type => 'non_redundant_small_rna',
                      }
                     ]
+                },
+                {
+                 type_term_name => 'genome aligned reads filter',
+                 runable_name => 'SmallRNA::Runable::GenomeMatchingReadsRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     },
+                     {
+                       format_type => 'gff3',
+                       content_type => 'genome_aligned_srna_reads'
+                     }
+                   ]
                 },
                 # {
                 #  type_term_name => 'ssaha alignment',
