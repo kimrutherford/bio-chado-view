@@ -381,10 +381,6 @@ my @analyses = (
                  runable_name => 'SmallRNA::Runable::GenomeMatchingReadsRunable',
                  inputs => [
                      {
-                       format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
-                     },
-                     {
                        format_type => 'gff3',
                        content_type => 'genome_aligned_srna_reads'
                      }
