@@ -52,7 +52,8 @@ sub run
 
   my $code = sub {
     my $out_content_term_name = 'genome_matching_srna';
-    my $out_format_term_name = 'fasta';
+    my $fasta_term_name = 'fasta';
+    my $tsv_term_name = 'tsv';
     my $pipeprocess = $self->pipeprocess();
 
     my @input_pipedatas = $pipeprocess->input_pipedatas();
@@ -78,10 +79,13 @@ sub run
 
     my $fasta_file_name = $data_dir . '/' . $non_redundant_reads_data->file_name();
     my $out_file_name = $fasta_file_name;
+    my $tsv_out_file_name = $fasta_file_name;
 
-    my $new_suffix = ".$out_content_term_name.$out_format_term_name";
-
+    my $new_suffix = ".$out_content_term_name.$fasta_term_name";
     $out_file_name =~ s/(\.$non_redundant_type.fasta)?$/$new_suffix/;
+
+    $new_suffix = ".$out_content_term_name.$tsv_term_name";
+    $tsv_out_file_name =~ s/(\.$non_redundant_type.fasta)?$/$new_suffix/;
 
     my $gff_file_name = $data_dir . '/' . $gff_data->file_name();
 
@@ -108,6 +112,9 @@ sub run
     my $seq_out = Bio::SeqIO->new('-file' => ">$out_file_name",
                                   '-format' => 'Fasta');
 
+    open my $tsv_out_file, '>', $tsv_out_file_name
+      or die "can't open $tsv_out_file_name for writing: $!\n";
+
     warn "opened: $out_file_name for $fasta_file_name $gff_file_name\n";
 
     # write each entry in the input file to the output file
@@ -115,12 +122,24 @@ sub run
       my $sequence = $seq->seq();
       if (exists $genome_reads{$sequence}) {
         $seq_out->write_seq($seq);
+        if ($seq->desc() =~ /count:(\d+)/) {
+          print $tsv_out_file "$sequence $1\n";
+        } else {
+          croak "can't get the count from the description: ", $seq->desc(), "\n";
+        }
       }
     }
 
+    close $tsv_out_file or die "can't close $tsv_out_file_name: $!\n";
+
     $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
                           file_name => $out_file_name,
-                          format_type_name => $out_format_term_name,
+                          format_type_name => $fasta_term_name,
+                          content_type_name => $out_content_term_name);
+
+    $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
+                          file_name => $tsv_out_file_name,
+                          format_type_name => $tsv_term_name,
                           content_type_name => $out_content_term_name);
   };
   $self->schema->txn_do($code);
