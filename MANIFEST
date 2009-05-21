@@ -2,7 +2,7 @@ Changes
 MANIFEST
 Makefile.PL
 README
-lib/SmallRNA/Parse/Bowtie.pm
+lib/SmallRNA/Parse/SSAHA.pm
 t/00-load.t
 t/pod-coverage.t
 t/pod.t
