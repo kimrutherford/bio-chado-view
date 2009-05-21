@@ -94,7 +94,7 @@ sub run
 
 
     } else {
-      croak("pattern match failed");
+      croak("pattern match failed on: ", $output_file_name);
     }
   };
   $self->schema->txn_do($code);
