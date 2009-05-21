@@ -66,6 +66,9 @@ sub add_organism
     $org_objs{"H. Sapiens"} = $org;
     $org_objs{"Homo Sapiens"} = $org;
   }
+  if ($fullname eq 'Unknown unknown') {
+    $org_objs{''} = $org;
+  }
 }
 
 my $org_rs = $schema->resultset('Organism')->search();
@@ -269,8 +272,6 @@ sub create_pipedata
   my $file_name = shift;
   my $molecule_type = shift;
 
-  warn "storing; $file_name\n";
-
   my ($pipedata, $pipeprocess) =
     $loader->add_sequencingrun_datafile($config, $sequencing_run,
                                         $file_name, $molecule_type);
@@ -293,27 +294,18 @@ sub fix_date
 sub fix_name
 {
   my $file_name = shift;
-  $file_name =~ s/\.f[aq](?:\.gz)?$//;
-  $file_name =~ s/^SL\d+.(.*).reads.*/$1/;
+  $file_name =~ s/(?:\.gz)?$//;
   return $file_name;
 }
 
 my %dir_files = ();
 
-for my $sub_dir (qw(fastq SL9 SL11 SL12 SL18 SL19 SL21 SL22)) {
+for my $sub_dir (qw(fastq SL4 SL9 SL11 SL12 SL18 SL19 SL21 SL22)) {
   my $dir_name = $config->{data_directory} . "/$sub_dir";
   opendir my $dir, $dir_name or die "can't open directory $dir_name: $!\n";
   while (my $ent = readdir $dir) {
     next if $ent eq '.' or $ent eq '..' or $ent !~ /\.f[qa]$/;
     $dir_files{$ent} = "$sub_dir/$ent";
-    my $fixed_name = fix_name($ent);
-    warn "$dir_name - fixed_name: $fixed_name (orig: $ent)\n";
-    if (exists $dir_files{$fixed_name}) {
-#      croak "overwriting name from directory: new: $fixed_name, old: $dir_files{$fixed_name}\n";
-    } else {
-      #    warn "adding $fixed_name => $ent to hash\n";
-    }
-    $dir_files{$fixed_name} = "$sub_dir/$ent";
   }
   closedir $dir;
 }
@@ -322,27 +314,22 @@ sub find_real_file_name
 {
   my $config = shift;
   my $booking_sheet_file_name = shift;
-  my $test_file_name = $booking_sheet_file_name;
-
-  warn "looking for: $test_file_name\n";
 
   if (exists $dir_files{$booking_sheet_file_name}) {
-    warn "found file: $booking_sheet_file_name\n";
+#    warn "found file: $booking_sheet_file_name\n";
     return $dir_files{$booking_sheet_file_name};
   } else {
-    $test_file_name =~ s/(?:\.(?:fa|fq|fasta|fastq|gz))?(?:\.gz)?$/.fq/;
+    my $test_file_name = fix_name($booking_sheet_file_name);
+
+    $test_file_name =~ s/\.reads\.\d+_\d+_\d+//;
+    $test_file_name =~ s/\.fa$/.fq/;
+
     if (exists $dir_files{$test_file_name}) {
-      warn "found file: ", $dir_files{$test_file_name}, " - $test_file_name\n";
+#      warn "found file: ", $dir_files{$test_file_name}, " - $test_file_name\n";
       return $dir_files{$test_file_name};
     } else {
-      my $fixed_name = fix_name($test_file_name);
-      if (exists $dir_files{$fixed_name}) {
-        warn "found fixed file: ", $dir_files{$fixed_name}, " - $fixed_name\n";
-        return $dir_files{$fixed_name};
-      } else {
-        warn "can't find file for $booking_sheet_file_name => $test_file_name\n";
-        return undef;
-      }
+      warn "can't find file for $booking_sheet_file_name ($test_file_name)\n";
+      return undef;
     }
   }
 }
@@ -389,7 +376,7 @@ sub process
     }
 
     # XXX TEMP
-    if ($solexa_library !~ /SL234_BCF|SL236|SL5[45]/ && $test_mode) {
+    if ($solexa_library !~ /SL11$|SL234_BCF|SL236|SL5[45]/ && $test_mode) {
       next;
     }
 
@@ -410,7 +397,7 @@ sub process
     my $org_obj = $org_objs{$organism_name};
 
     if (!defined $org_obj) {
-      warn "skipping unknown organism: $organism_name for '@file_names'\n";
+      warn "unknown organism: '$organism_name' from line: @columns\n";
       next;
     }
 
@@ -504,7 +491,7 @@ sub process
 
             if (defined $replicate_identifier) {
               $new_sample_name .=  '_' . $replicate_identifier;
-      }
+            }
             my $sample = create_sample($proj, $new_sample_name, $description,
                                        $sequencing_run, $molecule_type,
                                        $ecotype);
