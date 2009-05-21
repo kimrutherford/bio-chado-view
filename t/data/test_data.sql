@@ -666,7 +666,7 @@ ALTER SEQUENCE ecotype_ecotype_id_seq OWNED BY ecotype.ecotype_id;
 -- Name: ecotype_ecotype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('ecotype_ecotype_id_seq', 10, true);
+SELECT pg_catalog.setval('ecotype_ecotype_id_seq', 11, true);
 
 
 --
@@ -802,7 +802,7 @@ ALTER SEQUENCE pipedata_pipedata_id_seq OWNED BY pipedata.pipedata_id;
 -- Name: pipedata_pipedata_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('pipedata_pipedata_id_seq', 4, true);
+SELECT pg_catalog.setval('pipedata_pipedata_id_seq', 5, true);
 
 
 --
@@ -857,7 +857,7 @@ ALTER SEQUENCE pipeprocess_pipeprocess_id_seq OWNED BY pipeprocess.pipeprocess_i
 -- Name: pipeprocess_pipeprocess_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('pipeprocess_pipeprocess_id_seq', 4, true);
+SELECT pg_catalog.setval('pipeprocess_pipeprocess_id_seq', 5, true);
 
 
 --
@@ -884,7 +884,7 @@ ALTER SEQUENCE pipeproject_pipeproject_id_seq OWNED BY pipeproject.pipeproject_i
 -- Name: pipeproject_pipeproject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('pipeproject_pipeproject_id_seq', 4, true);
+SELECT pg_catalog.setval('pipeproject_pipeproject_id_seq', 5, true);
 
 
 --
@@ -965,7 +965,7 @@ ALTER SEQUENCE sample_pipedata_sample_pipedata_id_seq OWNED BY sample_pipedata.s
 -- Name: sample_pipedata_sample_pipedata_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('sample_pipedata_sample_pipedata_id_seq', 6, true);
+SELECT pg_catalog.setval('sample_pipedata_sample_pipedata_id_seq', 7, true);
 
 
 --
@@ -992,7 +992,7 @@ ALTER SEQUENCE sample_sample_id_seq OWNED BY sample.sample_id;
 -- Name: sample_sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('sample_sample_id_seq', 6, true);
+SELECT pg_catalog.setval('sample_sample_id_seq', 7, true);
 
 
 --
@@ -1019,7 +1019,7 @@ ALTER SEQUENCE samplerun_samplerun_id_seq OWNED BY samplerun.samplerun_id;
 -- Name: samplerun_samplerun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('samplerun_samplerun_id_seq', 6, true);
+SELECT pg_catalog.setval('samplerun_samplerun_id_seq', 7, true);
 
 
 --
@@ -1046,7 +1046,7 @@ ALTER SEQUENCE sequencingrun_sequencingrun_id_seq OWNED BY sequencingrun.sequenc
 -- Name: sequencingrun_sequencingrun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('sequencingrun_sequencingrun_id_seq', 4, true);
+SELECT pg_catalog.setval('sequencingrun_sequencingrun_id_seq', 5, true);
 
 
 --
@@ -1201,17 +1201,17 @@ ALTER TABLE tissue ALTER COLUMN tissue_id SET DEFAULT nextval('tissue_tissue_id_
 --
 
 COPY barcode (barcode_id, created_stamp, identifier, code) FROM stdin;
-1	2009-05-21 12:53:32.360626	A	TACCT
-2	2009-05-21 12:53:32.360626	B	TACGA
-3	2009-05-21 12:53:32.360626	C	TAGCA
-4	2009-05-21 12:53:32.360626	D	TAGGT
-5	2009-05-21 12:53:32.360626	E	TCAAG
-6	2009-05-21 12:53:32.360626	F	TCATC
-7	2009-05-21 12:53:32.360626	G	TCTAC
-8	2009-05-21 12:53:32.360626	H	TCTTG
-9	2009-05-21 12:53:32.360626	I	TGAAC
-10	2009-05-21 12:53:32.360626	K	TGTTC
-11	2009-05-21 12:53:32.360626	J	TGTTG
+1	2009-05-21 17:03:59.65795	A	TACCT
+2	2009-05-21 17:03:59.65795	B	TACGA
+3	2009-05-21 17:03:59.65795	C	TAGCA
+4	2009-05-21 17:03:59.65795	D	TAGGT
+5	2009-05-21 17:03:59.65795	E	TCAAG
+6	2009-05-21 17:03:59.65795	F	TCATC
+7	2009-05-21 17:03:59.65795	G	TCTAC
+8	2009-05-21 17:03:59.65795	H	TCTTG
+9	2009-05-21 17:03:59.65795	I	TGAAC
+10	2009-05-21 17:03:59.65795	K	TGTTC
+11	2009-05-21 17:03:59.65795	J	TGTTG
 \.
 
 
@@ -1303,16 +1303,17 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 --
 
 COPY ecotype (ecotype_id, created_stamp, organism, description) FROM stdin;
-1	2009-05-21 12:53:32.518794	1	unspecified
-2	2009-05-21 12:53:32.518794	2	unspecified
-3	2009-05-21 12:53:32.518794	9	unspecified
-4	2009-05-21 12:53:32.518794	4	unspecified
-5	2009-05-21 12:53:32.518794	5	unspecified
-6	2009-05-21 12:53:32.518794	6	unspecified
-7	2009-05-21 12:53:32.518794	7	unspecified
-8	2009-05-21 12:53:32.518794	8	unspecified
-9	2009-05-21 12:53:32.518794	10	unspecified
-10	2009-05-21 12:53:32.518794	11	unspecified
+1	2009-05-21 17:03:59.839281	1	unspecified
+2	2009-05-21 17:03:59.839281	2	unspecified
+3	2009-05-21 17:03:59.839281	3	unspecified
+4	2009-05-21 17:03:59.839281	4	unspecified
+5	2009-05-21 17:03:59.839281	5	unspecified
+6	2009-05-21 17:03:59.839281	6	unspecified
+7	2009-05-21 17:03:59.839281	7	unspecified
+8	2009-05-21 17:03:59.839281	8	unspecified
+9	2009-05-21 17:03:59.839281	9	unspecified
+10	2009-05-21 17:03:59.839281	10	unspecified
+11	2009-05-21 17:03:59.839281	11	unspecified
 \.
 
 
@@ -1329,10 +1330,10 @@ COPY genotype (genotype_id, created_stamp, organism, type, description) FROM std
 --
 
 COPY organisation (organisation_id, created_stamp, name, description) FROM stdin;
-1	2009-05-21 12:53:32.492745	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
-2	2009-05-21 12:53:32.492745	CRUK CRI	Cancer Research UK, Cambridge Research Institute
-3	2009-05-21 12:53:32.492745	Sainsbury	The Sainsbury Laboratory
-4	2009-05-21 12:53:32.492745	JIC	The John Innes Centre
+1	2009-05-21 17:03:59.786539	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
+2	2009-05-21 17:03:59.786539	CRUK CRI	Cancer Research UK, Cambridge Research Institute
+3	2009-05-21 17:03:59.786539	Sainsbury	The Sainsbury Laboratory
+4	2009-05-21 17:03:59.786539	JIC	The John Innes Centre
 \.
 
 
@@ -1349,9 +1350,9 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 6	\N	Homo	sapiens	\N	\N
 7	\N	Lycopersicon	esculentum	\N	\N
 8	\N	Zea	mays	\N	\N
-9	\N	Cardamine	hirsuta	\N	\N
-10	\N	Nicotiana	benthamiana	\N	\N
-11	\N	Schizosaccharomyces	pombe	\N	\N
+9	\N	Nicotiana	benthamiana	\N	\N
+10	\N	Schizosaccharomyces	pombe	\N	\N
+11	\N	Unknown	unknown	\N	\N
 \.
 
 
@@ -1360,27 +1361,27 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 --
 
 COPY person (person_id, created_stamp, first_name, last_name, user_name, password, organisation) FROM stdin;
-1	2009-05-21 12:53:32.534814	Andy	Bassett	andy_bassett	andy_bassett	1
-2	2009-05-21 12:53:32.534814	David	Baulcombe	david_baulcombe	david_baulcombe	1
-3	2009-05-21 12:53:32.534814	Amy	Beeken	amy_beeken	amy_beeken	1
-4	2009-05-21 12:53:32.534814	Paola	Fedita	paola_fedita	paola_fedita	1
-5	2009-05-21 12:53:32.534814	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
-6	2009-05-21 12:53:32.534814	Jagger	Harvey	jagger_harvey	jagger_harvey	1
-7	2009-05-21 12:53:32.534814	Ericka	Havecker	ericka_havecker	ericka_havecker	1
-8	2009-05-21 12:53:32.534814	Ian	Henderson	ian_henderson	ian_henderson	1
-9	2009-05-21 12:53:32.534814	Charles	Melnyk	charles_melnyk	charles_melnyk	1
-10	2009-05-21 12:53:32.534814	Attila	Molnar	attila_molnar	attila_molnar	1
-11	2009-05-21 12:53:32.534814	Becky	Mosher	becky_mosher	becky_mosher	1
-12	2009-05-21 12:53:32.534814	Kanu	Patel	kanu_patel	kanu_patel	1
-13	2009-05-21 12:53:32.534814	Anna	Peters	anna_peters	anna_peters	1
-14	2009-05-21 12:53:32.534814	Kim	Rutherford	kim_rutherford	kim_rutherford	1
-15	2009-05-21 12:53:32.534814	Iain	Searle	iain_searle	iain_searle	1
-16	2009-05-21 12:53:32.534814	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
-17	2009-05-21 12:53:32.534814	Shuoya	Tang	shuoya_tang	shuoya_tang	1
-18	2009-05-21 12:53:32.534814	Laura	Taylor	laura_taylor	laura_taylor	1
-19	2009-05-21 12:53:32.534814	Craig	Thompson	craig_thompson	craig_thompson	1
-20	2009-05-21 12:53:32.534814	Natasha	Elina	natasha_elina	natasha_elina	1
-21	2009-05-21 12:53:32.534814	Hannes	V	hannes_v	hannes_v	1
+1	2009-05-21 17:03:59.858288	Andy	Bassett	andy_bassett	andy_bassett	1
+2	2009-05-21 17:03:59.858288	David	Baulcombe	david_baulcombe	david_baulcombe	1
+3	2009-05-21 17:03:59.858288	Amy	Beeken	amy_beeken	amy_beeken	1
+4	2009-05-21 17:03:59.858288	Paola	Fedita	paola_fedita	paola_fedita	1
+5	2009-05-21 17:03:59.858288	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
+6	2009-05-21 17:03:59.858288	Jagger	Harvey	jagger_harvey	jagger_harvey	1
+7	2009-05-21 17:03:59.858288	Ericka	Havecker	ericka_havecker	ericka_havecker	1
+8	2009-05-21 17:03:59.858288	Ian	Henderson	ian_henderson	ian_henderson	1
+9	2009-05-21 17:03:59.858288	Charles	Melnyk	charles_melnyk	charles_melnyk	1
+10	2009-05-21 17:03:59.858288	Attila	Molnar	attila_molnar	attila_molnar	1
+11	2009-05-21 17:03:59.858288	Becky	Mosher	becky_mosher	becky_mosher	1
+12	2009-05-21 17:03:59.858288	Kanu	Patel	kanu_patel	kanu_patel	1
+13	2009-05-21 17:03:59.858288	Anna	Peters	anna_peters	anna_peters	1
+14	2009-05-21 17:03:59.858288	Kim	Rutherford	kim_rutherford	kim_rutherford	1
+15	2009-05-21 17:03:59.858288	Iain	Searle	iain_searle	iain_searle	1
+16	2009-05-21 17:03:59.858288	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
+17	2009-05-21 17:03:59.858288	Shuoya	Tang	shuoya_tang	shuoya_tang	1
+18	2009-05-21 17:03:59.858288	Laura	Taylor	laura_taylor	laura_taylor	1
+19	2009-05-21 17:03:59.858288	Craig	Thompson	craig_thompson	craig_thompson	1
+20	2009-05-21 17:03:59.858288	Natasha	Elina	natasha_elina	natasha_elina	1
+21	2009-05-21 17:03:59.858288	Hannes	V	hannes_v	hannes_v	1
 \.
 
 
@@ -1389,10 +1390,11 @@ COPY person (person_id, created_stamp, first_name, last_name, user_name, passwor
 --
 
 COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name, generating_pipeprocess) FROM stdin;
-1	2009-05-21 12:53:34.33609	29	20	fastq/ID24_171007_FC5359.lane4.fq	1
-2	2009-05-21 12:53:34.33609	29	20	fastq/ID24_171007_FC5359.lane5.fq	2
-3	2009-05-21 12:53:34.33609	29	18	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	3
-4	2009-05-21 12:53:34.33609	29	21	fastq/SL236.090227.311F6AAXX.s_1.fq	4
+1	2009-05-21 17:04:00.809226	28	24	SL11/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa	1
+2	2009-05-21 17:04:00.809226	29	20	fastq/SL54.ID24_171007_FC5359.lane4.fq	2
+3	2009-05-21 17:04:00.809226	29	20	fastq/SL55.ID24_171007_FC5359.lane5.fq	3
+4	2009-05-21 17:04:00.809226	29	18	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	4
+5	2009-05-21 17:04:00.809226	29	21	fastq/SL236.090227.311F6AAXX.s_1.fq	5
 \.
 
 
@@ -1401,10 +1403,11 @@ COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name,
 --
 
 COPY pipeprocess (pipeprocess_id, created_stamp, description, process_conf, status, job_identifier, time_queued, time_started, time_finished) FROM stdin;
-1	2009-05-21 12:53:34.33609	Sequencing by Sainsbury for: SL54	1	40	\N	\N	\N	\N
-2	2009-05-21 12:53:34.33609	Sequencing by Sainsbury for: SL55	1	40	\N	\N	\N	\N
-3	2009-05-21 12:53:34.33609	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	40	\N	\N	\N	\N
-4	2009-05-21 12:53:34.33609	Sequencing by CRUK CRI for: SL236	2	40	\N	\N	\N	\N
+1	2009-05-21 17:04:00.809226	Sequencing by Sainsbury for: SL11	1	40	\N	\N	\N	\N
+2	2009-05-21 17:04:00.809226	Sequencing by Sainsbury for: SL54	1	40	\N	\N	\N	\N
+3	2009-05-21 17:04:00.809226	Sequencing by Sainsbury for: SL55	1	40	\N	\N	\N	\N
+4	2009-05-21 17:04:00.809226	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	40	\N	\N	\N	\N
+5	2009-05-21 17:04:00.809226	Sequencing by CRUK CRI for: SL236	2	40	\N	\N	\N	\N
 \.
 
 
@@ -1421,10 +1424,11 @@ COPY pipeprocess_in_pipedata (pipeprocess_in_pipedata_id, created_stamp, pipepro
 --
 
 COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner, funder) FROM stdin;
-1	2009-05-21 12:53:34.33609	P_SL54	P_SL54	44	1	\N
-2	2009-05-21 12:53:34.33609	P_SL55	P_SL55	44	1	\N
-3	2009-05-21 12:53:34.33609	P_SL234_BCF	P_SL234_BCF	45	7	\N
-4	2009-05-21 12:53:34.33609	P_SL236	P_SL236	45	10	\N
+1	2009-05-21 17:04:00.809226	P_SL11	P_SL11	45	7	\N
+2	2009-05-21 17:04:00.809226	P_SL54	P_SL54	44	1	\N
+3	2009-05-21 17:04:00.809226	P_SL55	P_SL55	44	1	\N
+4	2009-05-21 17:04:00.809226	P_SL234_BCF	P_SL234_BCF	45	7	\N
+5	2009-05-21 17:04:00.809226	P_SL236	P_SL236	45	10	\N
 \.
 
 
@@ -1433,17 +1437,17 @@ COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner,
 --
 
 COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) FROM stdin;
-1	2009-05-21 12:53:32.585828	\N	Sainsbury	5
-2	2009-05-21 12:53:32.585828	\N	CRI	5
-3	2009-05-21 12:53:32.585828	\N	CRI	4
-4	2009-05-21 12:53:32.585828	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
-5	2009-05-21 12:53:32.585828	SmallRNA::Runable::RemoveAdaptersRunable	\N	7
-6	2009-05-21 12:53:32.585828	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
-7	2009-05-21 12:53:32.585828	SmallRNA::Runable::NonRedundantFastaRunable	\N	8
-8	2009-05-21 12:53:32.585828	SmallRNA::Runable::CreateIndexRunable	\N	3
-9	2009-05-21 12:53:32.585828	SmallRNA::Runable::CreateIndexRunable	\N	1
-10	2009-05-21 12:53:32.585828	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	9
-11	2009-05-21 12:53:32.585828	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	2
+1	2009-05-21 17:03:59.914103	\N	Sainsbury	5
+2	2009-05-21 17:03:59.914103	\N	CRI	5
+3	2009-05-21 17:03:59.914103	\N	CRI	4
+4	2009-05-21 17:03:59.914103	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
+5	2009-05-21 17:03:59.914103	SmallRNA::Runable::RemoveAdaptersRunable	\N	7
+6	2009-05-21 17:03:59.914103	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+7	2009-05-21 17:03:59.914103	SmallRNA::Runable::NonRedundantFastaRunable	\N	8
+8	2009-05-21 17:03:59.914103	SmallRNA::Runable::CreateIndexRunable	\N	3
+9	2009-05-21 17:03:59.914103	SmallRNA::Runable::CreateIndexRunable	\N	1
+10	2009-05-21 17:03:59.914103	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	9
+11	2009-05-21 17:03:59.914103	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	2
 \.
 
 
@@ -1452,14 +1456,14 @@ COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) F
 --
 
 COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, format_type, content_type) FROM stdin;
-1	2009-05-21 12:53:32.585828	4	29	21
-2	2009-05-21 12:53:32.585828	5	29	18
-3	2009-05-21 12:53:32.585828	6	28	24
-4	2009-05-21 12:53:32.585828	7	28	24
-5	2009-05-21 12:53:32.585828	8	31	14
-6	2009-05-21 12:53:32.585828	9	28	19
-7	2009-05-21 12:53:32.585828	10	28	19
-8	2009-05-21 12:53:32.585828	11	31	14
+1	2009-05-21 17:03:59.914103	4	29	21
+2	2009-05-21 17:03:59.914103	5	29	18
+3	2009-05-21 17:03:59.914103	6	28	24
+4	2009-05-21 17:03:59.914103	7	28	24
+5	2009-05-21 17:03:59.914103	8	31	14
+6	2009-05-21 17:03:59.914103	9	28	19
+7	2009-05-21 17:03:59.914103	10	28	19
+8	2009-05-21 17:03:59.914103	11	31	14
 \.
 
 
@@ -1468,12 +1472,13 @@ COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, for
 --
 
 COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, description, protocol, molecule_type, treatment_type, fractionation_type, tissue) FROM stdin;
-1	2009-05-21 12:53:34.33609	SL54	1	2	\N	Chlamy total DNA (mononuc)	\N	36	\N	\N	\N
-2	2009-05-21 12:53:34.33609	SL55	2	2	\N	Chlamy methylated DNA IP (mononuc)	\N	36	\N	\N	\N
-3	2009-05-21 12:53:34.33609	SL234_B	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
-4	2009-05-21 12:53:34.33609	SL234_C	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
-5	2009-05-21 12:53:34.33609	SL234_F	3	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
-6	2009-05-21 12:53:34.33609	SL236	4	1	\N	grafting dcl234/dcl234	\N	37	\N	\N	\N
+1	2009-05-21 17:04:00.809226	SL11	1	1	\N	AGO9 associated small RNAs Rep1 (mixed Col-0 floral + silique)	\N	37	\N	\N	\N
+2	2009-05-21 17:04:00.809226	SL54	2	2	\N	Chlamy total DNA (mononuc)	\N	36	\N	\N	\N
+3	2009-05-21 17:04:00.809226	SL55	3	2	\N	Chlamy methylated DNA IP (mononuc)	\N	36	\N	\N	\N
+4	2009-05-21 17:04:00.809226	SL234_B	4	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+5	2009-05-21 17:04:00.809226	SL234_C	4	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+6	2009-05-21 17:04:00.809226	SL234_F	4	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP 	\N	37	\N	\N	\N
+7	2009-05-21 17:04:00.809226	SL236	5	1	\N	grafting dcl234/dcl234	\N	37	\N	\N	\N
 \.
 
 
@@ -1482,12 +1487,13 @@ COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, des
 --
 
 COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM stdin;
-1	2009-05-21 12:53:34.33609	1	1
-2	2009-05-21 12:53:34.33609	2	2
-3	2009-05-21 12:53:34.33609	3	3
-4	2009-05-21 12:53:34.33609	4	3
-5	2009-05-21 12:53:34.33609	5	3
-6	2009-05-21 12:53:34.33609	6	4
+1	2009-05-21 17:04:00.809226	1	1
+2	2009-05-21 17:04:00.809226	2	2
+3	2009-05-21 17:04:00.809226	3	3
+4	2009-05-21 17:04:00.809226	4	4
+5	2009-05-21 17:04:00.809226	5	4
+6	2009-05-21 17:04:00.809226	6	4
+7	2009-05-21 17:04:00.809226	7	5
 \.
 
 
@@ -1496,12 +1502,13 @@ COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM 
 --
 
 COPY samplerun (samplerun_id, created_stamp, description, samplerun_type, sample, barcode, sequencingrun) FROM stdin;
-1	2009-05-21 12:53:34.33609	sample run for: SL54	52	1	\N	1
-2	2009-05-21 12:53:34.33609	sample run for: SL55	52	2	\N	2
-3	2009-05-21 12:53:34.33609	sample run for: SL234_B	52	3	2	3
-4	2009-05-21 12:53:34.33609	sample run for: SL234_C	52	4	3	3
-5	2009-05-21 12:53:34.33609	sample run for: SL234_F	52	5	6	3
-6	2009-05-21 12:53:34.33609	sample run for: SL236	52	6	\N	4
+1	2009-05-21 17:04:00.809226	sample run for: SL11	52	1	\N	1
+2	2009-05-21 17:04:00.809226	sample run for: SL54	52	2	\N	2
+3	2009-05-21 17:04:00.809226	sample run for: SL55	52	3	\N	3
+4	2009-05-21 17:04:00.809226	sample run for: SL234_B	52	4	2	4
+5	2009-05-21 17:04:00.809226	sample run for: SL234_C	52	5	3	4
+6	2009-05-21 17:04:00.809226	sample run for: SL234_F	52	6	6	4
+7	2009-05-21 17:04:00.809226	sample run for: SL236	52	7	\N	5
 \.
 
 
@@ -1510,10 +1517,11 @@ COPY samplerun (samplerun_id, created_stamp, description, samplerun_type, sample
 --
 
 COPY sequencingrun (sequencingrun_id, created_stamp, identifier, initial_pipedata, sequencing_centre, initial_pipeprocess, submission_date, run_date, data_received_date, quality, sequencing_type, multiplexing_type) FROM stdin;
-1	2009-05-21 12:53:34.33609	R_SL54	1	3	1	\N	\N	\N	49	54	39
-2	2009-05-21 12:53:34.33609	R_SL55	2	3	2	\N	\N	\N	49	54	39
-3	2009-05-21 12:53:34.33609	R_SL234_BCF	3	2	3	2009-01-20	2009-02-10	2009-02-10	49	54	38
-4	2009-05-21 12:53:34.33609	R_SL236	4	2	4	2009-02-10	2009-03-09	2009-03-09	49	54	39
+1	2009-05-21 17:04:00.809226	R_SL11	1	3	1	\N	\N	\N	49	54	39
+2	2009-05-21 17:04:00.809226	R_SL54	2	3	2	\N	\N	\N	49	54	39
+3	2009-05-21 17:04:00.809226	R_SL55	3	3	3	\N	\N	\N	49	54	39
+4	2009-05-21 17:04:00.809226	R_SL234_BCF	4	2	4	2009-01-20	2009-02-10	2009-02-10	49	54	38
+5	2009-05-21 17:04:00.809226	R_SL236	5	2	5	2009-02-10	2009-03-09	2009-03-09	49	54	39
 \.
 
 

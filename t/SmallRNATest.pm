@@ -45,10 +45,15 @@ sub setup
   my $fastq_dir = $config->data_directory() . '/fastq';
   mkpath($fastq_dir);
 
+  # SL11 is an example of a data set for which we don't have a fastq file
+  my $sl11_dir = $config->data_directory() . '/SL11';
+  mkpath($sl11_dir);
+
   copy('t/data/ID24_171007_FC5359.lane4.fq', $fastq_dir) or die;
   copy('t/data/ID24_171007_FC5359.lane5.fq', $fastq_dir) or die;
   copy('t/data/SL234_BCF.090202.30W8NAAXX.s_1.fq', $fastq_dir) or die;
   copy('t/data/SL236.090227.311F6AAXX.s_1.fq', $fastq_dir) or die;
+  copy('t/data/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa', $sl11_dir) or die;
 
   my @connect_info = @{$config->{'Model::SmallRNAModel'}{connect_info}};
 
