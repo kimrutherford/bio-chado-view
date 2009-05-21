@@ -79,7 +79,7 @@ sub run
     my $output_file_name = $input_file_name;
 
     if (!($output_file_name =~ s/$input_type/$output_type/g)) {
-      $output_file_name =~ s/\.fa$/.$output_type.fasta/g
+      $output_file_name =~ s/\.(fa|fasta)$/.$output_type.fasta/g
     }
 
     SmallRNA::Process::NonRedundantFastaProcess::run(input_file_name =>
