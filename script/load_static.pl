@@ -209,7 +209,6 @@ my @organisms = ({ genus => "Arabidopsis", species => "thaliana" },
                  { genus => "Homo", species => "sapiens" },
                  { genus => "Lycopersicon", species => "esculentum" },
                  { genus => "Zea", species => "mays" },
-                 { genus => "Cardamine", species => "hirsuta" },
                  { genus => "Nicotiana", species => "benthamiana" },
                  { genus => "Schizosaccharomyces", species => "pombe" },
                  { genus => "Unknown", species => "unknown" }
