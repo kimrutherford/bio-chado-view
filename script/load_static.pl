@@ -211,7 +211,9 @@ my @organisms = ({ genus => "Arabidopsis", species => "thaliana" },
                  { genus => "Zea", species => "mays" },
                  { genus => "Cardamine", species => "hirsuta" },
                  { genus => "Nicotiana", species => "benthamiana" },
-                 { genus => "Schizosaccharomyces", species => "pombe" });
+                 { genus => "Schizosaccharomyces", species => "pombe" },
+                 { genus => "Unknown", species => "unknown" }
+                );
 
 my %organism_objects = ();
 
@@ -232,7 +234,9 @@ my @ecotypes = ({ description => "unspecified", org => "Arabidopsis thaliana" },
                 { description => "unspecified", org => "Lycopersicon esculentum" },
                 { description => "unspecified", org => "Zea mays" },
                 { description => "unspecified", org => "Nicotiana benthamiana" },
-                { description => "unspecified", org => "Schizosaccharomyces pombe" });
+                { description => "unspecified", org => "Schizosaccharomyces pombe" },
+                { description => "unspecified", org => "Unknown unknown" },
+               );
 
 $schema->txn_do(sub {
                   for my $ecotype (@ecotypes) {
