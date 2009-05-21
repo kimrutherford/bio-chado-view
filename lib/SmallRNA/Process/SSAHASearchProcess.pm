@@ -121,10 +121,8 @@ sub run
   my $ssaha_command =
     "$params{ssaha_path} $in_file $params{database_file_name} $SSAHA_ARGS";
 
-  open my $ssaha_out, "$ssaha_command|"
+  open my $ssaha_out, "$ssaha_command 2> /dev/null|"
     or die "can't open pipe to $params{ssaha_path}: $!";
-
-  warn "running: $ssaha_command\n";
 
   my $parser = SmallRNA::Parse::SSAHA->new(input_file_handle => $ssaha_out,
                                            format => 'standard');
