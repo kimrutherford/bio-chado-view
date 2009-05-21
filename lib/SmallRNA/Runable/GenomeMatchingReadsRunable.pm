@@ -123,7 +123,7 @@ sub run
 >$sequence count:$count
 $sequence
 END
-      print $tsv_out_file "$sequence $count\n";
+      print $tsv_out_file "$sequence\t$count\n";
     }
 
     close $fasta_out_file or die "can't close $fasta_out_file_name: $!\n";
