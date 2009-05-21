@@ -78,21 +78,19 @@ sub run
 
     my $output_file_name = $input_file_name;
 
-    if ($output_file_name =~ s/$input_type/$output_type/g) {
-      SmallRNA::Process::NonRedundantFastaProcess::run(input_file_name =>
-                                                         "$data_dir/" . $input_file_name,
-                                                       output_file_name =>
-                                                         "$data_dir/" . $output_file_name);
-
-      $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
-                            file_name => $output_file_name,
-                            format_type_name => 'fasta',
-                            content_type_name => $output_type);
-
-
-    } else {
-      croak("pattern match failed");
+    if (!($output_file_name =~ s/$input_type/$output_type/g)) {
+      $output_file_name =~ s/\.fa$/.$output_type.fa/g
     }
+
+    SmallRNA::Process::NonRedundantFastaProcess::run(input_file_name =>
+                                                       "$data_dir/" . $input_file_name,
+                                                     output_file_name =>
+                                                       "$data_dir/" . $output_file_name);
+
+    $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
+                          file_name => $output_file_name,
+                          format_type_name => 'fasta',
+                          content_type_name => $output_type);
   };
   $self->schema->txn_do($code);
 }

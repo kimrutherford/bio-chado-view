@@ -229,17 +229,24 @@ sub add_sequencingrun_datafile
                                     %pipeprocess_args
                                    });
 
-  my $pipedata_format_type = $self->_find('Cvterm', name => 'fastq');
+  my $pipedata_format_type;
   my $pipedata_content_type;
 
-  if ($molecule_type eq 'RNA') {
-    if ($multiplexed) {
-      $pipedata_content_type = $self->_find('Cvterm', name => 'multiplexed_small_rna_reads');
-    } else {
-      $pipedata_content_type = $self->_find('Cvterm', name => 'raw_small_rna_reads');
-    }
+  if ($file_name =~ /\.fa$|\.fasta$/) {
+    $pipedata_format_type = $self->_find('Cvterm', name => 'fasta');
+    $pipedata_content_type = $self->_find('Cvterm', name => 'small_rna');
   } else {
-    $pipedata_content_type = $self->_find('Cvterm', name => 'raw_genomic_dna_reads');
+    $pipedata_format_type = $self->_find('Cvterm', name => 'fastq');
+
+    if ($molecule_type eq 'RNA') {
+      if ($multiplexed) {
+        $pipedata_content_type = $self->_find('Cvterm', name => 'multiplexed_small_rna_reads');
+      } else {
+        $pipedata_content_type = $self->_find('Cvterm', name => 'raw_small_rna_reads');
+      }
+    } else {
+      $pipedata_content_type = $self->_find('Cvterm', name => 'raw_genomic_dna_reads');
+    }
   }
 
   my $pipedata = $self->_create('Pipedata',

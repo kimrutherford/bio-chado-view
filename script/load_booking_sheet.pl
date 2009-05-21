@@ -269,9 +269,11 @@ sub create_pipedata
   my $file_name = shift;
   my $molecule_type = shift;
 
+  warn "storing; $file_name\n";
+
   my ($pipedata, $pipeprocess) =
     $loader->add_sequencingrun_datafile($config, $sequencing_run,
-                                        "fastq/$file_name", $molecule_type);
+                                        $file_name, $molecule_type);
 
   $sequencing_run->initial_pipedata($pipedata);
   $sequencing_run->initial_pipeprocess($pipeprocess);
@@ -291,25 +293,30 @@ sub fix_date
 sub fix_name
 {
   my $file_name = shift;
-  $file_name =~ s/\.f[aq](?:\.gz)?$/.fq/;
-  $file_name =~ s/^SL\d+.(.*).reads.*/$1.fq/;
+  $file_name =~ s/\.f[aq](?:\.gz)?$//;
+  $file_name =~ s/^SL\d+.(.*).reads.*/$1/;
   return $file_name;
 }
 
 my %dir_files = ();
-my $dir_name = $config->{data_directory} . "/fastq";
-opendir my $dir, $dir_name or die "can't open directory $dir_name: $!\n";
-while (my $ent = readdir $dir) {
-  next if $ent eq '.' or $ent eq '..';
-  my $fixed_name = fix_name($ent);
-  if (exists $dir_files{$fixed_name}) {
-    croak "overwriting name from directory: $fixed_name\n";
-  } else {
-#    warn "adding $fixed_name => $ent to hash\n";
+
+for my $sub_dir (qw(fastq SL9 SL11 SL12 SL18 SL19 SL21 SL22)) {
+  my $dir_name = $config->{data_directory} . "/$sub_dir";
+  opendir my $dir, $dir_name or die "can't open directory $dir_name: $!\n";
+  while (my $ent = readdir $dir) {
+    next if $ent eq '.' or $ent eq '..' or $ent !~ /\.f[qa]$/;
+    $dir_files{$ent} = "$sub_dir/$ent";
+    my $fixed_name = fix_name($ent);
+    warn "$dir_name - fixed_name: $fixed_name (orig: $ent)\n";
+    if (exists $dir_files{$fixed_name}) {
+#      croak "overwriting name from directory: new: $fixed_name, old: $dir_files{$fixed_name}\n";
+    } else {
+      #    warn "adding $fixed_name => $ent to hash\n";
+    }
+    $dir_files{$fixed_name} = "$sub_dir/$ent";
   }
-  $dir_files{$fixed_name} = $ent;
+  closedir $dir;
 }
-closedir $dir;
 
 sub find_real_file_name
 {
@@ -317,18 +324,25 @@ sub find_real_file_name
   my $booking_sheet_file_name = shift;
   my $test_file_name = $booking_sheet_file_name;
 
-  $test_file_name =~ s/(?:\.(?:fa|fq|fasta|fastq|gz))?(?:\.gz)?$/.fq/;
-  if (exists $dir_files{$test_file_name}) {
-#    warn "found file: ", $dir_files{$test_file_name}, " - $test_file_name\n";
-    return $dir_files{$test_file_name};
+  warn "looking for: $test_file_name\n";
+
+  if (exists $dir_files{$booking_sheet_file_name}) {
+    warn "found file: $booking_sheet_file_name\n";
+    return $dir_files{$booking_sheet_file_name};
   } else {
-    my $fixed_name = fix_name($test_file_name);
-    if (exists $dir_files{$fixed_name}) {
-#      warn "found fixed file: ", $dir_files{$fixed_name}, " - $fixed_name\n";
-      return $dir_files{$fixed_name};
+    $test_file_name =~ s/(?:\.(?:fa|fq|fasta|fastq|gz))?(?:\.gz)?$/.fq/;
+    if (exists $dir_files{$test_file_name}) {
+      warn "found file: ", $dir_files{$test_file_name}, " - $test_file_name\n";
+      return $dir_files{$test_file_name};
     } else {
-      warn "can't find file for $booking_sheet_file_name => $test_file_name\n";
-      return undef;
+      my $fixed_name = fix_name($test_file_name);
+      if (exists $dir_files{$fixed_name}) {
+        warn "found fixed file: ", $dir_files{$fixed_name}, " - $fixed_name\n";
+        return $dir_files{$fixed_name};
+      } else {
+        warn "can't find file for $booking_sheet_file_name => $test_file_name\n";
+        return undef;
+      }
     }
   }
 }
@@ -355,7 +369,8 @@ sub process
 {
   while (my $columns_ref = $csv->getline($io)) {
     my @columns = @$columns_ref;
-    my ($file_names_column, $solexa_library, $dcb_validated, $funding,
+    my ($file_names_column, $solexa_library, $do_processing,
+        $dcb_validated, $funding,
         $sheet_seq_centre_name,
         $description, $organism_name, $genotype, $submitter, $institution,
         $date_submitted,
@@ -364,6 +379,8 @@ sub process
 
     $date_submitted = fix_date($date_submitted);
     $date_received = fix_date($date_received);
+
+    $do_processing = 0;
 
     my $has_tcv = 0;
 
@@ -454,6 +471,8 @@ sub process
         if (!defined $file_name) {
           next;
         }
+
+        die "$file_name\n" unless -e $config->{data_directory} . '/' . $file_name;
 
         my $seq_centre_name;
 
