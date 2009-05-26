@@ -168,19 +168,20 @@ sub add_sequencingrun
                                  });
 }
 
-=head2 add_sequencingrun_datafile
+=head2 add_sequencingrun_pipedata
 
- Usage   : my $datafile =
-             $loader->add_sequencingrun_datafile(config => $smallrna_config,
-                                                 sequencing_run => $sequencing_run,
-                                                 file_name => $file_name);
- Function: Create and return a new Datafile object for the given sequencing_run
+ Usage   : my $pipedata =
+             $loader->add_sequencingrun_pipedata($smallrna_config,
+                                                 $sequencing_run,
+                                                 $file_name, 'RNA');
+ Function: Create and return a new Pipedata object for the given sequencing_run
  Args    : config - a SmallRNA::Config object
            sequencing_run - a Sequencingrun object
            file_name - a file name of a fastq file from the sequencing run
+           molecule_type - 'DNA' or 'RNA'
 
 =cut
-sub add_sequencingrun_datafile
+sub add_sequencingrun_pipedata
 {
   my $self = shift;
   my $config = shift;

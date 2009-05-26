@@ -273,7 +273,7 @@ sub create_pipedata
   my $molecule_type = shift;
 
   my ($pipedata, $pipeprocess) =
-    $loader->add_sequencingrun_datafile($config, $sequencing_run,
+    $loader->add_sequencingrun_pipedata($config, $sequencing_run,
                                         $file_name, $molecule_type);
 
   $sequencing_run->initial_pipedata($pipedata);
