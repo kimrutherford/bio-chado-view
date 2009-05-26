@@ -260,6 +260,50 @@ sub add_sequencingrun_datafile
   return ($pipedata, $pipeprocess);
 }
 
+=head2
+
+ Usage   : my $project = $loader->create_with_prefix('Pipeproject',
+                                                     'name', 'P_',
+                                                     { description => $ARGV[0],
+                                                       type => $project_type,
+                                                       owner => $owner
+                                                     });
+ Function: Create and return a new object, picking a unique identifier for it.
+           Works by reading the given field of the type and finding the next
+           identifier to use.  eg. if the prefix is 'P_' and the database has
+           'P_0' and 'P_1' already, choose 'P_2' as the new identifier.
+ Args    : $type - the type to create
+           $field_name - the field name to use to the identifier
+           $prefix - the prefix
+           $args - the fields and values for the new object
+
+=cut
+sub create_with_prefix
+{
+  my $self = shift;
+  my $type = shift;
+  my $field_name = shift;
+  my $prefix = shift;
+  my $args = shift;
+
+  my $schema = $self->{schema};
+
+  my $rs = $schema->resultset($type)->search_like({$field_name, "$prefix%"});
+
+  my $max = -1;
+
+  while (defined (my $obj = $rs->next())) {
+    if ($obj->$field_name() =~ /^$prefix(\d+)/) {
+      if ($1 > $max) {
+        $max = $1;
+      }
+    }
+  }
+
+  return $self->_create($type, { $field_name, $prefix . ($max + 1), %$args });
+}
+
+
 sub _create
 {
   my $self = shift;
