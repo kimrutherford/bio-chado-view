@@ -118,7 +118,7 @@ sub store_pipedata
                        file_name => $file_name,
                        format_type => $format_term,
                        content_type => $content_term,
-                       file_length => $full_file_name,
+                       file_length => -s $full_file_name,
                       };
   my $pipedata = $schema->create_with_type('Pipedata', $pipedata_args);
 
