@@ -78,27 +78,44 @@ sub schema
 =head2 find_with_type
 
  Usage   : my $obj = $schema->find_with_type('Organism', 'abbreviation', 'SCHPO');
+       or: my $obj = $schema->find_with_type('Organism', { genus => 'Arabidopsis',
+                                                           species => 'thaliana' } );
  Function: Return the object of the given type that has the given key field with
            given value
  Args    : $type - an unqualified class name like 'Person'
            $field_name - the field name to use when searching
            $value - the value to search for
+       or: $type - an unqualified class name like 'Person'
+           $arg - reference of the hash to pass to find
 
 =cut
 sub find_with_type
 {
   my $self = shift;
-  my ($type, $field_name, $value) = validate_pos(@_, 1, 1, 1);
+  my ($type, $arg, $value) = validate_pos(@_, 1, 1, 0);
 
   $type = ucfirst $type;
 
   my $rs = $self->resultset($type);
-  my $obj = $rs->find({ $field_name => $value });
-  if (defined $obj) {
-    return $obj;
+
+  my $obj;
+
+  if (ref $arg) {
+    my %args = %$arg;
+    $obj = $rs->find($arg);
+    if (!defined $obj) {
+      croak "error: could not find a '$type' with args: "
+        . join "\n", map { "$_: $arg->{$_}" } keys %$arg;
+    }
   } else {
-    croak "error: could not find a '$type' with $field_name = '$value'\n";
+    my $field_name = $arg;
+    $obj = $rs->find({ $field_name => $value });
+    if (!defined $obj) {
+      croak "error: could not find a '$type' with $field_name = '$value'\n";
+    }
   }
+
+  return $obj;
 }
 
 =head2 create_with_type
