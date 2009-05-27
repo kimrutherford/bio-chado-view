@@ -123,6 +123,11 @@ my %terms = (
               'started' => 'Processing has started',
               'finished' => 'Processing is done',
              },
+             'tracking sample processing requirements' =>
+             {
+              'no processing' => 'Processing should not be performed for this sample',
+              'needs processing' =>' Processing should be performed for this sample',
+             },
              'tracking analysis types' =>
              {
               'non-multiplexed sequencing run' =>

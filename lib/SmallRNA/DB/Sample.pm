@@ -55,6 +55,8 @@ __PACKAGE__->add_columns(
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "fractionation_type",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
+  "processing_requirement",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "tissue",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
@@ -68,19 +70,9 @@ __PACKAGE__->belongs_to(
   { genotype_id => "genotype" },
 );
 __PACKAGE__->belongs_to(
-  "ecotype",
-  "SmallRNA::DB::Ecotype",
-  { ecotype_id => "ecotype" },
-);
-__PACKAGE__->belongs_to(
-  "treatment_type",
+  "processing_requirement",
   "SmallRNA::DB::Cvterm",
-  { cvterm_id => "treatment_type" },
-);
-__PACKAGE__->belongs_to(
-  "pipeproject",
-  "SmallRNA::DB::Pipeproject",
-  { pipeproject_id => "pipeproject" },
+  { cvterm_id => "processing_requirement" },
 );
 __PACKAGE__->belongs_to(
   "fractionation_type",
@@ -91,6 +83,21 @@ __PACKAGE__->belongs_to(
   "molecule_type",
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "molecule_type" },
+);
+__PACKAGE__->belongs_to(
+  "ecotype",
+  "SmallRNA::DB::Ecotype",
+  { ecotype_id => "ecotype" },
+);
+__PACKAGE__->belongs_to(
+  "pipeproject",
+  "SmallRNA::DB::Pipeproject",
+  { pipeproject_id => "pipeproject" },
+);
+__PACKAGE__->belongs_to(
+  "treatment_type",
+  "SmallRNA::DB::Cvterm",
+  { cvterm_id => "treatment_type" },
 );
 __PACKAGE__->has_many(
   "sample_pipedatas",
@@ -105,7 +112,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4q2IeX5erpwyrtNbTpn/LQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KY58OB2U2BqJxEuHhaHOkQ
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 

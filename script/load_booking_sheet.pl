@@ -182,12 +182,17 @@ sub create_sample
   my $sequencing_run = shift;
   my $molecule_type = shift;
   my $ecotype = shift;
+  my $do_processing = shift;
 
   if (!defined $sequencing_run) {
     croak "no sequencing_run passed to create_sample()\n";
   }
 
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
+  my $processing_type_term = find('Cvterm', 
+                                  name => ($do_processing ? 
+                                           'no processing' : 
+                                           'needs processing'));
 
   die "can't find term for $molecule_type" unless defined $molecule_type_term;
 
@@ -197,6 +202,7 @@ sub create_sample
                      pipeproject => $project,
                      molecule_type => $molecule_type_term,
                      ecotype => $ecotype,
+                     processing_requirement => $processing_type_term
                     };
 
   return create('Sample', $sample_args);
@@ -367,7 +373,11 @@ sub process
     $date_submitted = fix_date($date_submitted);
     $date_received = fix_date($date_received);
 
-    $do_processing = 0;
+    if (lc $do_processing eq 'no') {
+      $do_processing = 0;
+    } else {
+      $do_processing = 1;
+    }
 
     my $has_tcv = 0;
 
@@ -494,7 +504,7 @@ sub process
             }
             my $sample = create_sample($proj, $new_sample_name, $description,
                                        $sequencing_run, $molecule_type,
-                                       $ecotype);
+                                       $ecotype, $do_processing);
             push @all_samples, $sample;
             create_samplerun($sample, $sequencing_run, $is_replicate, $barcode);
             $pipedata->add_to_samples($sample);
@@ -508,7 +518,7 @@ sub process
 
           my $sample = create_sample($proj, $sample_name, $description,
                                      $sequencing_run, $molecule_type,
-                                     $ecotype);
+                                     $ecotype, $do_processing);
           push @all_samples, $sample;
           create_samplerun($sample, $sequencing_run, $is_replicate, undef);
           $pipedata->add_to_samples($sample);

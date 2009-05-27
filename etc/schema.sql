@@ -174,6 +174,7 @@ CREATE TABLE sample (
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),
        fractionation_type integer REFERENCES cvterm(cvterm_id),
+       processing_requirement integer REFERENCES cvterm(cvterm_id) NOT NULL,
        tissue integer REFERENCES tissue(tissue_id)
 );
 CREATE TABLE pipedata (

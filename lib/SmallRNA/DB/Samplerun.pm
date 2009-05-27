@@ -41,12 +41,6 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("samplerun_id");
 __PACKAGE__->add_unique_constraint("samplerun_id_pk", ["samplerun_id"]);
 __PACKAGE__->belongs_to(
-  "barcode",
-  "SmallRNA::DB::Barcode",
-  { barcode_id => "barcode" },
-);
-__PACKAGE__->belongs_to("sample", "SmallRNA::DB::Sample", { sample_id => "sample" });
-__PACKAGE__->belongs_to(
   "samplerun_type",
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "samplerun_type" },
@@ -56,10 +50,16 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Sequencingrun",
   { sequencingrun_id => "sequencingrun" },
 );
+__PACKAGE__->belongs_to(
+  "barcode",
+  "SmallRNA::DB::Barcode",
+  { barcode_id => "barcode" },
+);
+__PACKAGE__->belongs_to("sample", "SmallRNA::DB::Sample", { sample_id => "sample" });
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/j0cXeZQA83L9hVSM3+zfA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:68Yda2ouIcKrQhWmTBehxg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

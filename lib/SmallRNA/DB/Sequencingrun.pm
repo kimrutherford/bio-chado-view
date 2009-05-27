@@ -56,12 +56,6 @@ __PACKAGE__->has_many(
   "SmallRNA::DB::Samplerun",
   { "foreign.sequencingrun" => "self.sequencingrun_id" },
 );
-__PACKAGE__->belongs_to("quality", "SmallRNA::DB::Cvterm", { cvterm_id => "quality" });
-__PACKAGE__->belongs_to(
-  "initial_pipedata",
-  "SmallRNA::DB::Pipedata",
-  { pipedata_id => "initial_pipedata" },
-);
 __PACKAGE__->belongs_to(
   "multiplexing_type",
   "SmallRNA::DB::Cvterm",
@@ -82,10 +76,16 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Pipeprocess",
   { pipeprocess_id => "initial_pipeprocess" },
 );
+__PACKAGE__->belongs_to("quality", "SmallRNA::DB::Cvterm", { cvterm_id => "quality" });
+__PACKAGE__->belongs_to(
+  "initial_pipedata",
+  "SmallRNA::DB::Pipedata",
+  { pipedata_id => "initial_pipedata" },
+);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YeYG3XAALWCrUnKGmUlW8g
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YAd0R8FdDskGrcP1FMgX1w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
