@@ -33,8 +33,10 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => undef,
   },
-  "generating_pipeprocess",
+  "file_length",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  "generating_pipeprocess",
+  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
 __PACKAGE__->set_primary_key("pipedata_id");
 __PACKAGE__->add_unique_constraint("pipedata_id_pk", ["pipedata_id"]);
@@ -72,7 +74,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9QNhNwPUnaQ524ltUDEk1A
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vDq9N9vG1atsb/8jyKki6w
 
 __PACKAGE__->many_to_many(next_pipeprocesses => 'pipeprocess_in_pipedatas',
                           'pipeprocess');

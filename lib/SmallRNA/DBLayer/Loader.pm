@@ -41,9 +41,6 @@ use strict;
 use Carp;
 use Params::Validate qw(:all);
 
-# use vars qw(@ISA);
-# @ISA = qw(SmallRNA::Base);
-
 =head2 new
 
  Usage   : my $loader = SmallRNA::DBLayer::Loader(schema => $schema);
@@ -189,7 +186,9 @@ sub add_sequencingrun_pipedata
   my $file_name = shift;
   my $molecule_type = shift;
 
-  if (!-e ($config->{data_directory} . "/$file_name")) {
+  my $full_file_name = $config->data_directory() . "/$file_name";
+
+  if (!-e $full_file_name) {
     croak "file $file_name doesn't exist in data directory: ", $config->data_directory();
   }
 
@@ -250,11 +249,14 @@ sub add_sequencingrun_pipedata
     }
   }
 
+  my $ctx = Digest::MD5->new;
+
   my $pipedata = $self->_create('Pipedata',
                                 {
                                  file_name => $file_name,
                                  format_type => $pipedata_format_type,
                                  content_type => $pipedata_content_type,
+                                 file_length => -s $full_file_name,
                                  generating_pipeprocess => $pipeprocess
                                 });
 

@@ -181,7 +181,8 @@ CREATE TABLE pipedata (
        format_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        content_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        file_name text UNIQUE NOT NULL,
-       generating_pipeprocess integer REFERENCES pipeprocess(pipeprocess_id) NOT NULL
+       file_length integer NOT NULL,
+       generating_pipeprocess integer REFERENCES pipeprocess(pipeprocess_id)
 );
 CREATE TABLE pipeprocess_in_pipedata (
        pipeprocess_in_pipedata_id serial CONSTRAINT pipeprocess_in_pipedata_id_pk PRIMARY KEY,
