@@ -52,6 +52,7 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key("organism_id");
+__PACKAGE__->add_unique_constraint("organism_full_name_constraint", ["genus", "species"]);
 __PACKAGE__->add_unique_constraint("organism_id_pk", ["organism_id"]);
 __PACKAGE__->has_many(
   "ecotypes",
@@ -71,7 +72,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1CA4dqROOB7M6yN8A6J6kg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sI0axuVC3Odouafyy0S3/Q
 
 # the genus and species, used when displaying organisms
 sub full_name {

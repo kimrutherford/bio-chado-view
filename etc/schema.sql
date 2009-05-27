@@ -76,7 +76,8 @@ CREATE TABLE organism (
        genus character varying(255) NOT NULL,
        species character varying(255) NOT NULL,
        common_name character varying(255),
-       comment text
+       comment text,
+       CONSTRAINT organism_full_name_constraint UNIQUE(genus, species)
 );
 
 CREATE TABLE organisation (
