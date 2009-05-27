@@ -105,15 +105,20 @@ sub store_pipedata
 
   $file_name =~ s|$data_dir/*||;
 
-  if (!-e "$data_dir/$file_name") {
+  my $full_file_name = "$data_dir/$file_name";
+
+  if (!-e $full_file_name) {
     croak "error: tried to store a file that doesn't exist: $file_name\n";
   }
+
+  my $file_length = -s $full_file_name;
 
   my $pipedata_args = {
                        generating_pipeprocess => $params{generating_pipeprocess},
                        file_name => $file_name,
                        format_type => $format_term,
-                       content_type => $content_term
+                       content_type => $content_term,
+                       file_length => $full_file_name,
                       };
   my $pipedata = $schema->create_with_type('Pipedata', $pipedata_args);
 
