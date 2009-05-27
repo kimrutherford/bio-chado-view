@@ -8,66 +8,119 @@ use Getopt::Long;
 
 use SmallRNA::Config;
 use SmallRNA::DB;
+use SmallRNA::Web;
 use SmallRNA::DBLayer::Loader;
 
-my $barcode_id;
+my $c = SmallRNA::Web->commandline();
+my $config = $c->config();
 
-GetOptions("barcode-id=s" => \$barcode_id);
+my $schema = SmallRNA::DB->schema($config);
 
-if (@ARGV != 2) {
-  die <<"EOF";
-error: needs two arguments
+my $data_dir = $c->config()->data_directory();
 
+# set defaults
+my %options = (
+               add_project => undef,
+               add_sample => undef,
+               add_pipedata => undef,
+              );
+
+my $option_parser = new Getopt::Long::Parser;
+$option_parser->configure("gnu_getopt");
+
+my %opt_config = (
+                  "add-project|p" => \$options{add_project},
+                  "add-sample|s" => \$options{add_sample},
+                  "add-data|d" => \$options{add_pipedata},
+                 );
+
+sub usage
+{
+  my $message = shift;
+
+  if (defined $message) {
+    $message .= "\n";
+  } else {
+    $message = '';
+  }
+
+  die <<"USAGE";
+${message}
 usage:
-  $0 [--barcode-id <barcode_id>] <project_name> <sample_identifier>
-EOF
+  $0 -p <project_description> <project_type> <owner>
+(Add a project, prints the new project name)
+  $0 -s <project_name> <ecotype> <organism_name> <molecule_type> [sample_identifier]
+(Add a sample to the given project_name, if no sample_identifier is given
+create one.  The new sample is printed to STDOUT)
+  $0 -d <sample_identifier> <file_name> <content_type> <format_type>
+(Add the given file to the given sample, by copying it to $data_dir)
+USAGE
 }
 
-my $connect_string = SmallRNA::Config->db_connect_string();
-
-my $username = SmallRNA::Config->db_username();
-my $password = SmallRNA::Config->db_password();
-
-my $schema = SmallRNA::DB->connect($connect_string, $username, $password);
-
-my $project_name = shift;
-my $sample_identifier = shift;
-
-my $project_rs = $schema->resultset('Seqproject');
-my $project = $project_rs->find({
-                                 name => $project_name
-                                });
-
-my $rna_molecule_type = $schema->find_with_type('Cvterm', name => 'RNA');
-
-if (!defined $project) {
-  die "couldn't find project with name: $project_name\n";
+if (!$option_parser->getoptions(%opt_config)) {
+  usage();
 }
 
-my $barcode = undef;
+if (!($options{add_project} || $options{add_sample} || $options{add_pipedata})) {
+  usage("You must specify the type to add");
+}
 
-if (defined $barcode_id) {
-  my $barcode_rs = $schema->resultset('Barcode');
-  $barcode = $barcode_rs->find({
-                                identifier => $barcode_id
-                               });
+my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 
-  if (!defined $barcode) {
-    die "couldn't find barcode with name: $barcode_id\n";
+if ($options{add_project}) {
+  if (@ARGV == 3) {
+    my $project_type = $schema->find_with_type('Cvterm', 'name', $ARGV[1]);
+    my $owner = $schema->find_with_type('Person', 'user_name', $ARGV[2]);
+    my $project = $loader->create_with_prefix('Pipeproject', 'name', 'P_',
+                                              { description => $ARGV[0],
+                                                type => $project_type,
+                                                owner => $owner
+                                              });
+
+    print $project->name(), "\n";
+  } else {
+    usage("--add-project needs three arguments");
   }
 }
 
-my $sample_rs = $schema->resultset('Sample');
+if ($options{add_sample}) {
+  if (@ARGV < 5 || @ARGV > 6) {
+    usage("--add-sample needs 3 or 4 arguments");
+  } else { 
+    my $project = $schema->find_with_type('Pipeproject', 'name', $ARGV[0]);
+    my ($genus, $species) = split / /, $ARGV[2];
+    my $organism = $schema->find_with_type('Organism', { genus => $genus,
+                                                         species => $species });
+    my $ecotype = $schema->find_with_type('Ecotype', { description => $ARGV[1],
+                                                       organism => $organism });
+    my $molecule_type = $schema->find_with_type('Cvterm', 'name', $ARGV[3]);
 
-my %args = (
-            name => $sample_identifier,
-            seqproject => $project,
-            molecule_type => $rna_molecule_type
-           );
-
-if (defined $barcode) {
-  $args{barcode} = $barcode;
-
+    my $sample = $schema->create_with_type('Sample',
+                                             { description => $ARGV[4],
+                                               name => $ARGV[5],
+                                               pipeproject => $project,
+                                               molecule_type => $molecule_type,
+                                               ecotype => $ecotype,
+                                              });
+    print $project->name(), "\n";
+  }
 }
 
-$sample_rs->create(\%args);
+if ($options{add_pipedata}) {
+  if (@ARGV == 4) {
+    my $sample = $schema->find_with_type('Sample', 'name', $ARGV[0]);
+    my $content_type = $schema->find_with_type('Cvterm', 'name', $ARGV[2]);
+    my $format_type = $schema->find_with_type('Cvterm', 'name', $ARGV[3]);
+
+    my $pipe_data = $schema->create_with_type('Pipedata',
+                                             { description => $ARGV[4],
+                                               name => $ARGV[5],
+                                               pipeproject => $project,
+                                               molecule_type => $molecule_type,
+                                               ecotype => $ecotype,
+                                              });
+    print $project->name(), "\n";
+  } else {
+    usage("--add-pipedata needs two arguments");
+  }
+}
