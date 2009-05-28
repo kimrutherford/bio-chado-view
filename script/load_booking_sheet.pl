@@ -191,8 +191,8 @@ sub create_sample
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
   my $processing_type_term = find('Cvterm', 
                                   name => ($do_processing ? 
-                                           'no processing' : 
-                                           'needs processing'));
+                                           'needs processing' : 
+                                           'no processing'));
 
   die "can't find term for $molecule_type" unless defined $molecule_type_term;
 
