@@ -53,6 +53,7 @@ sub setup
   copy('t/data/ID24_171007_FC5359.lane5.fq', $fastq_dir) or die;
   copy('t/data/SL234_BCF.090202.30W8NAAXX.s_1.fq', $fastq_dir) or die;
   copy('t/data/SL236.090227.311F6AAXX.s_1.fq', $fastq_dir) or die;
+  copy('t/data/SL165.080905.306BFAAXX.s_5.fq', $fastq_dir) or die;
   copy('t/data/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa', $sl11_dir) or die;
 
   my @connect_info = @{$config->{'Model::SmallRNAModel'}{connect_info}};

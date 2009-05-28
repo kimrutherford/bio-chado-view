@@ -14,7 +14,7 @@ BEGIN {
 }
 
 my $input_file_name = 't/data/reads_fasta_summary_test.fasta';
-my $db_file_name = 't/data/test_genome.fasta';
+my $db_file_name = 't/data/arabidopsis_thaliana_test_genome.fasta';
 
 my ($gff_fh, $output_gff_file_name) =
   tempfile('/tmp/ssaha_search_test_gff.XXXXXX', UNLINK => 0);
