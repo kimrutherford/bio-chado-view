@@ -127,3 +127,6 @@ programs:
       Arabidopsis_thaliana:
         database_files:
           nuclear_genome: arabidopsis/TAIR_8/arabidopsis_nuclear_genome
+      Chlamydomonas_reinhardtii:
+        database_files:
+          nuclear_genome: chlamydomonas/20090120_chlamy_assembly4/C_reinhardtii.main_genome.scaffolds_plus_unmapped_scaffolds.fasta
