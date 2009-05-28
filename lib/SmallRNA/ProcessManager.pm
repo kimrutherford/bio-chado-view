@@ -207,6 +207,9 @@ sub create_new_pipeprocesses
   #   - for each sample we found, create any pipeprocesses that are needed
 
   my $code = sub {
+    my $needs_processing_term = 
+      $schema->find_with_type('Cvterm', name => 'needs processing');
+
     my $process_conf_rs = $schema->resultset('ProcessConf');
 
     while (defined (my $process_conf = $process_conf_rs->next())) {
@@ -218,7 +221,8 @@ sub create_new_pipeprocesses
         _make_bit($process_conf, $_);
       } @inputs;
 
-      my $where = join ' and ', @where_bits;
+      my $where = join ' AND ', @where_bits;
+      $where .= ' AND processing_requirement = ' . $needs_processing_term->cvterm_id();
 
       my $rs = $schema->resultset('Sample')->search({}, { where => $where });
 
