@@ -34,7 +34,7 @@ __PACKAGE__->add_columns(
     size => undef,
   },
   "file_length",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  { data_type => "bigint", default_value => undef, is_nullable => 0, size => 8 },
   "generating_pipeprocess",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
@@ -74,7 +74,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vDq9N9vG1atsb/8jyKki6w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:etXOraNBbcCdTjcTfVyRRA
 
 __PACKAGE__->many_to_many(next_pipeprocesses => 'pipeprocess_in_pipedatas',
                           'pipeprocess');
