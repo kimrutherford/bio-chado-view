@@ -424,6 +424,12 @@ sub process
     if ($solexa_library =~ /(SL\d+)(?:_([A-Z]+))?(?:_(\d+))?/) {
       my $sample_prefix = $1;
       my $barcodes = $2;
+
+      if ($solexa_library =~ /^(SL25[12])/) {
+        # actually is barcoded
+        $barcodes = 'ACDEFGH';
+      }
+
       my $replicate_identifier = $3;
 
       my $is_replicate = 0;
