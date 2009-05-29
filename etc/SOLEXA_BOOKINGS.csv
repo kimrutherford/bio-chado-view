@@ -1,6 +1,6 @@
 ,,,,,,SOLEXA BOOKING: Bold highlighted columns are pull-down menu selective formatted,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,176,,23,,,,,Average,4.8,,,,,,,,,,,,,,,,,,
+,,,,,180,,23,,,,,Average,4.8,,,,,,,,,,,,,,,,,,
 Genomics ID (CRUK),Solexa Library,Process,DCB validation,Funding,,Sample Name/Description,Organism,Genotype,Submitter,Insititution,Date submitted,Date Received,Time taken,Quality,Quality Note,Sample Type,Run Type,Sequencing cycles,Required number of reads,Sample conc.(µM),,,?X,Single end,"36 (default), 26, 18, >36",DCB1,Andrew B,,Pass,DCB,YES
 ,SL1,,YES,,Norwich,Col-0 Floral small RNAs Rep1,Arabidopsis thaliana,,Ericka H,DCB,,,,,inconsistent result: no 24s in sample,,,,,,,,DNA,Single end Indexed,26,DCB2,Anna P,,Failed,Guest,NO
 ,SL2,,YES,,Norwich,Col-0 Floral small RNAs Rep2,Arabidopsis thaliana,,Ericka H,DCB,,,,,did not do,,,,,,,,smallRNA,Paired end,18,DCB3,Attila M,,Re-Run,,
@@ -295,7 +295,7 @@ SL252.090515.42ACVAAXX.s_5.fq.gz,SL252,,,,CRI,"Dr Matthew Murray: MRC, This is a
 ,SL257,,YES,,CRI,"No8: D2z, Tgsm1, mt -",Chlamydomonas reinhardtii,,Attila M,DCB,27/05/09,,,,,smallRNA,Single end,"36 (default), 26, 18, >36",,,,,,,,,,,,,
 ,SL258,,YES,,CRI,grafting: Col-0 to Col-0 (root),A. thaliana,,Attila M,DCB,27/05/09,,,,,smallRNA,Single end,"36 (default), 26, 18, >36",,,,,,,,,,,,,
 ,SL259,,YES,,CRI,grafting: Col-0 to Col-0 (root),A. thaliana,,Attila M,DCB,27/05/09,,,,,smallRNA,Single end,"36 (default), 26, 18, >36",,,,,,,,,,,,,
-,SL260,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,SL260,,YES,,CRI,"grafting: dcl2,3,4 to dcl2,3,4 (root)",A. thaliana,,Attila M,DCB,29/05/09,,,,,smallRNA,Single end,"36 (default), 26, 18, >36",,,,,,,,,,,,,
 ,SL261,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,SL262,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,SL263,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -334,7 +334,7 @@ SL252.090515.42ACVAAXX.s_5.fq.gz,SL252,,,,CRI,"Dr Matthew Murray: MRC, This is a
 ,SL296,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,SL297,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,SL298,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,SL299,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,SL300,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,SL301,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+SL1000.AGO4_A_combined.fa,SL1000,,YES,,CRI,AGO4 A combined,Arabidopsis thaliana,,Ericka H,DCB,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1001.AGO4_April_06_B.fa,SL1001,,YES,,CRI,AGO4 April 06 B ,Arabidopsis thaliana,,Ericka H,DCB,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1002.AGO4_C_combined_July06.fa,SL1002,,YES,,CRI,AGO4 C,Arabidopsis thaliana,,Ericka H,DCB,,,,,,smallRNA,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
