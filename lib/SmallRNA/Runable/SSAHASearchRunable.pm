@@ -89,6 +89,11 @@ sub run
       my $org_full_name = $sample->ecotype()->organism()->full_name();
       $org_full_name =~ s/ /_/g;
       my $org_config = $c->{organisms}{$org_full_name};
+
+      if (!defined $org_config) {
+        croak "can't find organism configuration for $org_full_name\n";
+      }
+
       my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$versus};
 
       my $ssaha_path = $c->{path};
