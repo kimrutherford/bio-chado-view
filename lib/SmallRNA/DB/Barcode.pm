@@ -42,14 +42,14 @@ __PACKAGE__->add_unique_constraint("barcode_id_pk", ["barcode_id"]);
 __PACKAGE__->add_unique_constraint("barcode_code_key", ["code"]);
 __PACKAGE__->add_unique_constraint("barcode_identifier_key", ["identifier"]);
 __PACKAGE__->has_many(
-  "sampleruns",
-  "SmallRNA::DB::Samplerun",
+  "coded_samples",
+  "SmallRNA::DB::CodedSample",
   { "foreign.barcode" => "self.barcode_id" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n2LZcZAoKqiKOfLEe0Ke8g
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2wbTkxuzQboFUUg4kuddqA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

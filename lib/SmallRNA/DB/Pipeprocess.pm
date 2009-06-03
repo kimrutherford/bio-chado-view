@@ -90,6 +90,6 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1OUGvjDJlw0ZK1OdHG3+Yw
 
-__PACKAGE__->many_to_many(input_pipedatas => 'pipeprocess_in_pipedatas',
-                          'pipedata' );
+
+# You can replace this text with custom content, and it will be preserved on regeneration
 1;

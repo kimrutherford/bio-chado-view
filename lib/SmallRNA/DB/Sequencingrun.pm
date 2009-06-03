@@ -29,6 +29,8 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => undef,
   },
+  "sequencing_sample",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "initial_pipedata",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "sequencing_centre",
@@ -51,11 +53,6 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("sequencingrun_id");
 __PACKAGE__->add_unique_constraint("sequencingrun_identifier_key", ["identifier"]);
 __PACKAGE__->add_unique_constraint("sequencingrun_id_pk", ["sequencingrun_id"]);
-__PACKAGE__->has_many(
-  "sampleruns",
-  "SmallRNA::DB::Samplerun",
-  { "foreign.sequencingrun" => "self.sequencingrun_id" },
-);
 __PACKAGE__->belongs_to(
   "multiplexing_type",
   "SmallRNA::DB::Cvterm",
@@ -82,10 +79,15 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Pipedata",
   { pipedata_id => "initial_pipedata" },
 );
+__PACKAGE__->belongs_to(
+  "sequencing_sample",
+  "SmallRNA::DB::SequencingSample",
+  { sequencing_sample_id => "sequencing_sample" },
+);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YAd0R8FdDskGrcP1FMgX1w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cr4TJSzMtHpMxeI/UPT93Q
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

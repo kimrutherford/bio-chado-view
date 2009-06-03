@@ -15,8 +15,9 @@ DROP TABLE tissue CASCADE;
 DROP TABLE ecotype CASCADE;
 DROP TABLE genotype CASCADE;
 DROP TABLE organism CASCADE;
-DROP TABLE samplerun CASCADE;
 DROP TABLE sample_pipedata CASCADE;
+DROP TABLE coded_sample CASCADE;
+DROP TABLE sequencing_sample CASCADE;
 DROP SEQUENCE cvterm_cvterm_id_seq CASCADE;
 DROP SEQUENCE cv_cv_id_seq CASCADE;
 
@@ -201,10 +202,15 @@ CREATE TABLE sample_pipedata (
        sample integer REFERENCES sample(sample_id) NOT NULL,
        pipedata integer REFERENCES pipedata(pipedata_id) NOT NULL
 );
+CREATE TABLE sequencing_sample (
+       sequencing_sample_id serial CONSTRAINT sequencing_sample_id_pk PRIMARY KEY,
+       name text NOT NULL UNIQUE
+);
 CREATE TABLE sequencingrun (
        sequencingrun_id serial CONSTRAINT sequencingrun_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        identifier text NOT NULL UNIQUE,
+       sequencing_sample integer NOT NULL REFERENCES sequencing_sample(sequencing_sample_id),
        -- set when fastq arrives:
        initial_pipedata integer REFERENCES pipedata(pipedata_id),
        sequencing_centre integer REFERENCES organisation(organisation_id) NOT NULL,
@@ -219,15 +225,15 @@ CREATE TABLE sequencingrun (
        -- set when analysis starts:
        CHECK (CASE WHEN run_date IS NULL THEN data_received_date IS NULL ELSE TRUE END)
 );
-CREATE TABLE samplerun (
-       samplerun_id serial CONSTRAINT samplerun_id_pk PRIMARY KEY,
+CREATE TABLE coded_sample (
+       coded_sample_id serial CONSTRAINT coded_sample_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        description text NOT NULL,
-       samplerun_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
+       coded_sample_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        sample integer REFERENCES sample(sample_id) NOT NULL,
-       barcode integer REFERENCES barcode(barcode_id),
-       sequencingrun integer REFERENCES sequencingrun(sequencingrun_id) NOT NULL
+       sequencing_sample integer REFERENCES sequencing_sample(sequencing_sample_id) NOT NULL,
+       barcode integer REFERENCES barcode(barcode_id)
 );
-COMMENT ON TABLE samplerun IS
-'This table records the many-to-many relationship between samples and '
-'sequencing runs and the type of the run (intial, re-run, replicate etc.)';
+COMMENT ON TABLE coded_sample IS
+  'This table records the many-to-many relationship between samples and '
+  'sequencing runs and the type of the run (intial, re-run, replicate etc.)';
