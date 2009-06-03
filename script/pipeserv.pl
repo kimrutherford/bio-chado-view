@@ -31,8 +31,6 @@ while (my $pipeprocess = $conf_rs->next()) {
     my $pipeprocess_id = $pipeprocess->pipeprocess_id();
     my $pipework_path = "$Bin/pipework.pl";
 
-    warn "starting job with pipeprocess_id: $pipeprocess_id\n";
-
     my $command = 
       "qsub -v PIPEPROCESS_ID=$pipeprocess_id,SMALLRNA_PIPELINE_TEST=$test_mode $pipework_path";
 
@@ -40,6 +38,8 @@ while (my $pipeprocess = $conf_rs->next()) {
       or die "couldn't open pipe from qsub: $!\n";
 
     my $qsub_jobid = <$qsub_handle>;
+
+    chomp $qsub_jobid;
 
     if (!defined $qsub_handle) {
       die "failed to read the job id from qsub command: $!\n";
@@ -49,6 +49,8 @@ while (my $pipeprocess = $conf_rs->next()) {
 
     # finish reading everything from the pipe so that qsub doesn't get a SIGPIPE
     1 while (<$qsub_handle>);
+
+    warn "started job with pipeprocess_id: $pipeprocess_id and job id: $qsub_jobid\n";
 
     close $qsub_handle or die "couldn't close pipe from qsub: $!\n";
 
