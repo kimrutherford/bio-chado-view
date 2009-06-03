@@ -144,6 +144,7 @@ sub run
                                     -format => 'fastfastq');
 
   my $reject_file_name = "$output_file_base.rejects.fasta";
+  my $fasta_file_name = "$output_file_base.reads.fasta";
 
   # used when there is no multiplexing
   my $default_out_file_name = "$output_file_base.fasta";
@@ -163,6 +164,9 @@ sub run
   open my $rej_file, '>', $reject_file_name
     or croak("can't open $reject_file_name for writing: $!\n");
 
+  open my $fasta_file, '>', $fasta_file_name
+    or croak("can't open $fasta_file_name for writing: $!\n");
+
   my $code_re = '';
   if ($multiplexed) {
     $code_re = '(' . (join '|', keys %$barcodes_map_ref) . ')';
@@ -172,6 +176,9 @@ sub run
     my $sequence = $seq_obj->{sequence};
     my $seq_len = length $sequence;
     my $id = $seq_obj->{id};
+
+    print $fasta_file ">$id\n";
+    print $fasta_file "$sequence\n";
 
     if ($sequence =~ m/^(.+)($code_re)($adapter_start.*)/) {
       my $trimmed_seq = $1;
@@ -232,12 +239,20 @@ sub run
     close $barcode_file->{file} or croak "can't close file: $!\n";
   }
 
+  close $rej_file or croak "can't close $reject_file_name: $!\n";
+  close $fasta_file or croak "can't close $fasta_file_name: $!\n";
+
   if ($multiplexed) {
-    return ($_trim_file->($reject_file_name), {map {
-      ($_ => $_trim_file->($out_files_by_code->{$_}{name}))
-    } keys %$out_files_by_code});
+    return ($_trim_file->($reject_file_name),
+            $_trim_file->($fasta_file_name),
+            {
+              map {
+                ($_ => $_trim_file->($out_files_by_code->{$_}{name}))
+              } keys %$out_files_by_code
+            });
   } else {
     return ($_trim_file->($reject_file_name),
+            $_trim_file->($fasta_file_name),
             $_trim_file->($default_out_file_name));
   }
 }

@@ -15,7 +15,7 @@ my $in_fastq_file = '/dev/null';
 
 my $tempdir = tempdir("/tmp/remove_adapters_test_$$.XXXXX", CLEANUP => 0);
 
-my ($reject_file_name, $output_file_name) =
+my ($reject_file_name, $fasta_file_name, $output_file_name) =
   SmallRNA::Process::RemoveAdaptersProcess::run(
                                                 output_dir_name => $tempdir,
                                                 input_file_name => $in_fastq_file

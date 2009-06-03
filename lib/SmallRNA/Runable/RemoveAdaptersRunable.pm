@@ -132,9 +132,14 @@ sub run
   my $kept_term_name = 'small_rna';
   my $reject_term_name = 'remove_adapter_rejects';
   my $unknown_barcode_term_name = 'remove_adapter_unknown_barcode';
+  my $raw_small_rna_reads = 'raw_small_rna_reads';
+  my $multiplexed_small_rna_reads = 'multiplexed_small_rna_reads';
 
   _check_terms($schema, $kept_term_name, $reject_term_name,
-               $unknown_barcode_term_name);
+               $unknown_barcode_term_name, $raw_small_rna_reads,
+               $multiplexed_small_rna_reads);
+
+  my $fasta_output_term_name;
 
   my $pipeprocess =
     $self->pipeprocess();
@@ -159,7 +164,9 @@ sub run
            " has more than one input pipedata\n");
   }
 
-  my $sequencingrun = _find_sequencingrun_from_pipedata($input_pipedatas[0]);
+  my $input_pipedata = $input_pipedatas[0];
+
+  my $sequencingrun = _find_sequencingrun_from_pipedata($input_pipedata);
 
   my $code = sub {
     my @input_files = $self->input_files();
@@ -174,6 +181,7 @@ sub run
                                   '.XXXXX', CLEANUP => 1);
 
     my $reject_file_name;
+    my $fasta_file_name;
     my $output;
 
     my $input_file_name = $data_dir . '/' . $input_files[0];
@@ -181,7 +189,9 @@ sub run
     if ($multiplexed) {
       my %barcodes_map = _get_barcodes($schema);
 
-      ($reject_file_name, $output) =
+      $fasta_output_term_name = $multiplexed_small_rna_reads;
+
+      ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::RemoveAdaptersProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name,
@@ -227,13 +237,15 @@ sub run
                               samples => [@samples]);
       }
     } else {
-      ($reject_file_name, $output) =
+      $fasta_output_term_name = $raw_small_rna_reads;
+
+      ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::RemoveAdaptersProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name
                                                      );
 
-      my @samples = $input_pipedatas[0]->samples();
+      my @samples = $input_pipedata->samples();
       my $sample = $samples[0];
 
       my $temp_dir_output_file_name = "$temp_output_dir/$output";
@@ -274,7 +286,26 @@ sub run
                           file_name => $new_reject_file_name,
                           format_type_name => 'fasta',
                           content_type_name => $reject_term_name,
-                          samples => []);
+                          samples => [$input_pipedata->samples()]);
+
+    my $new_fasta_file_name = $fasta_file_name;
+
+    if (!($new_fasta_file_name =~ s|(.*)\.reads\.fasta$|$fasta_output_term_name/$1.$fasta_output_term_name.fasta|)) {
+      croak "pattern match failed for $new_fasta_file_name\n";
+    }
+
+    my $fasta_output_dir = $data_dir . "/$fasta_output_term_name";
+    mkpath($fasta_output_dir);
+
+    die unless -e "$temp_output_dir/$fasta_file_name";
+
+    move("$temp_output_dir/$fasta_file_name", "$data_dir/$new_fasta_file_name");
+
+    $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
+                          file_name => $new_fasta_file_name,
+                          format_type_name => 'fasta',
+                          content_type_name => $fasta_output_term_name,
+                          samples => [$input_pipedata->samples()]);
   };
   $self->schema->txn_do($code);
 }

@@ -24,7 +24,7 @@ my $schema = SmallRNA::DB->schema($config);
 
 my %barcodes_map = SmallRNA::Runable::RemoveAdaptersRunable::_get_barcodes($schema);
 
-my ($reject_file_name, $output) =
+my ($reject_file_name, $fasta_file_name, $output) =
   SmallRNA::Process::RemoveAdaptersProcess::run(
                                                 output_dir_name => $tempdir,
                                                 input_file_name => $in_fastq_file,
