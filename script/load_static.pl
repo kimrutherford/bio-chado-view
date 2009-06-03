@@ -58,9 +58,9 @@ my %terms = (
              'tracking file content types' =>
              {
               'raw_small_rna_reads' =>
-                'Raw small RNA sequence with quality scores from a non-multiplexed sequencing run',
+                'Raw small RNA sequence reads from a non-multiplexed sequencing run, before any processing',
               'multiplexed_small_rna_reads' =>
-                'Raw small RNA sequence with quality scores from a multiplexed sequencing run',
+                'Raw small RNA sequence reads from a multiplexed sequencing run, before any processing',
               'raw_genomic_dna_reads' =>
                 'Raw DNA sequence reads with quality scores',
               'small_rna' =>
