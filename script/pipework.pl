@@ -15,7 +15,7 @@
 use strict;
 
 BEGIN {
-  push @INC, '/home/kmr44/svn/pipeline/lib';
+  push @INC, '/home/kmr44/vc/pipeline/lib';
   push @INC, '/applications/pipeline/perl_lib/share/perl/5.10.0';
 };
 
