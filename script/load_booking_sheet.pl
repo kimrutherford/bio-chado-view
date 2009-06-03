@@ -399,13 +399,6 @@ sub process
       next;
     }
 
-    if ($file_names_column =~ /ID20_250907_FC5363/) {
-      # duplicated lane - Attila - needs fixing
-      warn "ignoring $file_names_column\n";
-      next;
-    }
-    # XXX TEMP
-
     my @file_names = split m|/|, $file_names_column;
 
     @file_names = grep { ! /^failed/i } @file_names;
