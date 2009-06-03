@@ -121,8 +121,6 @@ sub run
   my $ssaha_command =
     "$params{ssaha_path} $in_file $params{database_file_name} $SSAHA_ARGS";
 
-  warn "running: $ssaha_command\n";
-
   open my $ssaha_out, "$ssaha_command 2> /dev/null|"
     or die "can't open pipe to $params{ssaha_path}: $!";
 
