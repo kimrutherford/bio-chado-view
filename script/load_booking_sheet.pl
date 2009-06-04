@@ -437,7 +437,6 @@ sub process
       my $barcodes = $2;
 
       if ($solexa_library =~ /^(SL25[12])/) {
-        # actually is barcoded
         $barcodes = 'ACDEFGH';
       }
 
