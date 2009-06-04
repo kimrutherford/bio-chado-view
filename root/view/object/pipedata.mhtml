@@ -9,7 +9,8 @@ $type
 </div>
 
 <div>
-  <a href="/data/<% $object->file_name() %>">view/download file contents</a>
+  <a href="/data/<% $object->file_name()
+  %>"><img src="/static/images/download.png"/> view/download file contents</a>
 </div>
 
 

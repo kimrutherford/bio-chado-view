@@ -1,0 +1,5 @@
+<%args>
+$object
+</%args>
+
+<img src='<% $c->uri_for("/plugins/object/sizedist", SmallRNA::DB::id_of_object($object)) %>'>
