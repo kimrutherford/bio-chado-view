@@ -10,6 +10,10 @@ a:link:hover { color:#CF4D23; text-decoration:underline }
 a:visited:hover { color:#CF4D23; text-decoration:underline }
 a:link:active { color:#58e; text-decoration:none }
 
+img {
+    border-width: 0px;
+}
+
 #heading a {
     color: white;
 }
