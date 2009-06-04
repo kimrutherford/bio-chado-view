@@ -349,6 +349,16 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'summarise fasta first base',
+                 runable_name => 'SmallRNA::Runable::FirstBaseCompSummaryRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
                        content_type => 'raw_small_rna_reads',
                      }
                     ]
