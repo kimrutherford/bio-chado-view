@@ -257,6 +257,13 @@ sub create_sequencing_run
     $multiplexing_type_name = 'non-multiplexed';
   }
 
+  my $existing_run =
+    $schema->resultset('Sequencingrun')->find({identifier => $run_identifier});
+
+  if (defined $existing_run) {
+    return ($existing_run, 1);
+  }
+
   my $sequencing_run = $loader->add_sequencingrun(run_identifier => $run_identifier,
                                                   sequencing_centre_name => $seq_centre_name,
                                                   multiplexing_type_name => $multiplexing_type_name,
@@ -270,6 +277,8 @@ sub create_sequencing_run
     $sequencing_run->data_received_date($date_received);
   }
   $sequencing_run->update();
+
+  return ($sequencing_run, 0);
 }
 
 sub create_pipedata
@@ -491,10 +500,15 @@ sub process
           }
         }
 
-        my $sequencing_run =
+        my ($sequencing_run, $existing_run) =
           create_sequencing_run($solexa_library, $seq_centre_name,
                                 $multiplexed,
                                 $date_submitted, $date_received);
+
+        if ($existing_run) {
+          warn "a sequencingrun entry exists for $solexa_library - skipping\n";
+          next;
+        }
 
         my $pipedata = create_pipedata($sequencing_run, $file_name, $molecule_type);
 
