@@ -409,8 +409,6 @@ sub process
       next;
     }
 
-    warn "library: $solexa_library\n";
-
     if ($file_names_column =~ /ID20_250907_FC5363/) {
       # duplicated lane - Attila - needs fixing
       warn "ignoring $file_names_column\n";
