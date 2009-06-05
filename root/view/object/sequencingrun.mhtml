@@ -16,7 +16,7 @@ $type
 
 <%init>
 my $samples_rs =
-  $object->sampleruns()->search_related('sample');
+  $object->sequencing_sample()->search_related('coded_samples')->search_related('sample');
 my $samples_count = $samples_rs->count();
 my $plu = $samples_count != 0 ? 's' : '';
 </%init>

@@ -88,17 +88,19 @@ sub _find_sample_from_code
 
   my $sequencingrun = _find_sequencingrun_from_pipedata($pipedata);
 
-  my @sampleruns = $sequencingrun->sampleruns();
+  my $sequencing_sample = $sequencingrun->sequencing_sample();
+
+  my @coded_samples = $sequencing_sample->coded_samples();
 
   my $sample = undef;
 
-  for my $samplerun (@sampleruns) {
-    if ($samplerun->barcode()->code() eq $code) {
+  for my $coded_sample (@coded_samples) {
+    if ($coded_sample->barcode()->code() eq $code) {
       if (defined $sample) {
         croak ("two samples used the same barcode: ", $sample->sample_id(),
-               " and ", $samplerun->sample());
+               " and ", $coded_sample->sample());
       } else {
-        $sample = $samplerun->sample();
+        $sample = $coded_sample->sample();
       }
     }
   }

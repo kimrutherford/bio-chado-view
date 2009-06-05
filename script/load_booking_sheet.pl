@@ -377,7 +377,7 @@ sub create_sequencing_sample
 {
   my $solexa_library_name = shift;
 
-  return create('SequencingSample', { name => $solexa_library_name });
+  return create('SequencingSample', { name => "CRI_$solexa_library_name" });
 }
 
 sub process
