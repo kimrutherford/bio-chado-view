@@ -218,15 +218,18 @@ sub create_coded_sample
   if (defined $barcode) {
     $coded_sample_args{barcode} = $barcode;
     $coded_sample_args{description} =
-      'coded sample for: ' . $sample->name() . ' using code: ' . $barcode->identifier();
+      'barcoded sample for: ' . $sample->name() . ' using barcode: '
+        . $barcode->identifier();
   } else {
     $coded_sample_args{description} = 'sample for: ' . $sample->name();
   }
 
   if ($is_replicate) {
-    $coded_sample_args{coded_sample_type} = find('Cvterm', name => 'technical replicate');
+    $coded_sample_args{coded_sample_type} = find('Cvterm', 
+                                                 name => 'technical replicate');
   } else {
-    $coded_sample_args{coded_sample_type} = find('Cvterm', name => 'initial run');
+    $coded_sample_args{coded_sample_type} = find('Cvterm', 
+                                                 name => 'initial run');
   }
 
   return create('CodedSample', {%coded_sample_args});
