@@ -409,8 +409,6 @@ sub process
       next;
     }
 
-    next unless $solexa_library eq 'SL253';
-
     warn "library: $solexa_library\n";
 
     if ($file_names_column =~ /ID20_250907_FC5363/) {
