@@ -228,6 +228,7 @@ CREATE TABLE sequencingrun (
 CREATE TABLE coded_sample (
        coded_sample_id serial CONSTRAINT coded_sample_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
+       description text NOT NULL,
        coded_sample_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        sample integer REFERENCES sample(sample_id) NOT NULL,
        sequencing_sample integer REFERENCES sequencing_sample(sequencing_sample_id) NOT NULL,

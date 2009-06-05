@@ -213,12 +213,14 @@ sub create_coded_sample
   my %coded_sample_args = (
                         sample => $sample,
                         sequencing_sample => $sequencing_sample,
-                        description =>
-                          'sample run for: ' . $sample->name()
                        );
 
   if (defined $barcode) {
     $coded_sample_args{barcode} = $barcode;
+    $coded_sample_args{description} =
+      'coded sample for: ' . $sample->name() . ' using code: ' . $barcode->identifier();
+  } else {
+    $coded_sample_args{description} = 'sample for: ' . $sample->name();
   }
 
   if ($is_replicate) {
@@ -372,7 +374,7 @@ sub create_sequencing_sample
 {
   my $solexa_library_name = shift;
 
-  XXX
+  return create('SequencingSample', { name => $solexa_library_name });
 }
 
 sub process
@@ -406,6 +408,10 @@ sub process
     if ($solexa_library !~ /SL11$|SL234_BCF|SL236|SL5[45]|SL165_1/ && $test_mode) {
       next;
     }
+
+    next unless $solexa_library eq 'SL253';
+
+    warn "library: $solexa_library\n";
 
     if ($file_names_column =~ /ID20_250907_FC5363/) {
       # duplicated lane - Attila - needs fixing

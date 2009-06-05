@@ -49,6 +49,14 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w3k59uhlV+6zlmLQpRHmiQ
 
+# the description and the organism full name, used when displaying ecotypes
+sub long_description
+{
+  my $self = shift;
+
+  return $self->description() . ' ' . $self->organism()->full_name();
+}
+
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

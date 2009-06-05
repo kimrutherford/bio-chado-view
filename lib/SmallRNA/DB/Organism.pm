@@ -74,6 +74,12 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sI0axuVC3Odouafyy0S3/Q
 
+# the genus and species, used when displaying organisms
+sub full_name {
+  my $self = shift;
+
+  return $self->genus() . ' ' . $self->species();
+}
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

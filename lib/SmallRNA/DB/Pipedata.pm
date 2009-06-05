@@ -76,6 +76,9 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:etXOraNBbcCdTjcTfVyRRA
 
+__PACKAGE__->many_to_many(next_pipeprocesses => 'pipeprocess_in_pipedatas',
+                          'pipeprocess');
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+__PACKAGE__->many_to_many('samples' => 'sample_pipedatas', 'sample');
+
 1;
