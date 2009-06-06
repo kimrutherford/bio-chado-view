@@ -440,6 +440,10 @@ sub process
         $barcodes = 'ACDEFGH';
       }
 
+      if ($solexa_library eq 'SL253') {
+        $barcodes = 'ABCDFG';
+      }
+
       my $replicate_identifier = $3;
 
       my $is_replicate = 0;
