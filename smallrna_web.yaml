@@ -1,3 +1,4 @@
+# SmallRNA config file
 name: SmallRNA::Web
 long_name: SmallRNA Tracking
 pipeline_directory: /data/pipeline
@@ -25,17 +26,17 @@ authentication:
 #   The field_info_list, if provided is used to decide which columns to
 #   display when listing a class or showing an object.
 #   Field flags:
-#     field_label: the description to display for the field
-#     editable: if set and true, the field is editable
-#     field_conf:
-#       - if set, and the value matches /^\w[\w\d]+$/, use this value instead
-#         of the field_label as the database column to retrieve the data from
-#       - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
-#         perl code for each object / row to be displayed.  During evaluation,
-#         $object will be set to the current row.  Any HTML characters will be
-#         passed through to the user
-#       - if not set, the field_label is used to choose the database
-#         column that holds the value for this field
+#     - field_label: the description to display for the field
+#     - editable: if set and true, the field is editable
+#     - field_conf:
+#        - if set, and the value matches /^\w[\w\d]+$/, use this value instead
+#          of the field_label as the database column to retrieve the data from
+#        - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
+#          perl code for each object / row to be displayed.  During evaluation,
+#          $object will be set to the current row.  Any HTML characters will be
+#          passed through to the user
+#        - if not set, the field_label is used to choose the database
+#          column that holds the value for this field
 class_info:
   cv:
     display_field: name
