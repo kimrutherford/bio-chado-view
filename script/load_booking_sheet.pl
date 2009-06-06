@@ -527,7 +527,12 @@ sub process
             if (defined $replicate_identifier) {
               $new_sample_name .=  '_' . $replicate_identifier;
             }
-            my $sample = create_sample($proj, $new_sample_name, $description,
+            
+            my $desc_with_barcode = 
+              $description . ' - barcode ' . $barcode->identifier();
+
+            my $sample = create_sample($proj, $new_sample_name,
+                                       $desc_with_barcode,
                                        $sequencing_run, $molecule_type,
                                        $ecotype, $do_processing);
             push @all_samples, $sample;
