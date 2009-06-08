@@ -44,7 +44,20 @@ Attempt to render a view, if needed.
 
 =cut
 
-sub end : ActionClass('RenderView') {}
+sub end : Private {
+  my $self = shift;
+  my $c = shift;
+
+  # copied from RenderView.pm
+  if (! $c->response->content_type ) {
+    $c->response->content_type( 'text/html; charset=utf-8' );
+  }
+  return 1 if $c->req->method eq 'HEAD';
+  return 1 if length( $c->response->body );
+  return 1 if scalar @{ $c->error } && !$c->stash->{template};
+  return 1 if $c->response->status =~ /^(?:204|3\d\d)$/;
+  $c->forward('SmallRNA::Web::View::Mason');
+}
 
 =head1 AUTHOR
 
