@@ -10,18 +10,6 @@ __PACKAGE__->config(use_match => 0);
 
 SmallRNA::Web::View::Mason - Mason View Component
 
-=head1 SYNOPSIS
-
-    Very simple to use
-
-=head1 DESCRIPTION
-
-Very nice component.
-
-=head1 AUTHOR
-
-Clever guy
-
 =head1 LICENSE
 
 This library is free software . You can redistribute it and/or modify it under
