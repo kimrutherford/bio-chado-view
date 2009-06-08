@@ -221,7 +221,7 @@ sub create_coded_sample
       'barcoded sample for: ' . $sample->name() . ' using barcode: '
         . $barcode->identifier();
   } else {
-    $coded_sample_args{description} = 'sample for: ' . $sample->name();
+    $coded_sample_args{description} = 'non-barcoded sample for: ' . $sample->name();
   }
 
   if ($is_replicate) {
