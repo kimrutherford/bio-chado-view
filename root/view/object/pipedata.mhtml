@@ -10,7 +10,7 @@ $type
 
 <div>
   <a href="/data/<% $object->file_name()%>">
-    <img src="<% $c->uri_for('/static/images/download.png' %>"/>View/download file contents</a>
+    <img src="<% $c->uri_for('/static/images/download.png') %>"/>View/download file contents</a>
 </div>
 
 
