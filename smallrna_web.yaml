@@ -122,6 +122,13 @@ class_info:
      - "dbi:Pg:dbname=pipeline-dev-kmr44;host=hydrogen"
      - 'kmr44'
      - 'kmr'
+plugins:
+  object_page:
+    sample:
+      - name: Size distribution graph
+        path: /plugins/sizedist
+        config:
+          pipedata_content_type: 
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64

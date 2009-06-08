@@ -31,6 +31,9 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                       file                => __PACKAGE__->path_to('smallrna_web'),
                       config_local_suffix => $login . '_' . $host,
                     },
+                    'View::Graphics::Primitive' => {
+                      driver => 'Cairo',
+                    }
                    );
 
 # Start the application
