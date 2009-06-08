@@ -179,19 +179,14 @@ sub create_sample
   my $project = shift;
   my $sample_name = shift;
   my $description = shift;
-  my $sequencing_run = shift;
   my $molecule_type = shift;
   my $ecotype = shift;
   my $do_processing = shift;
 
-  if (!defined $sequencing_run) {
-    croak "no sequencing_run passed to create_sample()\n";
-  }
-
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
-  my $processing_type_term = find('Cvterm', 
-                                  name => ($do_processing ? 
-                                           'needs processing' : 
+  my $processing_type_term = find('Cvterm',
+                                  name => ($do_processing ?
+                                           'needs processing' :
                                            'no processing'));
 
   die "can't find term for $molecule_type" unless defined $molecule_type_term;
@@ -208,46 +203,63 @@ sub create_sample
   return create('Sample', $sample_args);
 }
 
-sub create_samplerun
+sub create_coded_sample
 {
   my $sample = shift;
-  my $sequencingrun = shift;
+  my $sequencing_sample = shift;
   my $is_replicate = shift;
   my $barcode = shift;
 
-  my %samplerun_args = (
+  my %coded_sample_args = (
                         sample => $sample,
-                        sequencingrun => $sequencingrun,
-                        description =>
-                          'sample run for: ' . $sample->name()
+                        sequencing_sample => $sequencing_sample,
                        );
 
   if (defined $barcode) {
-    $samplerun_args{barcode} = $barcode;
+    $coded_sample_args{barcode} = $barcode;
+    $coded_sample_args{description} =
+      'barcoded sample for: ' . $sample->name() . ' using barcode: '
+        . $barcode->identifier();
+  } else {
+    $coded_sample_args{description} = 'non-barcoded sample for: ' . $sample->name();
   }
-
 
   if ($is_replicate) {
-    $samplerun_args{samplerun_type} = find('Cvterm', name => 'technical replicate');
+    $coded_sample_args{coded_sample_type} = find('Cvterm',
+                                                 name => 'technical replicate');
   } else {
-    $samplerun_args{samplerun_type} = find('Cvterm', name => 'initial run');
+    $coded_sample_args{coded_sample_type} = find('Cvterm',
+                                                 name => 'initial run');
   }
 
-  return create('Samplerun', {%samplerun_args});
+  return create('CodedSample', {%coded_sample_args});
 }
 
 my %file_name_to_sequencingrun = ();
+
+sub run_exists
+{
+  my $run_identifier = shift;
+
+  my $existing_run =
+    $schema->resultset('Sequencingrun')->find({identifier => $run_identifier});
+
+  if (defined $existing_run) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
 # process a file and make a sequencingrun object for it
 sub create_sequencing_run
 {
   my $run_identifier = shift;
   my $seq_centre_name = shift;
+  my $sequencing_sample = shift;
   my $multiplexed = shift;
   my $date_submitted = shift;
   my $date_received = shift;
-
-  $run_identifier = 'R_' . $run_identifier;
 
   my $multiplexing_type_name;
 
@@ -257,16 +269,10 @@ sub create_sequencing_run
     $multiplexing_type_name = 'non-multiplexed';
   }
 
-  my $existing_run =
-    $schema->resultset('Sequencingrun')->find({identifier => $run_identifier});
-
-  if (defined $existing_run) {
-    return ($existing_run, 1);
-  }
-
   my $sequencing_run = $loader->add_sequencingrun(run_identifier => $run_identifier,
                                                   sequencing_centre_name => $seq_centre_name,
                                                   multiplexing_type_name => $multiplexing_type_name,
+                                                  sequencing_sample => $sequencing_sample,
                                                   sequencing_type_name => 'Illumina');
 
   if (defined $date_submitted && length $date_submitted > 0) {
@@ -278,7 +284,7 @@ sub create_sequencing_run
   }
   $sequencing_run->update();
 
-  return ($sequencing_run, 0);
+  return $sequencing_run;
 }
 
 sub create_pipedata
@@ -286,6 +292,9 @@ sub create_pipedata
   my $sequencing_run = shift;
   my $file_name = shift;
   my $molecule_type = shift;
+  my $samples = shift;
+
+  my @samples = @$samples;
 
   my ($pipedata, $pipeprocess) =
     $loader->add_sequencingrun_pipedata($config, $sequencing_run,
@@ -293,6 +302,8 @@ sub create_pipedata
 
   $sequencing_run->initial_pipedata($pipedata);
   $sequencing_run->initial_pipeprocess($pipeprocess);
+
+  $pipedata->add_to_samples(@samples);
 
   $sequencing_run->update();
 
@@ -374,6 +385,13 @@ sub get_ecotype_by_org
   }
 
   return $rs->next();
+}
+
+sub create_sequencing_sample
+{
+  my $solexa_library_name = shift;
+
+  return create('SequencingSample', { name => "CRI_$solexa_library_name" });
 }
 
 sub process
@@ -503,17 +521,14 @@ sub process
           }
         }
 
-        my ($sequencing_run, $existing_run) =
-          create_sequencing_run($solexa_library, $seq_centre_name,
-                                $multiplexed,
-                                $date_submitted, $date_received);
+        my $sequencing_run_identifier = 'Run_' . $solexa_library;
 
-        if ($existing_run) {
+        if (run_exists($sequencing_run_identifier)) {
           warn "a sequencingrun entry exists for $solexa_library - skipping\n";
           next;
         }
 
-        my $pipedata = create_pipedata($sequencing_run, $file_name, $molecule_type);
+        my $sequencing_sample = create_sequencing_sample($solexa_library);
 
         my @all_samples = ();
 
@@ -527,17 +542,16 @@ sub process
             if (defined $replicate_identifier) {
               $new_sample_name .=  '_' . $replicate_identifier;
             }
-            
-            my $desc_with_barcode = 
+
+            my $desc_with_barcode =
               $description . ' - barcode ' . $barcode->identifier();
 
             my $sample = create_sample($proj, $new_sample_name,
-                                       $desc_with_barcode,
-                                       $sequencing_run, $molecule_type,
+                                       $desc_with_barcode, $molecule_type,
                                        $ecotype, $do_processing);
+
             push @all_samples, $sample;
-            create_samplerun($sample, $sequencing_run, $is_replicate, $barcode);
-            $pipedata->add_to_samples($sample);
+            create_coded_sample($sample, $sequencing_sample, $is_replicate, $barcode);
           }
         } else {
           my $sample_name = $sample_prefix;
@@ -547,12 +561,19 @@ sub process
           }
 
           my $sample = create_sample($proj, $sample_name, $description,
-                                     $sequencing_run, $molecule_type,
+                                     $molecule_type,
                                      $ecotype, $do_processing);
           push @all_samples, $sample;
-          create_samplerun($sample, $sequencing_run, $is_replicate, undef);
-          $pipedata->add_to_samples($sample);
+          create_coded_sample($sample, $sequencing_sample, $is_replicate, undef);
         }
+
+        my $sequencing_run =
+          create_sequencing_run($sequencing_run_identifier, $seq_centre_name,
+                                $sequencing_sample, $multiplexed,
+                                $date_submitted, $date_received);
+
+        my $pipedata = create_pipedata($sequencing_run, $file_name, $molecule_type,
+                                       \@all_samples);
 
         $pipedata->update();
 

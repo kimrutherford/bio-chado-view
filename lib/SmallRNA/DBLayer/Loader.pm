@@ -133,12 +133,14 @@ sub add_sequencingrun
   my %params = validate(@_, { run_identifier => 1,
                               sequencing_centre_name => 1,
                               multiplexing_type_name => 1,
+                              sequencing_sample => 1,
                               sequencing_type_name => 1 });
 
 
   my $run_identifier = $params{run_identifier};
   my $sequencing_centre_name = $params{sequencing_centre_name};
   my $multiplexing_type_name = $params{multiplexing_type_name};
+  my $sequencing_sample = $params{sequencing_sample};
   my $sequencing_type_name = $params{sequencing_type_name};
 
   my $seq_centre = $self->_find('Organisation',
@@ -156,6 +158,7 @@ sub add_sequencingrun
                              sequencing_type => $sequencing_type,
                              multiplexing_type => $multiplexing_type,
                              sequencing_centre => $seq_centre,
+                             sequencing_sample => $sequencing_sample,
                              quality => $unknown_quality
                             );
 

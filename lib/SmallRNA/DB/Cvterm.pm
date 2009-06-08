@@ -40,6 +40,11 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("cvterm_id");
 __PACKAGE__->add_unique_constraint("cvterm_pkey", ["cvterm_id"]);
+__PACKAGE__->has_many(
+  "coded_samples",
+  "SmallRNA::DB::CodedSample",
+  { "foreign.coded_sample_type" => "self.cvterm_id" },
+);
 __PACKAGE__->belongs_to("cv_id", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
 __PACKAGE__->has_many(
   "genotypes",
@@ -102,11 +107,6 @@ __PACKAGE__->has_many(
   { "foreign.treatment_type" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sampleruns",
-  "SmallRNA::DB::Samplerun",
-  { "foreign.samplerun_type" => "self.cvterm_id" },
-);
-__PACKAGE__->has_many(
   "sequencingrun_multiplexing_types",
   "SmallRNA::DB::Sequencingrun",
   { "foreign.multiplexing_type" => "self.cvterm_id" },
@@ -129,7 +129,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hgYaP+7KcFFbk+0hUnsZ4w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DxRSQXCEGNtOEynGQjwUNA
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

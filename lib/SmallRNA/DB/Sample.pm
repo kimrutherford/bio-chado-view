@@ -63,6 +63,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("sample_id");
 __PACKAGE__->add_unique_constraint("sample_name_key", ["name"]);
 __PACKAGE__->add_unique_constraint("sample_id_pk", ["sample_id"]);
+__PACKAGE__->has_many(
+  "coded_samples",
+  "SmallRNA::DB::CodedSample",
+  { "foreign.sample" => "self.sample_id" },
+);
 __PACKAGE__->belongs_to("tissue", "SmallRNA::DB::Tissue", { tissue_id => "tissue" });
 __PACKAGE__->belongs_to(
   "genotype",
@@ -104,15 +109,10 @@ __PACKAGE__->has_many(
   "SmallRNA::DB::SamplePipedata",
   { "foreign.sample" => "self.sample_id" },
 );
-__PACKAGE__->has_many(
-  "sampleruns",
-  "SmallRNA::DB::Samplerun",
-  { "foreign.sample" => "self.sample_id" },
-);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KY58OB2U2BqJxEuHhaHOkQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:az9HootF6gjaf0C8pCWQoA
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 

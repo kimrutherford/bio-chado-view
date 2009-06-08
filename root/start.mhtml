@@ -19,7 +19,7 @@
             <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
           </li>
           <li>
-            <a href="<% $c->uri_for('/view/list/samplerun') %>">Sample runs</a>
+            <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
           </li>
           <li>
             <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
@@ -47,7 +47,7 @@
               <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample to the database</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/samplerun') %>">Add a sample to a sequencing run</a>
+              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Add a sample to a sequencing sample</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Add a person</a>

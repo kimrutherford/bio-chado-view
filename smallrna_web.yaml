@@ -97,15 +97,17 @@ class_info:
     display_field: file_name
   sequencingrun:
     display_field: identifier
-  samplerun:
+  sequencing_sample:
+    display_field: name
+  coded_sample:
     editable: 1
     display_field: description
     field_info_list:
       - field_label: description
         editable: 1
       - field_label: run type
-        field_conf: samplerun_type
-        values_constraint: 'cv->name = "tracking samplerun types"'
+        field_conf: coded_sample_type
+        values_constraint: 'cv->name = "tracking coded sample types"'
         editable: 1
       - field_label: sample
         editable: 1

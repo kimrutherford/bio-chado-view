@@ -18,7 +18,7 @@ $type
 </div>
   
 <%init>
-my $seqruns_rs = $object->sampleruns()->search_related('sequencingrun');
+my $seqruns_rs = $object->coded_samples()->search_related('sequencing_sample')->search_related('sequencingruns');
 my $seqruns_count = $seqruns_rs->count();
 my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
 my $pipedatas_rs = $object->pipedatas();

@@ -1,4 +1,4 @@
-package SmallRNA::DB::Samplerun;
+package SmallRNA::DB::CodedSample;
 
 use strict;
 use warnings;
@@ -6,12 +6,12 @@ use warnings;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
-__PACKAGE__->table("samplerun");
+__PACKAGE__->table("coded_sample");
 __PACKAGE__->add_columns(
-  "samplerun_id",
+  "coded_sample_id",
   {
     data_type => "integer",
-    default_value => "nextval('samplerun_samplerun_id_seq'::regclass)",
+    default_value => "nextval('coded_sample_coded_sample_id_seq'::regclass)",
     is_nullable => 0,
     size => 4,
   },
@@ -29,37 +29,37 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => undef,
   },
-  "samplerun_type",
+  "coded_sample_type",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "sample",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  "sequencing_sample",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "barcode",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
-  "sequencingrun",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
 );
-__PACKAGE__->set_primary_key("samplerun_id");
-__PACKAGE__->add_unique_constraint("samplerun_id_pk", ["samplerun_id"]);
+__PACKAGE__->set_primary_key("coded_sample_id");
+__PACKAGE__->add_unique_constraint("coded_sample_id_pk", ["coded_sample_id"]);
 __PACKAGE__->belongs_to(
-  "samplerun_type",
+  "sequencing_sample",
+  "SmallRNA::DB::SequencingSample",
+  { sequencing_sample_id => "sequencing_sample" },
+);
+__PACKAGE__->belongs_to("sample", "SmallRNA::DB::Sample", { sample_id => "sample" });
+__PACKAGE__->belongs_to(
+  "coded_sample_type",
   "SmallRNA::DB::Cvterm",
-  { cvterm_id => "samplerun_type" },
-);
-__PACKAGE__->belongs_to(
-  "sequencingrun",
-  "SmallRNA::DB::Sequencingrun",
-  { sequencingrun_id => "sequencingrun" },
+  { cvterm_id => "coded_sample_type" },
 );
 __PACKAGE__->belongs_to(
   "barcode",
   "SmallRNA::DB::Barcode",
   { barcode_id => "barcode" },
 );
-__PACKAGE__->belongs_to("sample", "SmallRNA::DB::Sample", { sample_id => "sample" });
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:68Yda2ouIcKrQhWmTBehxg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lMng83OPuqUplmwj1RkWwg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
