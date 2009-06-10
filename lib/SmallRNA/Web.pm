@@ -33,6 +33,8 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                     },
                     'View::Graphics::Primitive' => {
                       driver => 'Cairo',
+                      driver_args => { format => 'pdf' },
+                      content_type => 'application/pdf'
                     }
                    );
 
