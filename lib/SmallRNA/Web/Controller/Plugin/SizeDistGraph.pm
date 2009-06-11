@@ -120,6 +120,13 @@ sub sizedist : Path('/plugin/graph/sizedist') {
   my @lengths = keys %counts;
   my ($min, $max) = _minmax(@lengths);
 
+  if ($min > 15) {
+    $min = 15;
+  }
+  if ($max < 36) {
+    $max = 36;
+  }
+
   @lengths = ($min .. $max);
 
   my @series_list = ();
