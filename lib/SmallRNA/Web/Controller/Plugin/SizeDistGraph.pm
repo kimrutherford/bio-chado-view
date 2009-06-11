@@ -50,8 +50,6 @@ use Chart::Clicker::Renderer::StackedBar;
 use Geometry::Primitive::Rectangle;
 use Graphics::Color::RGB;
 
-use List::MoreUtils 'minmax';
-
 sub _get_data
 {
   my $file_name = shift;
@@ -90,6 +88,25 @@ sub _get_data
   return %res;
 }
 
+sub _minmax
+{
+  my @lengths = @_;
+
+  my $min = 999999999999;
+  my $max = -999999999999;
+
+  for my $val (@lengths) {
+    if ($val < $min) {
+      $min = $val;
+    }
+    if ($val > $max) {
+      $max = $val;
+    }
+  }
+
+  return ($min, $max);
+}
+
 sub sizedist : Path('/plugin/graph/sizedist') {
   my ($self, $c, $pipedata_id) = @_;
 
@@ -101,7 +118,7 @@ sub sizedist : Path('/plugin/graph/sizedist') {
   my $cc = Chart::Clicker->new(width => 600, height => 400);
 
   my @lengths = keys %counts;
-  my ($min, $max) = minmax(@lengths);
+  my ($min, $max) = _minmax(@lengths);
 
   @lengths = ($min .. $max);
 

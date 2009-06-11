@@ -126,7 +126,7 @@ plugins:
   object_page:
     sample:
       - name: Size distribution graph
-        path: /plugins/sizedist.mhtml
+        path: /plugins/sizedists.mhtml
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64

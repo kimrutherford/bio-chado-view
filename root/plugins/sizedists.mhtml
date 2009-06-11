@@ -1,0 +1,24 @@
+<%args>
+$object
+</%args>
+
+% if (defined $pipe_data_id) {
+  <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipe_data_id) %>'/>
+% }
+
+
+<%init>
+my $schema = $c->schema();
+my $content_type = $schema->find_with_type('Cvterm', 'name', 'first_base_summary');
+my @pipe_datas = $object->pipedatas()->search({content_type => $content_type->cvterm_id()});
+my $pipe_data_id = undef;
+
+for my $pipe_data (@pipe_datas) {
+  my @input_pipedatas = $pipe_data->generating_pipeprocess()->input_pipedatas();
+  if (@input_pipedatas) {
+    if ($input_pipedatas[0]->content_type()->name() eq 'small_rna') {
+      $pipe_data_id = SmallRNA::DB::id_of_object($pipe_data);
+    }
+  }
+}
+</%init>
