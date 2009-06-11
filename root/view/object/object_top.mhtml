@@ -20,8 +20,11 @@ $object
 
 <%init>
 my $config = $c->config();
-
 my $type = $object->table();
+my @object_plugins = ();
+my $plugins_ref = $c->config()->{plugins}{object_page}{$type};
 
-my @object_plugins = @{$c->config()->{plugins}{object_page}{$type}};
+if (defined $plugins_ref) {
+  @object_plugins = @{$plugins_ref};
+}
 </%init>
