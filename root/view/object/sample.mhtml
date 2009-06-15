@@ -4,7 +4,7 @@ $type
 </%args>
 
 <& /view/object/object_top.mhtml, object => $object, 
-  field_labels => [qw(name description pipeproject ecotype genotype protocol molecule_type
+  field_labels => [qw(name description pipeproject genotype protocol molecule_type
                    treatment_type fractionation_type tissue)] &>
 
 <div>

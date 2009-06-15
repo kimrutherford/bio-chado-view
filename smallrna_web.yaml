@@ -56,8 +56,6 @@ class_info:
         editable: 1
       - field_label: description
         editable: 1
-      - field_label: ecotype
-        editable: 1
       - field_label: project
         field_conf: pipeproject
         editable: 1
