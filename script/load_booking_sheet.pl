@@ -69,6 +69,12 @@ sub add_organism
   if ($fullname eq 'Unknown unknown') {
     $org_objs{''} = $org;
   }
+  if ($fullname eq 'Carmovirus turnip crinkle virus') {
+    $org_objs{'TCV'} = $org;
+  }
+  if ($fullname eq 'Benyvirus rice stripe virus') {
+    $org_objs{'RSV'} = $org;
+  }
 }
 
 my $org_rs = $schema->resultset('Organism')->search();
@@ -180,7 +186,8 @@ sub create_sample
   my $sample_name = shift;
   my $description = shift;
   my $molecule_type = shift;
-  my $ecotype = shift;
+  my $ecotypes_ref = shift;
+  my @ecotypes = @$ecotypes_ref;
   my $do_processing = shift;
 
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
@@ -201,7 +208,7 @@ sub create_sample
 
   my $sample = create('Sample', $sample_args);
 
-  $sample->add_to_ecotypes($ecotype);
+  $sample->add_to_ecotypes(@ecotypes);
 
   return $sample;
 }
@@ -418,10 +425,10 @@ sub process
       $do_processing = 1;
     }
 
-    my $has_tcv = 0;
+    my $virus_name = undef;
 
-    if ($organism_name =~ s|/TCV$||) {
-      $has_tcv = 1;
+    if ($organism_name =~ s{/(TCV|RSV)$}{}) {
+      $virus_name = $1;
     }
 
     # XXX TEMP
@@ -444,6 +451,13 @@ sub process
     }
 
     my $ecotype = get_ecotype_by_org($org_obj);
+
+    my @ecotypes = ($ecotype);
+
+    if (defined $virus_name) {
+      my $virus_obj = $org_objs{$virus_name};
+      push @ecotypes, get_ecotype_by_org($virus_obj);
+    }
 
     my $person_obj = $person_objs{$submitter};
 
@@ -555,7 +569,7 @@ sub process
 
             my $sample = create_sample($proj, $new_sample_name,
                                        $desc_with_barcode, $molecule_type,
-                                       $ecotype, $do_processing);
+                                       [@ecotypes], $do_processing);
 
             push @all_samples, $sample;
             create_coded_sample($sample, $sequencing_sample, $is_replicate, $barcode);
@@ -569,7 +583,7 @@ sub process
 
           my $sample = create_sample($proj, $sample_name, $description,
                                      $molecule_type,
-                                     $ecotype, $do_processing);
+                                     [@ecotypes], $do_processing);
           push @all_samples, $sample;
           create_coded_sample($sample, $sequencing_sample, $is_replicate, undef);
         }
