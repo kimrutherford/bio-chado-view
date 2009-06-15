@@ -208,7 +208,7 @@ sub create_sample
 
   my $sample = create('Sample', $sample_args);
 
-  $sample->add_to_ecotypes(@ecotypes);
+  map { $sample->add_to_ecotypes($_); } @ecotypes;
 
   return $sample;
 }
