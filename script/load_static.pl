@@ -216,7 +216,8 @@ my @organisms = ({ genus => "Arabidopsis", species => "thaliana" },
                  { genus => "Zea", species => "mays" },
                  { genus => "Nicotiana", species => "benthamiana" },
                  { genus => "Schizosaccharomyces", species => "pombe" },
-                 { genus => "Unknown", species => "unknown" }
+                 { genus => "Carmovirus", species => "turnip crinkle virus" },
+                 { genus => "Unknown", species => "unknown" },
                 );
 
 my %organism_objects = ();
