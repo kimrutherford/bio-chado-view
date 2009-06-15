@@ -192,13 +192,15 @@ $schema->txn_do(sub {
 $schema->txn_commit();
 
 my @orgs = ({ name => "DCB",
-              description => "David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences" },
+              description => 'David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences' },
             { name => 'CRUK CRI',
               description => 'Cancer Research UK, Cambridge Research Institute' },
             { name => 'Sainsbury',
-              description => 'The Sainsbury Laboratory' },
+              description => 'Sainsbury Laboratory' },
             { name => 'JIC',
-              description => 'The John Innes Centre' },
+              description => 'John Innes Centre' },
+            { name => 'BGI',
+              description => 'Beijing Genomics Institute' },
            );
 
 $schema->txn_do(sub {
@@ -280,6 +282,7 @@ my @people = (
               ['Laura Taylor', 'laura_taylor', 'DCB'],
               ['Craig Thompson', 'craig_thompson', 'DCB'],
               ['Natasha Elina', 'natasha_elina', 'DCB'],
+              ['Krys Kelly', 'krys_kelly', 'DCB'],
               ['Hannes V', 'hannes_v', 'DCB'],
              );
 
@@ -317,6 +320,11 @@ my @analyses = (
                 {
                  type_term_name => 'multiplexed sequencing run',
                  detail => 'CRI',
+                 inputs => []
+                },
+                {
+                 type_term_name => 'non-multiplexed sequencing run',
+                 detail => 'BGI',
                  inputs => []
                 },
                 {
