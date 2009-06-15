@@ -86,12 +86,22 @@ sub run
 
     if ($detail =~ /versus: (\S+)/) {
       my $versus = $1;
-      my $org_full_name = $sample->ecotype()->organism()->full_name();
-      $org_full_name =~ s/ /_/g;
-      my $org_config = $c->{organisms}{$org_full_name};
+      my @sample_ecotypes = $sample->ecotypes();
+
+      my $org_config = undef;
+
+      for my $ecotype (@sample_ecotypes) {
+        my $org_full_name = $ecotype->organism()->full_name();
+        $org_full_name =~ s/ /_/g;
+        $org_config = $c->{organisms}{$org_full_name};
+
+        if (defined $org_config) {
+          last;
+        }
+      }
 
       if (!defined $org_config) {
-        croak "can't find organism configuration for $org_full_name\n";
+        croak "can't find organism configuration for ", $sample->name(), "\n";
       }
 
       my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$versus};

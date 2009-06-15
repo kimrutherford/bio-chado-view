@@ -28,7 +28,8 @@ ALTER TABLE ONLY public.sample_pipedata DROP CONSTRAINT sample_pipedata_pipedata
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_molecule_type_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_genotype_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_fractionation_type_fkey;
-ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_ecotype_fkey;
+ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_sample_fkey;
+ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_ecotype_fkey;
 ALTER TABLE ONLY public.process_conf DROP CONSTRAINT process_conf_type_fkey;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_process_conf_fkey;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_format_type_fkey;
@@ -57,10 +58,10 @@ ALTER TABLE ONLY public.sequencingrun DROP CONSTRAINT sequencingrun_identifier_k
 ALTER TABLE ONLY public.sequencingrun DROP CONSTRAINT sequencingrun_id_pk;
 ALTER TABLE ONLY public.sequencing_sample DROP CONSTRAINT sequencing_sample_name_key;
 ALTER TABLE ONLY public.sequencing_sample DROP CONSTRAINT sequencing_sample_id_pk;
-ALTER TABLE ONLY public.samplerun DROP CONSTRAINT samplerun_id_pk;
 ALTER TABLE ONLY public.sample_pipedata DROP CONSTRAINT sample_pipedata_id_pk;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_name_key;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_id_pk;
+ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_id_pk;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_id_pk;
 ALTER TABLE ONLY public.process_conf DROP CONSTRAINT process_conf_id_pk;
 ALTER TABLE ONLY public.pipeproject DROP CONSTRAINT pipeproject_id_pk;
@@ -87,8 +88,8 @@ ALTER TABLE ONLY public.barcode DROP CONSTRAINT barcode_code_key;
 ALTER TABLE public.tissue ALTER COLUMN tissue_id DROP DEFAULT;
 ALTER TABLE public.sequencingrun ALTER COLUMN sequencingrun_id DROP DEFAULT;
 ALTER TABLE public.sequencing_sample ALTER COLUMN sequencing_sample_id DROP DEFAULT;
-ALTER TABLE public.samplerun ALTER COLUMN samplerun_id DROP DEFAULT;
 ALTER TABLE public.sample_pipedata ALTER COLUMN sample_pipedata_id DROP DEFAULT;
+ALTER TABLE public.sample_ecotype ALTER COLUMN sample_ecotype_id DROP DEFAULT;
 ALTER TABLE public.sample ALTER COLUMN sample_id DROP DEFAULT;
 ALTER TABLE public.process_conf_input ALTER COLUMN process_conf_input_id DROP DEFAULT;
 ALTER TABLE public.process_conf ALTER COLUMN process_conf_id DROP DEFAULT;
@@ -106,9 +107,9 @@ ALTER TABLE public.barcode ALTER COLUMN barcode_id DROP DEFAULT;
 DROP SEQUENCE public.tissue_tissue_id_seq;
 DROP SEQUENCE public.sequencingrun_sequencingrun_id_seq;
 DROP SEQUENCE public.sequencing_sample_sequencing_sample_id_seq;
-DROP SEQUENCE public.samplerun_samplerun_id_seq;
 DROP SEQUENCE public.sample_sample_id_seq;
 DROP SEQUENCE public.sample_pipedata_sample_pipedata_id_seq;
+DROP SEQUENCE public.sample_ecotype_sample_ecotype_id_seq;
 DROP SEQUENCE public.process_conf_process_conf_id_seq;
 DROP SEQUENCE public.process_conf_input_process_conf_input_id_seq;
 DROP SEQUENCE public.pipeproject_pipeproject_id_seq;
@@ -169,8 +170,8 @@ DROP FUNCTION public.bioseg_cmp(bioseg, bioseg);
 DROP TABLE public.tissue;
 DROP TABLE public.sequencingrun;
 DROP TABLE public.sequencing_sample;
-DROP TABLE public.samplerun;
 DROP TABLE public.sample_pipedata;
+DROP TABLE public.sample_ecotype;
 DROP TABLE public.sample;
 DROP TABLE public.process_conf_input;
 DROP TABLE public.process_conf;
@@ -563,7 +564,6 @@ CREATE TABLE sample (
     created_stamp timestamp without time zone DEFAULT now() NOT NULL,
     name text NOT NULL,
     pipeproject integer NOT NULL,
-    ecotype integer NOT NULL,
     genotype integer,
     description text,
     protocol text,
@@ -578,6 +578,20 @@ CREATE TABLE sample (
 ALTER TABLE public.sample OWNER TO kmr44;
 
 --
+-- Name: sample_ecotype; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE TABLE sample_ecotype (
+    sample_ecotype_id integer NOT NULL,
+    created_stamp timestamp without time zone DEFAULT now() NOT NULL,
+    sample integer NOT NULL,
+    ecotype integer NOT NULL
+);
+
+
+ALTER TABLE public.sample_ecotype OWNER TO kmr44;
+
+--
 -- Name: sample_pipedata; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
 --
 
@@ -590,30 +604,6 @@ CREATE TABLE sample_pipedata (
 
 
 ALTER TABLE public.sample_pipedata OWNER TO kmr44;
-
---
--- Name: samplerun; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
---
-
-CREATE TABLE samplerun (
-    samplerun_id integer NOT NULL,
-    created_stamp timestamp without time zone DEFAULT now() NOT NULL,
-    description text NOT NULL,
-    samplerun_type integer NOT NULL,
-    sample integer NOT NULL,
-    barcode integer,
-    sequencingrun integer NOT NULL
-);
-
-
-ALTER TABLE public.samplerun OWNER TO kmr44;
-
---
--- Name: TABLE samplerun; Type: COMMENT; Schema: public; Owner: kmr44
---
-
-COMMENT ON TABLE samplerun IS 'This table records the many-to-many relationship between samples and sequencing runs and the type of the run (intial, re-run, replicate etc.)';
-
 
 --
 -- Name: sequencing_sample; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -1416,7 +1406,7 @@ ALTER SEQUENCE ecotype_ecotype_id_seq OWNED BY ecotype.ecotype_id;
 -- Name: ecotype_ecotype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('ecotype_ecotype_id_seq', 11, true);
+SELECT pg_catalog.setval('ecotype_ecotype_id_seq', 14, true);
 
 
 --
@@ -1498,7 +1488,7 @@ ALTER SEQUENCE organism_organism_id_seq OWNED BY organism.organism_id;
 -- Name: organism_organism_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('organism_organism_id_seq', 11, true);
+SELECT pg_catalog.setval('organism_organism_id_seq', 14, true);
 
 
 --
@@ -1692,6 +1682,33 @@ SELECT pg_catalog.setval('process_conf_process_conf_id_seq', 14, true);
 
 
 --
+-- Name: sample_ecotype_sample_ecotype_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE sample_ecotype_sample_ecotype_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sample_ecotype_sample_ecotype_id_seq OWNER TO kmr44;
+
+--
+-- Name: sample_ecotype_sample_ecotype_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE sample_ecotype_sample_ecotype_id_seq OWNED BY sample_ecotype.sample_ecotype_id;
+
+
+--
+-- Name: sample_ecotype_sample_ecotype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('sample_ecotype_sample_ecotype_id_seq', 8, true);
+
+
+--
 -- Name: sample_pipedata_sample_pipedata_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
 --
 
@@ -1743,33 +1760,6 @@ ALTER SEQUENCE sample_sample_id_seq OWNED BY sample.sample_id;
 --
 
 SELECT pg_catalog.setval('sample_sample_id_seq', 8, true);
-
-
---
--- Name: samplerun_samplerun_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
---
-
-CREATE SEQUENCE samplerun_samplerun_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.samplerun_samplerun_id_seq OWNER TO kmr44;
-
---
--- Name: samplerun_samplerun_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
---
-
-ALTER SEQUENCE samplerun_samplerun_id_seq OWNED BY samplerun.samplerun_id;
-
-
---
--- Name: samplerun_samplerun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
---
-
-SELECT pg_catalog.setval('samplerun_samplerun_id_seq', 273, true);
 
 
 --
@@ -1953,17 +1943,17 @@ ALTER TABLE sample ALTER COLUMN sample_id SET DEFAULT nextval('sample_sample_id_
 
 
 --
+-- Name: sample_ecotype_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE sample_ecotype ALTER COLUMN sample_ecotype_id SET DEFAULT nextval('sample_ecotype_sample_ecotype_id_seq'::regclass);
+
+
+--
 -- Name: sample_pipedata_id; Type: DEFAULT; Schema: public; Owner: kmr44
 --
 
 ALTER TABLE sample_pipedata ALTER COLUMN sample_pipedata_id SET DEFAULT nextval('sample_pipedata_sample_pipedata_id_seq'::regclass);
-
-
---
--- Name: samplerun_id; Type: DEFAULT; Schema: public; Owner: kmr44
---
-
-ALTER TABLE samplerun ALTER COLUMN samplerun_id SET DEFAULT nextval('samplerun_samplerun_id_seq'::regclass);
 
 
 --
@@ -1992,17 +1982,17 @@ ALTER TABLE tissue ALTER COLUMN tissue_id SET DEFAULT nextval('tissue_tissue_id_
 --
 
 COPY barcode (barcode_id, created_stamp, identifier, code) FROM stdin;
-1	2009-06-09 17:36:12.824657	A	TACCT
-2	2009-06-09 17:36:12.824657	B	TACGA
-3	2009-06-09 17:36:12.824657	C	TAGCA
-4	2009-06-09 17:36:12.824657	D	TAGGT
-5	2009-06-09 17:36:12.824657	E	TCAAG
-6	2009-06-09 17:36:12.824657	F	TCATC
-7	2009-06-09 17:36:12.824657	G	TCTAC
-8	2009-06-09 17:36:12.824657	H	TCTTG
-9	2009-06-09 17:36:12.824657	I	TGAAC
-10	2009-06-09 17:36:12.824657	K	TGTTC
-11	2009-06-09 17:36:12.824657	J	TGTTG
+1	2009-06-15 16:49:13.99585	A	TACCT
+2	2009-06-15 16:49:13.99585	B	TACGA
+3	2009-06-15 16:49:13.99585	C	TAGCA
+4	2009-06-15 16:49:13.99585	D	TAGGT
+5	2009-06-15 16:49:13.99585	E	TCAAG
+6	2009-06-15 16:49:13.99585	F	TCATC
+7	2009-06-15 16:49:13.99585	G	TCTAC
+8	2009-06-15 16:49:13.99585	H	TCTTG
+9	2009-06-15 16:49:13.99585	I	TGAAC
+10	2009-06-15 16:49:13.99585	K	TGTTC
+11	2009-06-15 16:49:13.99585	J	TGTTG
 \.
 
 
@@ -2011,14 +2001,14 @@ COPY barcode (barcode_id, created_stamp, identifier, code) FROM stdin;
 --
 
 COPY coded_sample (coded_sample_id, created_stamp, description, coded_sample_type, sample, sequencing_sample, barcode) FROM stdin;
-1	2009-06-09 17:36:14.986288	non-barcoded sample for: SL11	14	1	1	\N
-2	2009-06-09 17:36:14.986288	non-barcoded sample for: SL54	14	2	2	\N
-3	2009-06-09 17:36:14.986288	non-barcoded sample for: SL55	14	3	3	\N
-4	2009-06-09 17:36:14.986288	non-barcoded sample for: SL165_1	14	4	4	\N
-5	2009-06-09 17:36:14.986288	barcoded sample for: SL234_B using barcode: B	14	5	5	2
-6	2009-06-09 17:36:14.986288	barcoded sample for: SL234_C using barcode: C	14	6	5	3
-7	2009-06-09 17:36:14.986288	barcoded sample for: SL234_F using barcode: F	14	7	5	6
-8	2009-06-09 17:36:14.986288	non-barcoded sample for: SL236	14	8	6	\N
+1	2009-06-15 16:49:16.959558	non-barcoded sample for: SL11	14	1	1	\N
+2	2009-06-15 16:49:16.959558	non-barcoded sample for: SL54	14	2	2	\N
+3	2009-06-15 16:49:16.959558	non-barcoded sample for: SL55	14	3	3	\N
+4	2009-06-15 16:49:16.959558	non-barcoded sample for: SL165_1	14	4	4	\N
+5	2009-06-15 16:49:16.959558	barcoded sample for: SL234_B using barcode: B	14	5	5	2
+6	2009-06-15 16:49:16.959558	barcoded sample for: SL234_C using barcode: C	14	6	5	3
+7	2009-06-15 16:49:16.959558	barcoded sample for: SL234_F using barcode: F	14	7	5	6
+8	2009-06-15 16:49:16.959558	non-barcoded sample for: SL236	14	8	6	\N
 \.
 
 
@@ -2113,17 +2103,20 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 --
 
 COPY ecotype (ecotype_id, created_stamp, organism, description) FROM stdin;
-1	2009-06-09 17:36:13.212443	1	unspecified
-2	2009-06-09 17:36:13.212443	2	unspecified
-3	2009-06-09 17:36:13.212443	3	unspecified
-4	2009-06-09 17:36:13.212443	4	unspecified
-5	2009-06-09 17:36:13.212443	5	unspecified
-6	2009-06-09 17:36:13.212443	6	unspecified
-7	2009-06-09 17:36:13.212443	7	unspecified
-8	2009-06-09 17:36:13.212443	8	unspecified
-9	2009-06-09 17:36:13.212443	9	unspecified
-10	2009-06-09 17:36:13.212443	10	unspecified
-11	2009-06-09 17:36:13.212443	11	unspecified
+1	2009-06-15 16:49:14.169088	1	unspecified
+2	2009-06-15 16:49:14.169088	2	unspecified
+3	2009-06-15 16:49:14.169088	3	unspecified
+4	2009-06-15 16:49:14.169088	4	unspecified
+5	2009-06-15 16:49:14.169088	5	unspecified
+6	2009-06-15 16:49:14.169088	6	unspecified
+7	2009-06-15 16:49:14.169088	7	unspecified
+8	2009-06-15 16:49:14.169088	8	unspecified
+9	2009-06-15 16:49:14.169088	10	unspecified
+10	2009-06-15 16:49:14.169088	11	unspecified
+11	2009-06-15 16:49:14.169088	9	unspecified
+12	2009-06-15 16:49:14.169088	12	unspecified
+13	2009-06-15 16:49:14.169088	13	unspecified
+14	2009-06-15 16:49:14.169088	14	unspecified
 \.
 
 
@@ -2140,10 +2133,10 @@ COPY genotype (genotype_id, created_stamp, organism, type, description) FROM std
 --
 
 COPY organisation (organisation_id, created_stamp, name, description) FROM stdin;
-1	2009-06-09 17:36:13.16741	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
-2	2009-06-09 17:36:13.16741	CRUK CRI	Cancer Research UK, Cambridge Research Institute
-3	2009-06-09 17:36:13.16741	Sainsbury	The Sainsbury Laboratory
-4	2009-06-09 17:36:13.16741	JIC	The John Innes Centre
+1	2009-06-15 16:49:14.139082	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
+2	2009-06-15 16:49:14.139082	CRUK CRI	Cancer Research UK, Cambridge Research Institute
+3	2009-06-15 16:49:14.139082	Sainsbury	The Sainsbury Laboratory
+4	2009-06-15 16:49:14.139082	JIC	The John Innes Centre
 \.
 
 
@@ -2160,9 +2153,12 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 6	\N	Homo	sapiens	\N	\N
 7	\N	Lycopersicon	esculentum	\N	\N
 8	\N	Zea	mays	\N	\N
-9	\N	Nicotiana	benthamiana	\N	\N
-10	\N	Schizosaccharomyces	pombe	\N	\N
-11	\N	Unknown	unknown	\N	\N
+9	\N	Oryza	sativa	\N	\N
+10	\N	Nicotiana	benthamiana	\N	\N
+11	\N	Schizosaccharomyces	pombe	\N	\N
+12	\N	Carmovirus	turnip crinkle virus	\N	\N
+13	\N	Benyvirus	rice stripe virus	\N	\N
+14	\N	Unknown	unknown	\N	\N
 \.
 
 
@@ -2171,27 +2167,27 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 --
 
 COPY person (person_id, created_stamp, first_name, last_name, user_name, password, organisation) FROM stdin;
-1	2009-06-09 17:36:13.229642	Andy	Bassett	andy_bassett	andy_bassett	1
-2	2009-06-09 17:36:13.229642	David	Baulcombe	david_baulcombe	david_baulcombe	1
-3	2009-06-09 17:36:13.229642	Amy	Beeken	amy_beeken	amy_beeken	1
-4	2009-06-09 17:36:13.229642	Paola	Fedita	paola_fedita	paola_fedita	1
-5	2009-06-09 17:36:13.229642	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
-6	2009-06-09 17:36:13.229642	Jagger	Harvey	jagger_harvey	jagger_harvey	1
-7	2009-06-09 17:36:13.229642	Ericka	Havecker	ericka_havecker	ericka_havecker	1
-8	2009-06-09 17:36:13.229642	Ian	Henderson	ian_henderson	ian_henderson	1
-9	2009-06-09 17:36:13.229642	Charles	Melnyk	charles_melnyk	charles_melnyk	1
-10	2009-06-09 17:36:13.229642	Attila	Molnar	attila_molnar	attila_molnar	1
-11	2009-06-09 17:36:13.229642	Becky	Mosher	becky_mosher	becky_mosher	1
-12	2009-06-09 17:36:13.229642	Kanu	Patel	kanu_patel	kanu_patel	1
-13	2009-06-09 17:36:13.229642	Anna	Peters	anna_peters	anna_peters	1
-14	2009-06-09 17:36:13.229642	Kim	Rutherford	kim_rutherford	kim_rutherford	1
-15	2009-06-09 17:36:13.229642	Iain	Searle	iain_searle	iain_searle	1
-16	2009-06-09 17:36:13.229642	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
-17	2009-06-09 17:36:13.229642	Shuoya	Tang	shuoya_tang	shuoya_tang	1
-18	2009-06-09 17:36:13.229642	Laura	Taylor	laura_taylor	laura_taylor	1
-19	2009-06-09 17:36:13.229642	Craig	Thompson	craig_thompson	craig_thompson	1
-20	2009-06-09 17:36:13.229642	Natasha	Elina	natasha_elina	natasha_elina	1
-21	2009-06-09 17:36:13.229642	Hannes	V	hannes_v	hannes_v	1
+1	2009-06-15 16:49:14.189242	Andy	Bassett	andy_bassett	andy_bassett	1
+2	2009-06-15 16:49:14.189242	David	Baulcombe	david_baulcombe	david_baulcombe	1
+3	2009-06-15 16:49:14.189242	Amy	Beeken	amy_beeken	amy_beeken	1
+4	2009-06-15 16:49:14.189242	Paola	Fedita	paola_fedita	paola_fedita	1
+5	2009-06-15 16:49:14.189242	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	1
+6	2009-06-15 16:49:14.189242	Jagger	Harvey	jagger_harvey	jagger_harvey	1
+7	2009-06-15 16:49:14.189242	Ericka	Havecker	ericka_havecker	ericka_havecker	1
+8	2009-06-15 16:49:14.189242	Ian	Henderson	ian_henderson	ian_henderson	1
+9	2009-06-15 16:49:14.189242	Charles	Melnyk	charles_melnyk	charles_melnyk	1
+10	2009-06-15 16:49:14.189242	Attila	Molnar	attila_molnar	attila_molnar	1
+11	2009-06-15 16:49:14.189242	Becky	Mosher	becky_mosher	becky_mosher	1
+12	2009-06-15 16:49:14.189242	Kanu	Patel	kanu_patel	kanu_patel	1
+13	2009-06-15 16:49:14.189242	Anna	Peters	anna_peters	anna_peters	1
+14	2009-06-15 16:49:14.189242	Kim	Rutherford	kim_rutherford	kim_rutherford	1
+15	2009-06-15 16:49:14.189242	Iain	Searle	iain_searle	iain_searle	1
+16	2009-06-15 16:49:14.189242	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	1
+17	2009-06-15 16:49:14.189242	Shuoya	Tang	shuoya_tang	shuoya_tang	1
+18	2009-06-15 16:49:14.189242	Laura	Taylor	laura_taylor	laura_taylor	1
+19	2009-06-15 16:49:14.189242	Craig	Thompson	craig_thompson	craig_thompson	1
+20	2009-06-15 16:49:14.189242	Natasha	Elina	natasha_elina	natasha_elina	1
+21	2009-06-15 16:49:14.189242	Hannes	V	hannes_v	hannes_v	1
 \.
 
 
@@ -2200,12 +2196,12 @@ COPY person (person_id, created_stamp, first_name, last_name, user_name, passwor
 --
 
 COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name, file_length, generating_pipeprocess) FROM stdin;
-1	2009-06-09 17:36:14.986288	32	28	SL11/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa	85196121	1
-2	2009-06-09 17:36:14.986288	33	24	fastq/SL54.ID24_171007_FC5359.lane4.fq	308933804	2
-3	2009-06-09 17:36:14.986288	33	24	fastq/SL55.ID24_171007_FC5359.lane5.fq	305662338	3
-4	2009-06-09 17:36:14.986288	33	25	fastq/SL165.080905.306BFAAXX.s_5.fq	1026029170	4
-5	2009-06-09 17:36:14.986288	33	22	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	517055794	5
-6	2009-06-09 17:36:14.986288	33	25	fastq/SL236.090227.311F6AAXX.s_1.fq	1203596662	6
+1	2009-06-15 16:49:16.959558	32	28	SL11/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa	85196121	1
+2	2009-06-15 16:49:16.959558	33	24	fastq/SL54.ID24_171007_FC5359.lane4.fq	308933804	2
+3	2009-06-15 16:49:16.959558	33	24	fastq/SL55.ID24_171007_FC5359.lane5.fq	305662338	3
+4	2009-06-15 16:49:16.959558	33	25	fastq/SL165.080905.306BFAAXX.s_5.fq	1026029170	4
+5	2009-06-15 16:49:16.959558	33	22	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	517055794	5
+6	2009-06-15 16:49:16.959558	33	25	fastq/SL236.090227.311F6AAXX.s_1.fq	1203596662	6
 \.
 
 
@@ -2214,12 +2210,12 @@ COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name,
 --
 
 COPY pipeprocess (pipeprocess_id, created_stamp, description, process_conf, status, job_identifier, time_queued, time_started, time_finished) FROM stdin;
-1	2009-06-09 17:36:14.986288	Sequencing by Sainsbury for: SL11	1	44	\N	\N	\N	\N
-2	2009-06-09 17:36:14.986288	Sequencing by Sainsbury for: SL54	1	44	\N	\N	\N	\N
-3	2009-06-09 17:36:14.986288	Sequencing by Sainsbury for: SL55	1	44	\N	\N	\N	\N
-4	2009-06-09 17:36:14.986288	Sequencing by CRUK CRI for: SL165_1	2	44	\N	\N	\N	\N
-5	2009-06-09 17:36:14.986288	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	44	\N	\N	\N	\N
-6	2009-06-09 17:36:14.986288	Sequencing by CRUK CRI for: SL236	2	44	\N	\N	\N	\N
+1	2009-06-15 16:49:16.959558	Sequencing by Sainsbury for: SL11	1	44	\N	\N	\N	\N
+2	2009-06-15 16:49:16.959558	Sequencing by Sainsbury for: SL54	1	44	\N	\N	\N	\N
+3	2009-06-15 16:49:16.959558	Sequencing by Sainsbury for: SL55	1	44	\N	\N	\N	\N
+4	2009-06-15 16:49:16.959558	Sequencing by CRUK CRI for: SL165_1	2	44	\N	\N	\N	\N
+5	2009-06-15 16:49:16.959558	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	44	\N	\N	\N	\N
+6	2009-06-15 16:49:16.959558	Sequencing by CRUK CRI for: SL236	2	44	\N	\N	\N	\N
 \.
 
 
@@ -2236,12 +2232,12 @@ COPY pipeprocess_in_pipedata (pipeprocess_in_pipedata_id, created_stamp, pipepro
 --
 
 COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner, funder) FROM stdin;
-1	2009-06-09 17:36:14.986288	P_SL11	P_SL11	49	7	\N
-2	2009-06-09 17:36:14.986288	P_SL54	P_SL54	48	1	\N
-3	2009-06-09 17:36:14.986288	P_SL55	P_SL55	48	1	\N
-4	2009-06-09 17:36:14.986288	P_SL165_1	P_SL165_1	49	1	\N
-5	2009-06-09 17:36:14.986288	P_SL234_BCF	P_SL234_BCF	49	7	\N
-6	2009-06-09 17:36:14.986288	P_SL236	P_SL236	49	10	\N
+1	2009-06-15 16:49:16.959558	P_SL11	P_SL11	49	7	\N
+2	2009-06-15 16:49:16.959558	P_SL54	P_SL54	48	1	\N
+3	2009-06-15 16:49:16.959558	P_SL55	P_SL55	48	1	\N
+4	2009-06-15 16:49:16.959558	P_SL165_1	P_SL165_1	49	1	\N
+5	2009-06-15 16:49:16.959558	P_SL234_BCF	P_SL234_BCF	49	7	\N
+6	2009-06-15 16:49:16.959558	P_SL236	P_SL236	49	10	\N
 \.
 
 
@@ -2250,20 +2246,20 @@ COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner,
 --
 
 COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) FROM stdin;
-1	2009-06-09 17:36:13.280584	\N	Sainsbury	5
-2	2009-06-09 17:36:13.280584	\N	CRI	5
-3	2009-06-09 17:36:13.280584	\N	CRI	4
-4	2009-06-09 17:36:13.280584	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
-5	2009-06-09 17:36:13.280584	SmallRNA::Runable::RemoveAdaptersRunable	\N	7
-6	2009-06-09 17:36:13.280584	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
-7	2009-06-09 17:36:13.280584	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
-8	2009-06-09 17:36:13.280584	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
-9	2009-06-09 17:36:13.280584	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
-10	2009-06-09 17:36:13.280584	SmallRNA::Runable::NonRedundantFastaRunable	\N	8
-11	2009-06-09 17:36:13.280584	SmallRNA::Runable::CreateIndexRunable	\N	3
-12	2009-06-09 17:36:13.280584	SmallRNA::Runable::CreateIndexRunable	\N	1
-13	2009-06-09 17:36:13.280584	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	9
-14	2009-06-09 17:36:13.280584	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	2
+1	2009-06-15 16:49:14.246263	\N	Sainsbury	5
+2	2009-06-15 16:49:14.246263	\N	CRI	5
+3	2009-06-15 16:49:14.246263	\N	CRI	4
+4	2009-06-15 16:49:14.246263	SmallRNA::Runable::RemoveAdaptersRunable	\N	6
+5	2009-06-15 16:49:14.246263	SmallRNA::Runable::RemoveAdaptersRunable	\N	7
+6	2009-06-15 16:49:14.246263	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+7	2009-06-15 16:49:14.246263	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+8	2009-06-15 16:49:14.246263	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+9	2009-06-15 16:49:14.246263	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	10
+10	2009-06-15 16:49:14.246263	SmallRNA::Runable::NonRedundantFastaRunable	\N	8
+11	2009-06-15 16:49:14.246263	SmallRNA::Runable::CreateIndexRunable	\N	3
+12	2009-06-15 16:49:14.246263	SmallRNA::Runable::CreateIndexRunable	\N	1
+13	2009-06-15 16:49:14.246263	SmallRNA::Runable::SSAHASearchRunable	versus: nuclear_genome	9
+14	2009-06-15 16:49:14.246263	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	2
 \.
 
 
@@ -2272,17 +2268,17 @@ COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) F
 --
 
 COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, format_type, content_type) FROM stdin;
-1	2009-06-09 17:36:13.280584	4	33	25
-2	2009-06-09 17:36:13.280584	5	33	22
-3	2009-06-09 17:36:13.280584	6	32	28
-4	2009-06-09 17:36:13.280584	7	32	23
-5	2009-06-09 17:36:13.280584	8	32	25
-6	2009-06-09 17:36:13.280584	9	32	22
-7	2009-06-09 17:36:13.280584	10	32	28
-8	2009-06-09 17:36:13.280584	11	35	18
-9	2009-06-09 17:36:13.280584	12	32	23
-10	2009-06-09 17:36:13.280584	13	32	23
-11	2009-06-09 17:36:13.280584	14	35	18
+1	2009-06-15 16:49:14.246263	4	33	25
+2	2009-06-15 16:49:14.246263	5	33	22
+3	2009-06-15 16:49:14.246263	6	32	28
+4	2009-06-15 16:49:14.246263	7	32	23
+5	2009-06-15 16:49:14.246263	8	32	25
+6	2009-06-15 16:49:14.246263	9	32	22
+7	2009-06-15 16:49:14.246263	10	32	28
+8	2009-06-15 16:49:14.246263	11	35	18
+9	2009-06-15 16:49:14.246263	12	32	23
+10	2009-06-15 16:49:14.246263	13	32	23
+11	2009-06-15 16:49:14.246263	14	35	18
 \.
 
 
@@ -2290,15 +2286,31 @@ COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, for
 -- Data for Name: sample; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
-COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, description, protocol, molecule_type, treatment_type, fractionation_type, processing_requirement, tissue) FROM stdin;
-1	2009-06-09 17:36:14.986288	SL11	1	1	\N	AGO9 associated small RNAs Rep1 (mixed Col-0 floral + silique)	\N	41	\N	\N	54	\N
-2	2009-06-09 17:36:14.986288	SL54	2	2	\N	Chlamy total DNA (mononuc)	\N	40	\N	\N	54	\N
-3	2009-06-09 17:36:14.986288	SL55	3	2	\N	Chlamy methylated DNA IP (mononuc)	\N	40	\N	\N	54	\N
-4	2009-06-09 17:36:14.986288	SL165_1	4	2	\N	Total sRNA mono-P	\N	41	\N	\N	54	\N
-5	2009-06-09 17:36:14.986288	SL234_B	5	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode B	\N	41	\N	\N	54	\N
-6	2009-06-09 17:36:14.986288	SL234_C	5	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode C	\N	41	\N	\N	54	\N
-7	2009-06-09 17:36:14.986288	SL234_F	5	1	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode F	\N	41	\N	\N	54	\N
-8	2009-06-09 17:36:14.986288	SL236	6	1	\N	grafting dcl234/dcl234	\N	41	\N	\N	54	\N
+COPY sample (sample_id, created_stamp, name, pipeproject, genotype, description, protocol, molecule_type, treatment_type, fractionation_type, processing_requirement, tissue) FROM stdin;
+1	2009-06-15 16:49:16.959558	SL11	1	\N	AGO9 associated small RNAs Rep1 (mixed Col-0 floral + silique)	\N	41	\N	\N	54	\N
+2	2009-06-15 16:49:16.959558	SL54	2	\N	Chlamy total DNA (mononuc)	\N	40	\N	\N	54	\N
+3	2009-06-15 16:49:16.959558	SL55	3	\N	Chlamy methylated DNA IP (mononuc)	\N	40	\N	\N	54	\N
+4	2009-06-15 16:49:16.959558	SL165_1	4	\N	Total sRNA mono-P	\N	41	\N	\N	54	\N
+5	2009-06-15 16:49:16.959558	SL234_B	5	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode B	\N	41	\N	\N	54	\N
+6	2009-06-15 16:49:16.959558	SL234_C	5	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode C	\N	41	\N	\N	54	\N
+7	2009-06-15 16:49:16.959558	SL234_F	5	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode F	\N	41	\N	\N	54	\N
+8	2009-06-15 16:49:16.959558	SL236	6	\N	grafting dcl234/dcl234	\N	41	\N	\N	54	\N
+\.
+
+
+--
+-- Data for Name: sample_ecotype; Type: TABLE DATA; Schema: public; Owner: kmr44
+--
+
+COPY sample_ecotype (sample_ecotype_id, created_stamp, sample, ecotype) FROM stdin;
+1	2009-06-15 16:49:16.959558	1	1
+2	2009-06-15 16:49:16.959558	2	2
+3	2009-06-15 16:49:16.959558	3	2
+4	2009-06-15 16:49:16.959558	4	2
+5	2009-06-15 16:49:16.959558	5	1
+6	2009-06-15 16:49:16.959558	6	1
+7	2009-06-15 16:49:16.959558	7	1
+8	2009-06-15 16:49:16.959558	8	1
 \.
 
 
@@ -2307,293 +2319,12 @@ COPY sample (sample_id, created_stamp, name, pipeproject, ecotype, genotype, des
 --
 
 COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM stdin;
-1	2009-06-09 17:36:14.986288	1	1
-2	2009-06-09 17:36:14.986288	2	2
-3	2009-06-09 17:36:14.986288	3	3
-4	2009-06-09 17:36:14.986288	4	4
-5	2009-06-09 17:36:14.986288	5	5
-6	2009-06-09 17:36:14.986288	8	6
-\.
-
-
---
--- Data for Name: samplerun; Type: TABLE DATA; Schema: public; Owner: kmr44
---
-
-COPY samplerun (samplerun_id, created_stamp, description, samplerun_type, sample, barcode, sequencingrun) FROM stdin;
-1	2009-06-05 18:42:06.907936	sample run for: SL4_1	54	1	\N	1
-2	2009-06-05 18:42:06.907936	sample run for: SL4_2	55	2	\N	2
-3	2009-06-05 18:42:06.907936	sample run for: SL5	54	3	\N	3
-4	2009-06-05 18:42:06.907936	sample run for: SL8	54	4	\N	4
-5	2009-06-05 18:42:06.907936	sample run for: SL9	54	5	\N	5
-6	2009-06-05 18:42:06.907936	sample run for: SL10	54	6	\N	6
-7	2009-06-05 18:42:06.907936	sample run for: SL11	54	7	\N	7
-8	2009-06-05 18:42:06.907936	sample run for: SL12	54	8	\N	8
-9	2009-06-05 18:42:06.907936	sample run for: SL14	54	9	\N	9
-10	2009-06-05 18:42:06.907936	sample run for: SL15	54	10	\N	10
-11	2009-06-05 18:42:06.907936	sample run for: SL16	54	11	\N	11
-12	2009-06-05 18:42:06.907936	sample run for: SL17	54	12	\N	12
-13	2009-06-05 18:42:06.907936	sample run for: SL18	54	13	\N	13
-14	2009-06-05 18:42:06.907936	sample run for: SL19	54	14	\N	14
-15	2009-06-05 18:42:06.907936	sample run for: SL20	54	15	\N	15
-16	2009-06-05 18:42:06.907936	sample run for: SL21	54	16	\N	16
-17	2009-06-05 18:42:06.907936	sample run for: SL22	54	17	\N	17
-18	2009-06-05 18:42:06.907936	sample run for: SL23_1	54	18	\N	18
-19	2009-06-05 18:42:06.907936	sample run for: SL23_2	55	19	\N	19
-20	2009-06-05 18:42:06.907936	sample run for: SL24_1	54	20	\N	20
-21	2009-06-05 18:42:06.907936	sample run for: SL24_2	55	21	\N	21
-22	2009-06-05 18:42:06.907936	sample run for: SL24_3	55	22	\N	22
-23	2009-06-05 18:42:06.907936	sample run for: SL25_1	54	23	\N	23
-24	2009-06-05 18:42:06.907936	sample run for: SL25_2	55	24	\N	24
-25	2009-06-05 18:42:06.907936	sample run for: SL25_3	55	25	\N	25
-26	2009-06-05 18:42:06.907936	sample run for: SL26	54	26	\N	26
-27	2009-06-05 18:42:06.907936	sample run for: SL28_1	54	27	\N	27
-28	2009-06-05 18:42:06.907936	sample run for: SL28_2	55	28	\N	28
-29	2009-06-05 18:42:06.907936	sample run for: SL28_3	55	29	\N	29
-30	2009-06-05 18:42:06.907936	sample run for: SL28_4	55	30	\N	30
-31	2009-06-05 18:42:06.907936	sample run for: SL29_1	54	31	\N	31
-32	2009-06-05 18:42:06.907936	sample run for: SL29_2	55	32	\N	32
-33	2009-06-05 18:42:06.907936	sample run for: SL30_1	54	33	\N	33
-34	2009-06-05 18:42:06.907936	sample run for: SL30_2	55	34	\N	34
-35	2009-06-05 18:42:06.907936	sample run for: SL30_3	55	35	\N	35
-36	2009-06-05 18:42:06.907936	sample run for: SL30_4	55	36	\N	36
-37	2009-06-05 18:42:06.907936	sample run for: SL31	54	37	\N	37
-38	2009-06-05 18:42:06.907936	sample run for: SL32	54	38	\N	38
-39	2009-06-05 18:42:06.907936	sample run for: SL34	54	39	\N	39
-40	2009-06-05 18:42:06.907936	sample run for: SL35	54	40	\N	40
-41	2009-06-05 18:42:06.907936	sample run for: SL40	54	41	\N	41
-42	2009-06-05 18:42:06.907936	sample run for: SL41	54	42	\N	42
-43	2009-06-05 18:42:06.907936	sample run for: SL42	54	43	\N	43
-44	2009-06-05 18:42:06.907936	sample run for: SL43	54	44	\N	44
-45	2009-06-05 18:42:06.907936	sample run for: SL44_1	54	45	\N	45
-46	2009-06-05 18:42:06.907936	sample run for: SL44_2	55	46	\N	46
-47	2009-06-05 18:42:06.907936	sample run for: SL45	54	47	\N	47
-48	2009-06-05 18:42:06.907936	sample run for: SL46	54	48	\N	48
-49	2009-06-05 18:42:06.907936	sample run for: SL47	54	49	\N	49
-50	2009-06-05 18:42:06.907936	sample run for: SL48	54	50	\N	50
-51	2009-06-05 18:42:06.907936	sample run for: SL49	54	51	\N	51
-52	2009-06-05 18:42:06.907936	sample run for: SL50	54	52	\N	52
-53	2009-06-05 18:42:06.907936	sample run for: SL51	54	53	\N	53
-54	2009-06-05 18:42:06.907936	sample run for: SL52	54	54	\N	54
-55	2009-06-05 18:42:06.907936	sample run for: SL53	54	55	\N	55
-56	2009-06-05 18:42:06.907936	sample run for: SL54	54	56	\N	56
-57	2009-06-05 18:42:06.907936	sample run for: SL55	54	57	\N	57
-58	2009-06-05 18:42:06.907936	sample run for: SL56	54	58	\N	58
-59	2009-06-05 18:42:06.907936	sample run for: SL57	54	59	\N	59
-60	2009-06-05 18:42:06.907936	sample run for: SL58	54	60	\N	60
-61	2009-06-05 18:42:06.907936	sample run for: SL59	54	61	\N	61
-62	2009-06-05 18:42:06.907936	sample run for: SL60	54	62	\N	62
-63	2009-06-05 18:42:06.907936	sample run for: SL61	54	63	\N	63
-64	2009-06-05 18:42:06.907936	sample run for: SL68	54	64	\N	64
-65	2009-06-05 18:42:06.907936	sample run for: SL69	54	65	\N	65
-66	2009-06-05 18:42:06.907936	sample run for: SL70	54	66	\N	66
-67	2009-06-05 18:42:06.907936	sample run for: SL71	54	67	\N	67
-68	2009-06-05 18:42:06.907936	sample run for: SL72	54	68	\N	68
-69	2009-06-05 18:42:06.907936	sample run for: SL73	54	69	\N	69
-70	2009-06-05 18:42:06.907936	sample run for: SL74	54	70	\N	70
-71	2009-06-05 18:42:06.907936	sample run for: SL75	54	71	\N	71
-72	2009-06-05 18:42:06.907936	sample run for: SL76	54	72	\N	72
-73	2009-06-05 18:42:06.907936	sample run for: SL77	54	73	\N	73
-74	2009-06-05 18:42:06.907936	sample run for: SL78	54	74	\N	74
-75	2009-06-05 18:42:06.907936	sample run for: SL79	54	75	\N	75
-76	2009-06-05 18:42:06.907936	sample run for: SL80	54	76	\N	76
-77	2009-06-05 18:42:06.907936	sample run for: SL81	54	77	\N	77
-78	2009-06-05 18:42:06.907936	sample run for: SL82	54	78	\N	78
-79	2009-06-05 18:42:06.907936	sample run for: SL86	54	79	\N	79
-80	2009-06-05 18:42:06.907936	sample run for: SL87	54	80	\N	80
-81	2009-06-05 18:42:06.907936	sample run for: SL88	54	81	\N	81
-82	2009-06-05 18:42:06.907936	sample run for: SL89	54	82	\N	82
-83	2009-06-05 18:42:06.907936	sample run for: SL90_1	54	83	\N	83
-84	2009-06-05 18:42:06.907936	sample run for: SL91_1	54	84	\N	84
-85	2009-06-05 18:42:06.907936	sample run for: SL92_1	54	85	\N	85
-86	2009-06-05 18:42:06.907936	sample run for: SL93_1	54	86	\N	86
-87	2009-06-05 18:42:06.907936	sample run for: SL94	54	87	\N	87
-88	2009-06-05 18:42:06.907936	sample run for: SL95	54	88	\N	88
-89	2009-06-05 18:42:06.907936	sample run for: SL96	54	89	\N	89
-90	2009-06-05 18:42:06.907936	sample run for: SL97	54	90	\N	90
-91	2009-06-05 18:42:06.907936	sample run for: SL98	54	91	\N	91
-92	2009-06-05 18:42:06.907936	sample run for: SL99	54	92	\N	92
-93	2009-06-05 18:42:06.907936	sample run for: SL100	54	93	\N	93
-94	2009-06-05 18:42:06.907936	sample run for: SL101	54	94	\N	94
-95	2009-06-05 18:42:06.907936	sample run for: SL102	54	95	\N	95
-96	2009-06-05 18:42:06.907936	sample run for: SL103_1	54	96	\N	96
-97	2009-06-05 18:42:06.907936	sample run for: SL103_2	55	97	\N	97
-98	2009-06-05 18:42:06.907936	sample run for: SL105	54	98	\N	98
-99	2009-06-05 18:42:06.907936	sample run for: SL106	54	99	\N	99
-100	2009-06-05 18:42:06.907936	sample run for: SL107	54	100	\N	100
-101	2009-06-05 18:42:06.907936	sample run for: SL108	54	101	\N	101
-102	2009-06-05 18:42:06.907936	sample run for: SL109	54	102	\N	102
-103	2009-06-05 18:42:06.907936	sample run for: SL110	54	103	\N	103
-104	2009-06-05 18:42:06.907936	sample run for: SL111	54	104	\N	104
-105	2009-06-05 18:42:06.907936	sample run for: SL112	54	105	\N	105
-106	2009-06-05 18:42:06.907936	sample run for: SL113_1	54	106	\N	106
-107	2009-06-05 18:42:06.907936	sample run for: SL113_2	55	107	\N	107
-108	2009-06-05 18:42:06.907936	sample run for: SL113_3	55	108	\N	108
-109	2009-06-05 18:42:06.907936	sample run for: SL114_1	54	109	\N	109
-110	2009-06-05 18:42:06.907936	sample run for: SL114_2	55	110	\N	110
-111	2009-06-05 18:42:06.907936	sample run for: SL114_3	55	111	\N	111
-112	2009-06-05 18:42:06.907936	sample run for: SL115	54	112	\N	112
-113	2009-06-05 18:42:06.907936	sample run for: SL116	54	113	\N	113
-114	2009-06-05 18:42:06.907936	sample run for: SL117	54	114	\N	114
-115	2009-06-05 18:42:06.907936	sample run for: SL118	54	115	\N	115
-116	2009-06-05 18:42:06.907936	sample run for: SL119	54	116	\N	116
-117	2009-06-05 18:42:06.907936	sample run for: SL120	54	117	\N	117
-118	2009-06-05 18:42:06.907936	sample run for: SL121	54	118	\N	118
-119	2009-06-05 18:42:06.907936	sample run for: SL122	54	119	\N	119
-120	2009-06-05 18:42:06.907936	sample run for: SL123_2	55	120	\N	120
-121	2009-06-05 18:42:06.907936	sample run for: SL124	54	121	\N	121
-122	2009-06-05 18:42:06.907936	sample run for: SL125	54	122	\N	122
-123	2009-06-05 18:42:06.907936	sample run for: SL126	54	123	\N	123
-124	2009-06-05 18:42:06.907936	sample run for: SL127	54	124	\N	124
-125	2009-06-05 18:42:06.907936	sample run for: SL128_1	54	125	\N	125
-126	2009-06-05 18:42:06.907936	sample run for: SL128_2	55	126	\N	126
-127	2009-06-05 18:42:06.907936	sample run for: SL130	54	127	\N	127
-128	2009-06-05 18:42:06.907936	sample run for: SL131	54	128	\N	128
-129	2009-06-05 18:42:06.907936	sample run for: SL132	54	129	\N	129
-130	2009-06-05 18:42:06.907936	sample run for: SL133	54	130	\N	130
-131	2009-06-05 18:42:06.907936	sample run for: SL134	54	131	\N	131
-132	2009-06-05 18:42:06.907936	sample run for: SL135	54	132	\N	132
-133	2009-06-05 18:42:06.907936	sample run for: SL136	54	133	\N	133
-134	2009-06-05 18:42:06.907936	sample run for: SL137	54	134	\N	134
-135	2009-06-05 18:42:06.907936	sample run for: SL138	54	135	\N	135
-136	2009-06-05 18:42:06.907936	sample run for: SL139	54	136	\N	136
-137	2009-06-05 18:42:06.907936	sample run for: SL140	54	137	\N	137
-138	2009-06-05 18:42:06.907936	sample run for: SL141	54	138	\N	138
-139	2009-06-05 18:42:06.907936	sample run for: SL142	54	139	\N	139
-140	2009-06-05 18:42:06.907936	sample run for: SL143	54	140	\N	140
-141	2009-06-05 18:42:06.907936	sample run for: SL144	54	141	\N	141
-142	2009-06-05 18:42:06.907936	sample run for: SL145	54	142	\N	142
-143	2009-06-05 18:42:06.907936	sample run for: SL146	54	143	\N	143
-144	2009-06-05 18:42:06.907936	sample run for: SL147	54	144	\N	144
-145	2009-06-05 18:42:06.907936	sample run for: SL148	54	145	\N	145
-146	2009-06-05 18:42:06.907936	sample run for: SL149	54	146	\N	146
-147	2009-06-05 18:42:06.907936	sample run for: SL150	54	147	\N	147
-148	2009-06-05 18:42:06.907936	sample run for: SL151	54	148	\N	148
-149	2009-06-05 18:42:06.907936	sample run for: SL152	54	149	\N	149
-150	2009-06-05 18:42:06.907936	sample run for: SL153	54	150	\N	150
-151	2009-06-05 18:42:06.907936	sample run for: SL154	54	151	\N	151
-152	2009-06-05 18:42:06.907936	sample run for: SL155	54	152	\N	152
-153	2009-06-05 18:42:06.907936	sample run for: SL156	54	153	\N	153
-154	2009-06-05 18:42:06.907936	sample run for: SL157_2	55	154	\N	154
-155	2009-06-05 18:42:06.907936	sample run for: SL158_1	54	155	\N	155
-156	2009-06-05 18:42:06.907936	sample run for: SL158_2	55	156	\N	156
-157	2009-06-05 18:42:06.907936	sample run for: SL159	54	157	\N	157
-158	2009-06-05 18:42:06.907936	sample run for: SL160	54	158	\N	158
-159	2009-06-05 18:42:06.907936	sample run for: SL161	54	159	\N	159
-160	2009-06-05 18:42:06.907936	sample run for: SL162	54	160	\N	160
-161	2009-06-05 18:42:06.907936	sample run for: SL163	54	161	\N	161
-162	2009-06-05 18:42:06.907936	sample run for: SL164	54	162	\N	162
-163	2009-06-05 18:42:06.907936	sample run for: SL165_1	54	163	\N	163
-164	2009-06-05 18:42:06.907936	sample run for: SL165_2	55	164	\N	164
-165	2009-06-05 18:42:06.907936	sample run for: SL166	54	165	\N	165
-166	2009-06-05 18:42:06.907936	sample run for: SL167	54	166	\N	166
-167	2009-06-05 18:42:06.907936	sample run for: SL168	54	167	\N	167
-168	2009-06-05 18:42:06.907936	sample run for: SL169	54	168	\N	168
-169	2009-06-05 18:42:06.907936	sample run for: SL170	54	169	\N	169
-170	2009-06-05 18:42:06.907936	sample run for: SL171	54	170	\N	170
-171	2009-06-05 18:42:06.907936	sample run for: SL173	54	171	\N	171
-172	2009-06-05 18:42:06.907936	sample run for: SL174	54	172	\N	172
-173	2009-06-05 18:42:06.907936	sample run for: SL175	54	173	\N	173
-174	2009-06-05 18:42:06.907936	sample run for: SL176	54	174	\N	174
-175	2009-06-05 18:42:06.907936	sample run for: SL181_1	54	175	\N	175
-176	2009-06-05 18:42:06.907936	sample run for: SL181_2	55	176	\N	176
-177	2009-06-05 18:42:06.907936	sample run for: SL181_3	55	177	\N	177
-178	2009-06-05 18:42:06.907936	sample run for: SL182_2	55	178	\N	178
-179	2009-06-05 18:42:06.907936	sample run for: SL182_3	55	179	\N	179
-180	2009-06-05 18:42:06.907936	sample run for: SL183_1	54	180	\N	180
-181	2009-06-05 18:42:06.907936	sample run for: SL183_2	55	181	\N	181
-182	2009-06-05 18:42:06.907936	sample run for: SL183_3	55	182	\N	182
-183	2009-06-05 18:42:06.907936	sample run for: SL184	54	183	\N	183
-184	2009-06-05 18:42:06.907936	sample run for: SL185	54	184	\N	184
-185	2009-06-05 18:42:06.907936	sample run for: SL186	54	185	\N	185
-186	2009-06-05 18:42:06.907936	sample run for: SL187	54	186	\N	186
-187	2009-06-05 18:42:06.907936	sample run for: SL188	54	187	\N	187
-188	2009-06-05 18:42:06.907936	sample run for: SL189	54	188	\N	188
-189	2009-06-05 18:42:06.907936	sample run for: SL190	54	189	\N	189
-190	2009-06-05 18:42:06.907936	sample run for: SL191	54	190	\N	190
-191	2009-06-05 18:42:06.907936	sample run for: SL192	54	191	\N	191
-192	2009-06-05 18:42:06.907936	sample run for: SL193	54	192	\N	192
-193	2009-06-05 18:42:06.907936	sample run for: SL194	54	193	\N	193
-194	2009-06-05 18:42:06.907936	sample run for: SL195	54	194	\N	194
-195	2009-06-05 18:42:06.907936	sample run for: SL196	54	195	\N	195
-196	2009-06-05 18:42:06.907936	sample run for: SL197	54	196	\N	196
-197	2009-06-05 18:42:06.907936	sample run for: SL198	54	197	\N	197
-198	2009-06-05 18:42:06.907936	sample run for: SL199	54	198	\N	198
-199	2009-06-05 18:42:06.907936	sample run for: SL200	54	199	\N	199
-200	2009-06-05 18:42:06.907936	sample run for: SL201	54	200	\N	200
-201	2009-06-05 18:42:06.907936	sample run for: SL202	54	201	\N	201
-202	2009-06-05 18:42:06.907936	sample run for: SL203	54	202	\N	202
-203	2009-06-05 18:42:06.907936	sample run for: SL204	54	203	\N	203
-204	2009-06-05 18:42:06.907936	sample run for: SL205	54	204	\N	204
-205	2009-06-05 18:42:06.907936	sample run for: SL206	54	205	\N	205
-206	2009-06-05 18:42:06.907936	sample run for: SL207	54	206	\N	206
-207	2009-06-05 18:42:06.907936	sample run for: SL208	54	207	\N	207
-208	2009-06-05 18:42:06.907936	sample run for: SL209	54	208	\N	208
-209	2009-06-05 18:42:06.907936	sample run for: SL210	54	209	\N	209
-210	2009-06-05 18:42:06.907936	sample run for: SL211	54	210	\N	210
-211	2009-06-05 18:42:06.907936	sample run for: SL212	54	211	\N	211
-212	2009-06-05 18:42:06.907936	sample run for: SL213	54	212	\N	212
-213	2009-06-05 18:42:06.907936	sample run for: SL214	54	213	\N	213
-214	2009-06-05 18:42:06.907936	sample run for: SL215	54	214	\N	214
-215	2009-06-05 18:42:06.907936	sample run for: SL216	54	215	\N	215
-216	2009-06-05 18:42:06.907936	sample run for: SL217	54	216	\N	216
-217	2009-06-05 18:42:06.907936	sample run for: SL218	54	217	\N	217
-218	2009-06-05 18:42:06.907936	sample run for: SL219	54	218	\N	218
-219	2009-06-05 18:42:06.907936	sample run for: SL220	54	219	\N	219
-220	2009-06-05 18:42:06.907936	sample run for: SL226	54	220	\N	220
-221	2009-06-05 18:42:06.907936	sample run for: SL227	54	221	\N	221
-222	2009-06-05 18:42:06.907936	sample run for: SL228	54	222	\N	222
-223	2009-06-05 18:42:06.907936	sample run for: SL229	54	223	\N	223
-224	2009-06-05 18:42:06.907936	sample run for: SL230	54	224	\N	224
-225	2009-06-05 18:42:06.907936	sample run for: SL231	54	225	\N	225
-226	2009-06-05 18:42:06.907936	sample run for: SL232	54	226	\N	226
-227	2009-06-05 18:42:06.907936	sample run for: SL233	54	227	\N	227
-228	2009-06-05 18:42:06.907936	sample run for: SL234_B	54	228	2	228
-229	2009-06-05 18:42:06.907936	sample run for: SL234_C	54	229	3	228
-230	2009-06-05 18:42:06.907936	sample run for: SL234_F	54	230	6	228
-231	2009-06-05 18:42:06.907936	sample run for: SL234_B_2	55	231	2	229
-232	2009-06-05 18:42:06.907936	sample run for: SL234_C_2	55	232	3	230
-233	2009-06-05 18:42:06.907936	sample run for: SL235_B	54	233	2	231
-234	2009-06-05 18:42:06.907936	sample run for: SL235_H	54	234	8	231
-235	2009-06-05 18:42:06.907936	sample run for: SL236	54	235	\N	232
-236	2009-06-05 18:42:06.907936	sample run for: SL237	54	236	\N	233
-237	2009-06-05 18:42:06.907936	sample run for: SL238	54	237	\N	234
-238	2009-06-05 18:42:06.907936	sample run for: SL239	54	238	\N	235
-239	2009-06-05 18:42:06.907936	sample run for: SL240	54	239	\N	236
-240	2009-06-05 18:42:06.907936	sample run for: SL245	54	240	\N	237
-241	2009-06-05 18:42:06.907936	sample run for: SL246	54	241	\N	238
-242	2009-06-05 18:42:06.907936	sample run for: SL247	54	242	\N	239
-243	2009-06-05 18:42:06.907936	sample run for: SL248	54	243	\N	240
-244	2009-06-05 18:42:06.907936	sample run for: SL249	54	244	\N	241
-245	2009-06-05 18:42:06.907936	sample run for: SL251_A	54	245	1	242
-246	2009-06-05 18:42:06.907936	sample run for: SL251_C	54	246	3	242
-247	2009-06-05 18:42:06.907936	sample run for: SL251_D	54	247	4	242
-248	2009-06-05 18:42:06.907936	sample run for: SL251_E	54	248	5	242
-249	2009-06-05 18:42:06.907936	sample run for: SL251_F	54	249	6	242
-250	2009-06-05 18:42:06.907936	sample run for: SL251_G	54	250	7	242
-251	2009-06-05 18:42:06.907936	sample run for: SL251_H	54	251	8	242
-252	2009-06-05 18:42:06.907936	sample run for: SL252_A	54	252	1	243
-253	2009-06-05 18:42:06.907936	sample run for: SL252_C	54	253	3	243
-254	2009-06-05 18:42:06.907936	sample run for: SL252_D	54	254	4	243
-255	2009-06-05 18:42:06.907936	sample run for: SL252_E	54	255	5	243
-256	2009-06-05 18:42:06.907936	sample run for: SL252_F	54	256	6	243
-257	2009-06-05 18:42:06.907936	sample run for: SL252_G	54	257	7	243
-258	2009-06-05 18:42:06.907936	sample run for: SL252_H	54	258	8	243
-259	2009-06-05 18:42:06.907936	sample run for: SL253_A	54	259	1	244
-260	2009-06-05 18:42:06.907936	sample run for: SL253_B	54	260	2	244
-261	2009-06-05 18:42:06.907936	sample run for: SL253_C	54	261	3	244
-262	2009-06-05 18:42:06.907936	sample run for: SL253_D	54	262	4	244
-263	2009-06-05 18:42:06.907936	sample run for: SL253_F	54	263	6	244
-264	2009-06-05 18:42:06.907936	sample run for: SL253_G	54	264	7	244
-265	2009-06-05 18:42:06.907936	sample run for: SL254	54	265	\N	245
-266	2009-06-05 18:42:06.907936	sample run for: SL255	54	266	\N	246
-267	2009-06-05 18:42:06.907936	sample run for: SL256	54	267	\N	247
-268	2009-06-05 18:42:06.907936	sample run for: SL257	54	268	\N	248
-269	2009-06-05 18:42:06.907936	sample run for: SL258	54	269	\N	249
-270	2009-06-05 18:42:06.907936	sample run for: SL259	54	270	\N	250
-271	2009-06-05 18:42:06.907936	sample run for: SL1000	54	271	\N	251
-272	2009-06-05 18:42:06.907936	sample run for: SL1001	54	272	\N	252
-273	2009-06-05 18:42:06.907936	sample run for: SL1002	54	273	\N	253
+1	2009-06-15 16:49:16.959558	1	1
+2	2009-06-15 16:49:16.959558	2	2
+3	2009-06-15 16:49:16.959558	3	3
+4	2009-06-15 16:49:16.959558	4	4
+5	2009-06-15 16:49:16.959558	5	5
+6	2009-06-15 16:49:16.959558	8	6
 \.
 
 
@@ -2616,12 +2347,12 @@ COPY sequencing_sample (sequencing_sample_id, name) FROM stdin;
 --
 
 COPY sequencingrun (sequencingrun_id, created_stamp, identifier, sequencing_sample, initial_pipedata, sequencing_centre, initial_pipeprocess, submission_date, run_date, data_received_date, quality, sequencing_type, multiplexing_type) FROM stdin;
-1	2009-06-09 17:36:14.986288	Run_SL11	1	1	3	1	\N	\N	\N	53	56	43
-2	2009-06-09 17:36:14.986288	Run_SL54	2	2	3	2	\N	\N	\N	53	56	43
-3	2009-06-09 17:36:14.986288	Run_SL55	3	3	3	3	\N	\N	\N	53	56	43
-4	2009-06-09 17:36:14.986288	Run_SL165_1	4	4	2	4	2008-08-27	2008-09-11	2008-09-11	53	56	43
-5	2009-06-09 17:36:14.986288	Run_SL234_BCF	5	5	2	5	2009-01-20	2009-02-10	2009-02-10	53	56	42
-6	2009-06-09 17:36:14.986288	Run_SL236	6	6	2	6	2009-02-10	2009-03-09	2009-03-09	53	56	43
+1	2009-06-15 16:49:16.959558	Run_SL11	1	1	3	1	\N	\N	\N	53	56	43
+2	2009-06-15 16:49:16.959558	Run_SL54	2	2	3	2	\N	\N	\N	53	56	43
+3	2009-06-15 16:49:16.959558	Run_SL55	3	3	3	3	\N	\N	\N	53	56	43
+4	2009-06-15 16:49:16.959558	Run_SL165_1	4	4	2	4	2008-08-27	2008-09-11	2008-09-11	53	56	43
+5	2009-06-15 16:49:16.959558	Run_SL234_BCF	5	5	2	5	2009-01-20	2009-02-10	2009-02-10	53	56	42
+6	2009-06-15 16:49:16.959558	Run_SL236	6	6	2	6	2009-02-10	2009-03-09	2009-03-09	53	56	43
 \.
 
 
@@ -2818,6 +2549,14 @@ ALTER TABLE ONLY process_conf_input
 
 
 --
+-- Name: sample_ecotype_id_pk; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY sample_ecotype
+    ADD CONSTRAINT sample_ecotype_id_pk PRIMARY KEY (sample_ecotype_id);
+
+
+--
 -- Name: sample_id_pk; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
@@ -2839,14 +2578,6 @@ ALTER TABLE ONLY sample
 
 ALTER TABLE ONLY sample_pipedata
     ADD CONSTRAINT sample_pipedata_id_pk PRIMARY KEY (sample_pipedata_id);
-
-
---
--- Name: samplerun_id_pk; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
---
-
-ALTER TABLE ONLY samplerun
-    ADD CONSTRAINT samplerun_id_pk PRIMARY KEY (samplerun_id);
 
 
 --
@@ -3074,11 +2805,19 @@ ALTER TABLE ONLY process_conf
 
 
 --
--- Name: sample_ecotype_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+-- Name: sample_ecotype_ecotype_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
 --
 
-ALTER TABLE ONLY sample
-    ADD CONSTRAINT sample_ecotype_fkey FOREIGN KEY (ecotype) REFERENCES ecotype(ecotype_id);
+ALTER TABLE ONLY sample_ecotype
+    ADD CONSTRAINT sample_ecotype_ecotype_fkey FOREIGN KEY (ecotype) REFERENCES ecotype(ecotype_id);
+
+
+--
+-- Name: sample_ecotype_sample_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY sample_ecotype
+    ADD CONSTRAINT sample_ecotype_sample_fkey FOREIGN KEY (sample) REFERENCES sample(sample_id);
 
 
 --

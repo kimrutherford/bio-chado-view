@@ -92,6 +92,11 @@ __PACKAGE__->has_many(
   { "foreign.processing_requirement" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
+  "sample_treatment_types",
+  "SmallRNA::DB::Sample",
+  { "foreign.treatment_type" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
   "sample_fractionation_types",
   "SmallRNA::DB::Sample",
   { "foreign.fractionation_type" => "self.cvterm_id" },
@@ -102,9 +107,9 @@ __PACKAGE__->has_many(
   { "foreign.molecule_type" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sample_treatment_types",
-  "SmallRNA::DB::Sample",
-  { "foreign.treatment_type" => "self.cvterm_id" },
+  "sequencingrun_qualities",
+  "SmallRNA::DB::Sequencingrun",
+  { "foreign.quality" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
   "sequencingrun_multiplexing_types",
@@ -117,11 +122,6 @@ __PACKAGE__->has_many(
   { "foreign.sequencing_type" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sequencingrun_qualities",
-  "SmallRNA::DB::Sequencingrun",
-  { "foreign.quality" => "self.cvterm_id" },
-);
-__PACKAGE__->has_many(
   "tissues",
   "SmallRNA::DB::Tissue",
   { "foreign.type" => "self.cvterm_id" },
@@ -129,7 +129,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DxRSQXCEGNtOEynGQjwUNA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cZEMh+0WyKv2H7lfWbGjPg
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

@@ -40,14 +40,14 @@ __PACKAGE__->belongs_to(
   { organism_id => "organism" },
 );
 __PACKAGE__->has_many(
-  "samples",
-  "SmallRNA::DB::Sample",
+  "sample_ecotypes",
+  "SmallRNA::DB::SampleEcotype",
   { "foreign.ecotype" => "self.ecotype_id" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w3k59uhlV+6zlmLQpRHmiQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mEw0VXTFrGgB8xqQE1D/wA
 
 # the description and the organism full name, used when displaying ecotypes
 sub long_description

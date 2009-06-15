@@ -196,11 +196,14 @@ sub create_sample
                      description => $description,
                      pipeproject => $project,
                      molecule_type => $molecule_type_term,
-                     ecotype => $ecotype,
                      processing_requirement => $processing_type_term
                     };
 
-  return create('Sample', $sample_args);
+  my $sample = create('Sample', $sample_args);
+
+  $sample->add_to_ecotypes($ecotype);
+
+  return $sample;
 }
 
 sub create_coded_sample

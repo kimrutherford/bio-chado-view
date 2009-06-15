@@ -31,8 +31,6 @@ __PACKAGE__->add_columns(
   },
   "pipeproject",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
-  "ecotype",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "genotype",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "description",
@@ -80,6 +78,16 @@ __PACKAGE__->belongs_to(
   { cvterm_id => "processing_requirement" },
 );
 __PACKAGE__->belongs_to(
+  "treatment_type",
+  "SmallRNA::DB::Cvterm",
+  { cvterm_id => "treatment_type" },
+);
+__PACKAGE__->belongs_to(
+  "pipeproject",
+  "SmallRNA::DB::Pipeproject",
+  { pipeproject_id => "pipeproject" },
+);
+__PACKAGE__->belongs_to(
   "fractionation_type",
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "fractionation_type" },
@@ -89,20 +97,10 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "molecule_type" },
 );
-__PACKAGE__->belongs_to(
-  "ecotype",
-  "SmallRNA::DB::Ecotype",
-  { ecotype_id => "ecotype" },
-);
-__PACKAGE__->belongs_to(
-  "pipeproject",
-  "SmallRNA::DB::Pipeproject",
-  { pipeproject_id => "pipeproject" },
-);
-__PACKAGE__->belongs_to(
-  "treatment_type",
-  "SmallRNA::DB::Cvterm",
-  { cvterm_id => "treatment_type" },
+__PACKAGE__->has_many(
+  "sample_ecotypes",
+  "SmallRNA::DB::SampleEcotype",
+  { "foreign.sample" => "self.sample_id" },
 );
 __PACKAGE__->has_many(
   "sample_pipedatas",
@@ -112,8 +110,9 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:az9HootF6gjaf0C8pCWQoA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qUUUlp0HVyggzFFs9i/wGQ
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
+__PACKAGE__->many_to_many('ecotypes' => 'sample_ecotypes', 'ecotype');
 
 1;

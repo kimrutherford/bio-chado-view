@@ -135,6 +135,15 @@ programs:
       Arabidopsis_thaliana:
         database_files:
           nuclear_genome: arabidopsis/TAIR_8/arabidopsis_nuclear_genome
+      Carmovirus_turnip_crinkle_virus:
+        database_files:
+          genome: TCV/TCV.fa
+      Oryza_sativa:
+        database_files:
+          genome: /data/public_data/rice/Oryza_sativa/IRGSP_Build5/nuclear_genome.fasta
+      Benyvirus_rice_stripe_virus:
+        database_files:
+          genome: /data/public_data/viruses/Benyvirus/rice_stripe_virus_isolate_Zhejiang.fasta
       Chlamydomonas_reinhardtii:
         database_files:
           nuclear_genome: chlamydomonas/20090120_chlamy_assembly4/C_reinhardtii.main_genome.scaffolds_plus_unmapped_scaffolds.fasta

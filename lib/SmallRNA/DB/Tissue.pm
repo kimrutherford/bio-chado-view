@@ -41,16 +41,16 @@ __PACKAGE__->has_many(
   "SmallRNA::DB::Sample",
   { "foreign.tissue" => "self.tissue_id" },
 );
-__PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
 __PACKAGE__->belongs_to(
   "organism",
   "SmallRNA::DB::Organism",
   { organism_id => "organism" },
 );
+__PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2vSJeGlq+FJduzM86YN22Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qx3/tqATnHCdlc7bCgjG9w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

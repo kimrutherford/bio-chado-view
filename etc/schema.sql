@@ -16,6 +16,7 @@ DROP TABLE ecotype CASCADE;
 DROP TABLE genotype CASCADE;
 DROP TABLE organism CASCADE;
 DROP TABLE sample_pipedata CASCADE;
+DROP TABLE sample_ecotype CASCADE;
 DROP TABLE coded_sample CASCADE;
 DROP TABLE sequencing_sample CASCADE;
 DROP SEQUENCE cvterm_cvterm_id_seq CASCADE;
@@ -168,7 +169,6 @@ CREATE TABLE sample (
        created_stamp timestamp NOT NULL DEFAULT now(),
        name text NOT NULL UNIQUE,
        pipeproject integer REFERENCES pipeproject(pipeproject_id) NOT NULL,
-       ecotype integer REFERENCES ecotype(ecotype_id) NOT NULL,
        genotype integer REFERENCES genotype(genotype_id),
        description text,
        protocol text, -- there should be a protocol text, or ref to cvterm
@@ -201,6 +201,12 @@ CREATE TABLE sample_pipedata (
        created_stamp timestamp NOT NULL DEFAULT now(),
        sample integer REFERENCES sample(sample_id) NOT NULL,
        pipedata integer REFERENCES pipedata(pipedata_id) NOT NULL
+);
+CREATE TABLE sample_ecotype (
+       sample_ecotype_id serial CONSTRAINT sample_ecotype_id_pk PRIMARY KEY,
+       created_stamp timestamp NOT NULL DEFAULT now(),
+       sample integer REFERENCES sample(sample_id) NOT NULL,
+       ecotype integer REFERENCES ecotype(ecotype_id) NOT NULL
 );
 CREATE TABLE sequencing_sample (
        sequencing_sample_id serial CONSTRAINT sequencing_sample_id_pk PRIMARY KEY,

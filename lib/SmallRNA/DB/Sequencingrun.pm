@@ -53,6 +53,17 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("sequencingrun_id");
 __PACKAGE__->add_unique_constraint("sequencingrun_identifier_key", ["identifier"]);
 __PACKAGE__->add_unique_constraint("sequencingrun_id_pk", ["sequencingrun_id"]);
+__PACKAGE__->belongs_to("quality", "SmallRNA::DB::Cvterm", { cvterm_id => "quality" });
+__PACKAGE__->belongs_to(
+  "initial_pipedata",
+  "SmallRNA::DB::Pipedata",
+  { pipedata_id => "initial_pipedata" },
+);
+__PACKAGE__->belongs_to(
+  "sequencing_sample",
+  "SmallRNA::DB::SequencingSample",
+  { sequencing_sample_id => "sequencing_sample" },
+);
 __PACKAGE__->belongs_to(
   "multiplexing_type",
   "SmallRNA::DB::Cvterm",
@@ -73,21 +84,10 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Pipeprocess",
   { pipeprocess_id => "initial_pipeprocess" },
 );
-__PACKAGE__->belongs_to("quality", "SmallRNA::DB::Cvterm", { cvterm_id => "quality" });
-__PACKAGE__->belongs_to(
-  "initial_pipedata",
-  "SmallRNA::DB::Pipedata",
-  { pipedata_id => "initial_pipedata" },
-);
-__PACKAGE__->belongs_to(
-  "sequencing_sample",
-  "SmallRNA::DB::SequencingSample",
-  { sequencing_sample_id => "sequencing_sample" },
-);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cr4TJSzMtHpMxeI/UPT93Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8eHr3jUDiZ2WMT1b+5NqxA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
