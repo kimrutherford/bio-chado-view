@@ -1,2 +1,6 @@
 *~
 pipework.pl.*
+Makefile
+blib/
+inc/
+pm_to_blib
