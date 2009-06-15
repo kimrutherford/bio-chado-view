@@ -45,7 +45,7 @@ for (my $i = 0; $i < 6; $i++) {
 
   $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
 
-  my %count_exp = (0 => 11, 1 => 21, 2 => 31, 3 => 39, 4 => 39, 5 => 39);
+  my %count_exp = (0 => 11, 1 => 25, 2 => 39, 3 => 47, 4 => 47, 5 => 47);
 
   is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
