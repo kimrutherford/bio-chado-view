@@ -217,6 +217,7 @@ my @organisms = ({ genus => "Arabidopsis", species => "thaliana" },
                  { genus => "Nicotiana", species => "benthamiana" },
                  { genus => "Schizosaccharomyces", species => "pombe" },
                  { genus => "Carmovirus", species => "turnip crinkle virus" },
+                 { genus => "Benyvirus", species => "rice stripe virus" },
                  { genus => "Unknown", species => "unknown" },
                 );
 
