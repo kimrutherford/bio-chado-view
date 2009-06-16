@@ -118,10 +118,15 @@ sub run
 
   print $output_gff_file "##gff-version 3\n";
 
+  if (!-e $params{database_file_name}) {
+    croak "bad configuration: ssaha database file does not exist: ",
+      $params{database_file_name}, "\n";
+  }
+
   my $ssaha_command =
     "$params{ssaha_path} $in_file $params{database_file_name} $SSAHA_ARGS";
 
-  open my $ssaha_out, "$ssaha_command 2> /dev/null|"
+  open my $ssaha_out, "$ssaha_command 2>> /tmp/SSAHASearchProcess.log|"
     or die "can't open pipe to $params{ssaha_path}: $!";
 
   my $parser = SmallRNA::Parse::SSAHA->new(input_file_handle => $ssaha_out,
