@@ -68,10 +68,10 @@ sub new
     }
   }
 
-  if (!defined $config_file_name) {
+  if (defined $config_file_name) {
     $self = LoadFile($config_file_name);
   } else {
-    croak "can't find config file: $config_file_name in @config_dirs\n";
+    croak "can't find config file: $default_file_name in @config_dirs\n";
   }
 
   bless $self, $class;
