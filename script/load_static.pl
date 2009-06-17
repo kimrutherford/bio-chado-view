@@ -419,7 +419,7 @@ my @analyses = (
                 },
                 {
                  type_term_name => 'ssaha alignment',
-                 detail => 'versus: nuclear_genome',
+                 detail => 'component: genome',
                  runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
                  inputs => [
                      {

@@ -84,8 +84,8 @@ sub run
     my $data_dir = $self->config()->data_directory();
     my $detail = $pipeprocess->process_conf()->detail();
 
-    if ($detail =~ /versus: (\S+)/) {
-      my $versus = $1;
+    if ($detail =~ /component: (\S+)/) {
+      my $component = $1;
       my @sample_ecotypes = $sample->ecotypes();
 
       my $org_config = undef;
@@ -106,18 +106,18 @@ sub run
         croak "can't find organism configuration for ", $sample->name(), "\n";
       }
 
-      if (!defined $org_config->{database_files}{$versus}) {
-        die "can't find versus: $versus\n";
+      if (!defined $org_config->{database_files}{$component}) {
+        die "can't find configuration for component: $component\n";
       }
 
-      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$versus};
+      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$component};
 
       my $ssaha_path = $c->{path};
 
       my $input_file_name = $input_pipedata->file_name();
       my $gff_file_name = $input_file_name;
 
-      my $new_suffix = ".v_${org_full_name}_$versus.gff3";
+      my $new_suffix = ".v_${org_full_name}_$component.gff3";
 
       $gff_file_name =~ s/\.non_redundant_small_rna\.fasta/$new_suffix/;
 
