@@ -17,13 +17,6 @@ __PACKAGE__->add_columns(
   },
   "cv_id",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
-  "name",
-  {
-    data_type => "character varying",
-    default_value => undef,
-    is_nullable => 0,
-    size => 1024,
-  },
   "definition",
   {
     data_type => "text",
@@ -32,104 +25,260 @@ __PACKAGE__->add_columns(
     size => undef,
   },
   "dbxref_id",
-  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "is_obsolete",
   { data_type => "integer", default_value => 0, is_nullable => 0, size => 4 },
   "is_relationshiptype",
   { data_type => "integer", default_value => 0, is_nullable => 0, size => 4 },
+  "name",
+  {
+    data_type => "character varying",
+    default_value => undef,
+    is_nullable => 0,
+    size => 1024,
+  },
 );
 __PACKAGE__->set_primary_key("cvterm_id");
+__PACKAGE__->add_unique_constraint("cvterm_c2_unique", ["dbxref_id"]);
+__PACKAGE__->add_unique_constraint("cvterm_c1_unique", ["cv_id", "name", "is_obsolete"]);
 __PACKAGE__->add_unique_constraint("cvterm_pkey", ["cvterm_id"]);
 __PACKAGE__->has_many(
-  "coded_samples",
-  "SmallRNA::DB::CodedSample",
-  { "foreign.coded_sample_type" => "self.cvterm_id" },
+  "analysisprops",
+  "SmallRNA::DB::Analysisprop",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
-__PACKAGE__->belongs_to("cv_id", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
+__PACKAGE__->belongs_to("cv", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
+__PACKAGE__->belongs_to("dbxref", "SmallRNA::DB::Dbxref", { dbxref_id => "dbxref_id" });
 __PACKAGE__->has_many(
-  "genotypes",
-  "SmallRNA::DB::Genotype",
-  { "foreign.type" => "self.cvterm_id" },
-);
-__PACKAGE__->has_many(
-  "pipedata_format_types",
-  "SmallRNA::DB::Pipedata",
-  { "foreign.format_type" => "self.cvterm_id" },
+  "cvterm_dbxrefs",
+  "SmallRNA::DB::CvtermDbxref",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "pipedata_content_types",
-  "SmallRNA::DB::Pipedata",
-  { "foreign.content_type" => "self.cvterm_id" },
+  "cvtermpath_object_ids",
+  "SmallRNA::DB::Cvtermpath",
+  { "foreign.object_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "pipeprocesses",
-  "SmallRNA::DB::Pipeprocess",
-  { "foreign.status" => "self.cvterm_id" },
+  "cvtermpath_type_ids",
+  "SmallRNA::DB::Cvtermpath",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "pipeprojects",
-  "SmallRNA::DB::Pipeproject",
-  { "foreign.type" => "self.cvterm_id" },
+  "cvtermpath_subject_ids",
+  "SmallRNA::DB::Cvtermpath",
+  { "foreign.subject_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "process_confs",
-  "SmallRNA::DB::ProcessConf",
-  { "foreign.type" => "self.cvterm_id" },
+  "cvtermprop_cvterm_ids",
+  "SmallRNA::DB::Cvtermprop",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "process_conf_input_format_types",
-  "SmallRNA::DB::ProcessConfInput",
-  { "foreign.format_type" => "self.cvterm_id" },
+  "cvtermprop_type_ids",
+  "SmallRNA::DB::Cvtermprop",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "process_conf_input_content_types",
-  "SmallRNA::DB::ProcessConfInput",
-  { "foreign.content_type" => "self.cvterm_id" },
+  "cvterm_relationship_object_ids",
+  "SmallRNA::DB::CvtermRelationship",
+  { "foreign.object_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sample_processing_requirements",
-  "SmallRNA::DB::Sample",
-  { "foreign.processing_requirement" => "self.cvterm_id" },
+  "cvterm_relationship_type_ids",
+  "SmallRNA::DB::CvtermRelationship",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sample_treatment_types",
-  "SmallRNA::DB::Sample",
-  { "foreign.treatment_type" => "self.cvterm_id" },
+  "cvterm_relationship_subject_ids",
+  "SmallRNA::DB::CvtermRelationship",
+  { "foreign.subject_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sample_fractionation_types",
-  "SmallRNA::DB::Sample",
-  { "foreign.fractionation_type" => "self.cvterm_id" },
+  "cvtermsynonym_cvterm_ids",
+  "SmallRNA::DB::Cvtermsynonym",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sample_molecule_types",
-  "SmallRNA::DB::Sample",
-  { "foreign.molecule_type" => "self.cvterm_id" },
+  "cvtermsynonym_type_ids",
+  "SmallRNA::DB::Cvtermsynonym",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sequencingrun_qualities",
-  "SmallRNA::DB::Sequencingrun",
-  { "foreign.quality" => "self.cvterm_id" },
+  "dbxrefprops",
+  "SmallRNA::DB::Dbxrefprop",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sequencingrun_multiplexing_types",
-  "SmallRNA::DB::Sequencingrun",
-  { "foreign.multiplexing_type" => "self.cvterm_id" },
+  "environment_cvterms",
+  "SmallRNA::DB::EnvironmentCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "sequencingrun_sequencing_types",
-  "SmallRNA::DB::Sequencingrun",
-  { "foreign.sequencing_type" => "self.cvterm_id" },
+  "expression_cvterms",
+  "SmallRNA::DB::ExpressionCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
-  "tissues",
-  "SmallRNA::DB::Tissue",
-  { "foreign.type" => "self.cvterm_id" },
+  "features",
+  "SmallRNA::DB::Feature",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_cvterms",
+  "SmallRNA::DB::FeatureCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_cvtermprops",
+  "SmallRNA::DB::FeatureCvtermprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_genotypes",
+  "SmallRNA::DB::FeatureGenotype",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "featuremaps",
+  "SmallRNA::DB::Featuremap",
+  { "foreign.unittype_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "featureprops",
+  "SmallRNA::DB::Featureprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_pubprops",
+  "SmallRNA::DB::FeaturePubprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_relationships",
+  "SmallRNA::DB::FeatureRelationship",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "feature_relationshipprops",
+  "SmallRNA::DB::FeatureRelationshipprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "libraries",
+  "SmallRNA::DB::Library",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "library_cvterms",
+  "SmallRNA::DB::LibraryCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "libraryprops",
+  "SmallRNA::DB::Libraryprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "organismprops",
+  "SmallRNA::DB::Organismprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phendescs",
+  "SmallRNA::DB::Phendesc",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_cvalue_ids",
+  "SmallRNA::DB::Phenotype",
+  { "foreign.cvalue_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_observable_ids",
+  "SmallRNA::DB::Phenotype",
+  { "foreign.observable_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_attr_ids",
+  "SmallRNA::DB::Phenotype",
+  { "foreign.attr_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_assay_ids",
+  "SmallRNA::DB::Phenotype",
+  { "foreign.assay_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_comparison_cvterms",
+  "SmallRNA::DB::PhenotypeComparisonCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_cvterms",
+  "SmallRNA::DB::PhenotypeCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "phenstatements",
+  "SmallRNA::DB::Phenstatement",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "pubs",
+  "SmallRNA::DB::Pub",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "pubprops",
+  "SmallRNA::DB::Pubprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "pub_relationships",
+  "SmallRNA::DB::PubRelationship",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stocks",
+  "SmallRNA::DB::Stock",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stockcollections",
+  "SmallRNA::DB::Stockcollection",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stockcollectionprops",
+  "SmallRNA::DB::Stockcollectionprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stock_cvterms",
+  "SmallRNA::DB::StockCvterm",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stockprops",
+  "SmallRNA::DB::Stockprop",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "stock_relationships",
+  "SmallRNA::DB::StockRelationship",
+  { "foreign.type_id" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "synonyms",
+  "SmallRNA::DB::Synonym",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cZEMh+0WyKv2H7lfWbGjPg
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-06-18 14:03:56
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6D3hTJEamnKkibZjTF/UDQ
+
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

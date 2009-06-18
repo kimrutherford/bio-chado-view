@@ -1,6 +1,6 @@
 # SmallRNA config file
 name: SmallRNA::Web
-long_name: SmallRNA Tracking
+long_name: Chado view
 pipeline_directory: /data/pipeline
 data_sub_directory: process
 authentication:
@@ -42,82 +42,14 @@ class_info:
     display_field: name
   cvterm:
     display_field: name
-  organisation:
-    display_field: name
   organism:
     display_field: full_name
-  person:
-    display_field: user_name
-  sample:
-    editable: 1
-    display_field: name
-    field_info_list:
-      - field_label: name
-        editable: 1
-      - field_label: description
-        editable: 1
-      - field_label: project
-        field_conf: pipeproject
-        editable: 1
-      - field_label: genotype
-        editable: 1
-      - field_label: protocol
-        editable: 1
-      - field_label: molecule
-        field_conf: molecule_type
-        editable: 1
-        values_constraint: 'cv->name = "tracking molecule types"'
-      - field_label: treatment
-        field_conf: treatment_type
-        editable: 1
-        values_constraint: 'cv->name = "tracking treatment types"'
-      - field_label: fractionation
-        field_conf: fractionation_type
-        editable: 1
-        values_constraint: 'cv->name = "tracking fractionation types"'
-      - field_label: tissue
-        editable: 1
-  ecotype:
-    display_field: long_description
-  genotype:
-    display_field: description
-  tissue:
-    display_field: description
-  pipeproject:
-    display_field: name
-  process_conf:
-    display_field: long_description
-  pipeprocess:
-    display_field: description
-  barcode:
-    display_field: identifier
-  pipedata:
-    display_field: file_name
-  sequencingrun:
-    display_field: identifier
-  sequencing_sample:
-    display_field: name
-  coded_sample:
-    editable: 1
-    display_field: description
-    field_info_list:
-      - field_label: description
-        editable: 1
-      - field_label: run type
-        field_conf: coded_sample_type
-        values_constraint: 'cv->name = "tracking coded sample types"'
-        editable: 1
-      - field_label: sample
-        editable: 1
-      - field_label: barcode
-        editable: 1
-      - field_label: sequencing run
-        field_conf: sequencingrun
-        editable: 1
+  feature:
+    display_field: uniquename
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
-     - "dbi:Pg:dbname=pipeline-dev-kmr44;host=hydrogen"
+     - "dbi:Pg:dbname=kmr-chado-test;host=hydrogen"
      - 'kmr44'
      - 'kmr'
 plugins:

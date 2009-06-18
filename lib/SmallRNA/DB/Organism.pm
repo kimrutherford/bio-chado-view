@@ -52,34 +52,43 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key("organism_id");
-__PACKAGE__->add_unique_constraint("organism_full_name_constraint", ["genus", "species"]);
-__PACKAGE__->add_unique_constraint("organism_id_pk", ["organism_id"]);
+__PACKAGE__->add_unique_constraint("organism_pkey", ["organism_id"]);
+__PACKAGE__->add_unique_constraint("organism_genus_key", ["genus", "species"]);
 __PACKAGE__->has_many(
-  "ecotypes",
-  "SmallRNA::DB::Ecotype",
-  { "foreign.organism" => "self.organism_id" },
+  "features",
+  "SmallRNA::DB::Feature",
+  { "foreign.organism_id" => "self.organism_id" },
 );
 __PACKAGE__->has_many(
-  "genotypes",
-  "SmallRNA::DB::Genotype",
-  { "foreign.organism" => "self.organism_id" },
+  "libraries",
+  "SmallRNA::DB::Library",
+  { "foreign.organism_id" => "self.organism_id" },
 );
 __PACKAGE__->has_many(
-  "tissues",
-  "SmallRNA::DB::Tissue",
-  { "foreign.organism" => "self.organism_id" },
+  "organism_dbxrefs",
+  "SmallRNA::DB::OrganismDbxref",
+  { "foreign.organism_id" => "self.organism_id" },
+);
+__PACKAGE__->has_many(
+  "organismprops",
+  "SmallRNA::DB::Organismprop",
+  { "foreign.organism_id" => "self.organism_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_comparisons",
+  "SmallRNA::DB::PhenotypeComparison",
+  { "foreign.organism_id" => "self.organism_id" },
+);
+__PACKAGE__->has_many(
+  "stocks",
+  "SmallRNA::DB::Stock",
+  { "foreign.organism_id" => "self.organism_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sI0axuVC3Odouafyy0S3/Q
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-06-18 14:03:57
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2oG8aaU6Xg7HU0ZXHvJUFQ
 
-# the genus and species, used when displaying organisms
-sub full_name {
-  my $self = shift;
-
-  return $self->genus() . ' ' . $self->species();
-}
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

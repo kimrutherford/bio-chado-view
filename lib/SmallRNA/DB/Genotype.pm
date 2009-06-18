@@ -15,18 +15,21 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 4,
   },
-  "created_stamp",
+  "uniquename",
   {
-    data_type => "timestamp without time zone",
-    default_value => "now()",
+    data_type => "text",
+    default_value => undef,
     is_nullable => 0,
-    size => 8,
+    size => undef,
   },
-  "organism",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
-  "type",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "description",
+  {
+    data_type => "character varying",
+    default_value => undef,
+    is_nullable => 1,
+    size => 255,
+  },
+  "name",
   {
     data_type => "text",
     default_value => undef,
@@ -35,22 +38,42 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key("genotype_id");
-__PACKAGE__->add_unique_constraint("genotype_id_pk", ["genotype_id"]);
-__PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
-__PACKAGE__->belongs_to(
-  "organism",
-  "SmallRNA::DB::Organism",
-  { organism_id => "organism" },
+__PACKAGE__->add_unique_constraint("genotype_pkey", ["genotype_id"]);
+__PACKAGE__->add_unique_constraint("genotype_c1", ["uniquename"]);
+__PACKAGE__->has_many(
+  "feature_genotypes",
+  "SmallRNA::DB::FeatureGenotype",
+  { "foreign.genotype_id" => "self.genotype_id" },
 );
 __PACKAGE__->has_many(
-  "samples",
-  "SmallRNA::DB::Sample",
-  { "foreign.genotype" => "self.genotype_id" },
+  "phendescs",
+  "SmallRNA::DB::Phendesc",
+  { "foreign.genotype_id" => "self.genotype_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_comparison_genotype1_ids",
+  "SmallRNA::DB::PhenotypeComparison",
+  { "foreign.genotype1_id" => "self.genotype_id" },
+);
+__PACKAGE__->has_many(
+  "phenotype_comparison_genotype2_ids",
+  "SmallRNA::DB::PhenotypeComparison",
+  { "foreign.genotype2_id" => "self.genotype_id" },
+);
+__PACKAGE__->has_many(
+  "phenstatements",
+  "SmallRNA::DB::Phenstatement",
+  { "foreign.genotype_id" => "self.genotype_id" },
+);
+__PACKAGE__->has_many(
+  "stock_genotypes",
+  "SmallRNA::DB::StockGenotype",
+  { "foreign.genotype_id" => "self.genotype_id" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WdQVOO4/4tp0pHuAvAgWcQ
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-06-18 14:03:57
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0w9saW4lWE0axMayLDuaag
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

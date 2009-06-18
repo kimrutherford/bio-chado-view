@@ -31,17 +31,22 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key("cv_id");
-__PACKAGE__->add_unique_constraint("cv_c1", ["name"]);
+__PACKAGE__->add_unique_constraint("cv_name_key", ["name"]);
 __PACKAGE__->add_unique_constraint("cv_pkey", ["cv_id"]);
 __PACKAGE__->has_many(
   "cvterms",
   "SmallRNA::DB::Cvterm",
   { "foreign.cv_id" => "self.cv_id" },
 );
+__PACKAGE__->has_many(
+  "cvtermpaths",
+  "SmallRNA::DB::Cvtermpath",
+  { "foreign.cv_id" => "self.cv_id" },
+);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gvpYBcX0zwsvptRJD6pycQ
+# Created by DBIx::Class::Schema::Loader v0.04005 @ 2009-06-18 14:03:56
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9iHVjl8y9tNUVaUa0Sjxuw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
