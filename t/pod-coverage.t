@@ -22,7 +22,7 @@ plan tests => scalar(@modules);
 
 foreach my $module (@modules) {
  SKIP: {
-    skip "$module", 1 if $module =~ /SmallRNA::DB/;
+    skip "$module", 1 if $module =~ /ChadoView::DB/;
     pod_coverage_ok($module, {}, "$module POD coverage");
   }
 }

@@ -13,12 +13,12 @@ $field_label
 <span class="field_value">
 % if ($field_type eq 'table_id') {
   <span class="this_id_field">
-    <a href='<% $c->uri_for("/view/object", $type, SmallRNA::DB::id_of_object($object)) %>'>[details&nbsp;...]</a>
+    <a href='<% $c->uri_for("/view/object", $type, ChadoView::DB::id_of_object($object)) %>'>[details&nbsp;...]</a>
   </span>
 % } else {
 %   if ($field_type eq 'foreign_key' && $field_value && defined $ref_display_key) {
   <span class="ref_field">
-  <a href='<% $c->uri_for("/view/object", $referenced_object->table(), SmallRNA::DB::id_of_object($field_value)) %>'>
+  <a href='<% $c->uri_for("/view/object", $referenced_object->table(), ChadoView::DB::id_of_object($field_value)) %>'>
     <& field.mhtml, object => $referenced_object, field_label => $ref_display_key &>
   </a>
   </span>
@@ -26,7 +26,7 @@ $field_label
 %     if ($field_type eq 'key_field') {
   <span class="attribute_field">
     <span class="display_key">
-      <a href='<% $c->uri_for("/view/object", $type, SmallRNA::DB::id_of_object($object)) %>'>
+      <a href='<% $c->uri_for("/view/object", $type, ChadoView::DB::id_of_object($object)) %>'>
         <% $field_value %>
       </a>
     </span>
@@ -39,13 +39,13 @@ $field_label
 </span>
 
 <%init>
-use SmallRNA::DB;
-use SmallRNA::Web::Util;
+use ChadoView::DB;
+use ChadoView::Web::Util;
 
 die "field_label undefined\n" unless defined $field_label;
 
 my ($field_value, $field_type, $ref_display_key) =
-  SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
+  ChadoView::Web::Util::get_field_value($c, $object, $field_label);
 
 my $type = $object->table();
 

@@ -8,12 +8,12 @@ BEGIN {
 
 use strict;
 
-use SmallRNA::Web;
+use ChadoView::Web;
 
-my $c = SmallRNA::Web->commandline();
+my $c = ChadoView::Web->commandline();
 my $config = $c->config();
 
-my @connect_info = @{$config->{"Model::SmallRNAModel"}{connect_info}};
+my @connect_info = @{$config->{"Model::ChadoViewModel"}{connect_info}};
 
 my ($connect_string, $username, $password) = @connect_info;
 
@@ -28,7 +28,7 @@ sub remove_id {
   return $res;
 }
 
-make_schema_at('SmallRNA::DB',
+make_schema_at('ChadoView::DB',
                { debug => 1, dump_directory => './lib', inflect_singular =>
                  \&remove_id },
                [ "$connect_string;password=$password", $username ]);

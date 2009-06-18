@@ -2,5 +2,5 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'SmallRNA::Web::View::Mason' }
+BEGIN { use_ok 'ChadoView::Web::View::Mason' }
 

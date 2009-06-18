@@ -2,8 +2,8 @@
 # expected.  you have been warned
 use inc::Module::Install;
 
-name 'SmallRNA-Web';
-all_from 'lib/SmallRNA/Web.pm';
+name 'ChadoView-Web';
+all_from 'lib/ChadoView/Web.pm';
 
 requires 'Catalyst::Runtime' => '5.70000';
 requires 'Catalyst::Plugin::ConfigLoader';

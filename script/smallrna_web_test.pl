@@ -6,7 +6,7 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Catalyst::Test 'SmallRNA::Web';
+use Catalyst::Test 'ChadoView::Web';
 
 my $help = 0;
 

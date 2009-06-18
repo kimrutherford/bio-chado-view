@@ -2,6 +2,6 @@ use strict;
 use warnings;
 use Test::More tests => 2;
 
-BEGIN { use_ok 'Catalyst::Test', 'SmallRNA::Web' }
+BEGIN { use_ok 'Catalyst::Test', 'ChadoView::Web' }
 
 ok( request('/')->is_success, 'Request should succeed' );

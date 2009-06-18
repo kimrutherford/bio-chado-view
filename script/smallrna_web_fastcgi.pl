@@ -8,7 +8,7 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use SmallRNA::Web;
+use ChadoView::Web;
 
 my $help = 0;
 my ( $listen, $nproc, $pidfile, $manager, $detach, $keep_stderr );
@@ -25,7 +25,7 @@ GetOptions(
 
 pod2usage(1) if $help;
 
-SmallRNA::Web->run(
+ChadoView::Web->run(
     $listen,
     {   nproc   => $nproc,
         pidfile => $pidfile,

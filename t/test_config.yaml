@@ -1,8 +1,8 @@
-name: SmallRNA::Web
-long_name: SmallRNA tracking
+name: ChadoView::Web
+long_name: ChadoView tracking
 pipeline_directory: /tmp/pipeline-test
-"Model::SmallRNAModel":
-    schema_class: 'SmallRNA::DB'
+"Model::ChadoViewModel":
+    schema_class: 'ChadoView::DB'
     connect_info:
        - "dbi:Pg:dbname=pipeline-test;host=localhost"
        - 'kmr44'

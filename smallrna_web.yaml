@@ -1,5 +1,5 @@
-# SmallRNA config file
-name: SmallRNA::Web
+# ChadoView config file
+name: ChadoView::Web
 long_name: Chado view
 pipeline_directory: /data/pipeline
 data_sub_directory: process
@@ -46,8 +46,8 @@ class_info:
     display_field: full_name
   feature:
     display_field: uniquename
-"Model::SmallRNAModel":
-  schema_class: 'SmallRNA::DB'
+"Model::ChadoViewModel":
+  schema_class: 'ChadoView::DB'
   connect_info:
      - "dbi:Pg:dbname=kmr-chado-test;host=hydrogen"
      - 'kmr44'

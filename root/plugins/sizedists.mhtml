@@ -17,7 +17,7 @@ for my $pipe_data (@pipe_datas) {
   my @input_pipedatas = $pipe_data->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
     if ($input_pipedatas[0]->content_type()->name() eq 'small_rna') {
-      $pipe_data_id = SmallRNA::DB::id_of_object($pipe_data);
+      $pipe_data_id = ChadoView::DB::id_of_object($pipe_data);
     }
   }
 }
