@@ -50,26 +50,12 @@ sub set_template : Private {
 
   my $object = $c->schema()->resultset(ucfirst $type)->find($object_id);
 
-  if ($type eq 'person') {
-    $c->stash()->{title} = 'User details for ' . $object->full_name();
-  } elsif ($type eq 'pipeproject') {
-    $c->stash()->{title} = 'Details for project ' . $object->description();
-  } elsif ($type eq 'pipeprocess') {
-    $c->stash()->{title} = 'Details for process ' . $object->description();
-  } elsif ($type eq 'pipedata') {
-    $c->stash()->{title} = 'Details for data ' . $object->file_name();
-  } elsif ($type eq 'organism') {
+  if ($type eq 'organism') {
     $c->stash()->{title} = 'Details for organism ' . $object->full_name();
-  } elsif ($type eq 'sample') {
-    $c->stash()->{title} = 'Details for sample ' . $object->name();
-  } elsif ($type eq 'sequencingrun') {
-    $c->stash()->{title} = 'Details for sequencing run ' . $object->identifier();
-  } elsif ($type eq 'ecotype') {
-    $c->stash()->{title} = 'Details for ecotype ' . $object->long_description();
   }
 }
 
-sub object_with_template : LocalRegex('^(person|pipe[^/]+|sample|sequencingrun|organism|ecotype)/(.*)') {
+sub object_with_template : LocalRegex('^(organism)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_id) = @{$c->req()->captures()};
   set_template($self, $c, $type, $object_id);
