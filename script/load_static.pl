@@ -250,14 +250,20 @@ my @ecotypes = ({ description => "unspecified", org => "Arabidopsis thaliana" },
                 { description => "unspecified", org => "Unknown unknown" },
                );
 
+my %ecotype_objs = ();
+
 $schema->txn_do(sub {
                   for my $ecotype (@ecotypes) {
                     my $org_obj = $organism_objects{$ecotype->{org}};
-                    $schema->create_with_type('Ecotype',
+                    my $obj =
+                      $schema->create_with_type('Ecotype',
                                                 {
                                                   description => $ecotype->{description},
                                                   organism => $org_obj,
                                                 });
+                    my $ecotype_desc = 
+                      $ecotype->{description} . ' ' . $ecotype->{org};
+                    $ecotype_objs{$ecotype_desc} = $obj;
                   }
                 });
 
@@ -423,6 +429,55 @@ my @analyses = (
                  runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
                  inputs => [
                      {
+                       ecotype_name => 'unspecified Arabidopsis thaliana',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'ssaha alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Carmovirus turnip crinkle virus',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'ssaha alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Oryza sativa',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'ssaha alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Benyvirus rice stripe virus',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'ssaha alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Chlamydomonas reinhardtii',
                        format_type => 'fasta',
                        content_type => 'non_redundant_small_rna',
                      }
@@ -469,11 +524,16 @@ $schema->txn_do(sub {
     });
 
     for my $input (@{$conf{inputs}}) {
-      $schema->create_with_type('ProcessConfInput', {
+      my %args = (
         process_conf => $process_conf,
         content_type => $cvterm_objs{$input->{content_type}},
         format_type => $cvterm_objs{$input->{format_type}}
-      });
+      );
+
+      if (defined $input->{ecotype_name}) {
+        $args{ecotype} = $ecotype_objs{$input->{ecotype_name}};
+      }
+      $schema->create_with_type('ProcessConfInput', { %args });
     }
   }
 });

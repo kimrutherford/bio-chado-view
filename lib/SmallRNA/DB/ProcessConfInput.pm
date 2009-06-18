@@ -28,6 +28,8 @@ __PACKAGE__->add_columns(
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "content_type",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  "ecotype",
+  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
 __PACKAGE__->set_primary_key("process_conf_input_id");
 __PACKAGE__->add_unique_constraint("process_conf_input_id_pk", ["process_conf_input_id"]);
@@ -46,10 +48,15 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "content_type" },
 );
+__PACKAGE__->belongs_to(
+  "ecotype",
+  "SmallRNA::DB::Ecotype",
+  { ecotype_id => "ecotype" },
+);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+utfZ5KAb7XWSs2WK4v9qA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xEljkkzHZsPmjxHOpW5sKg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

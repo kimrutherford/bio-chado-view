@@ -63,10 +63,13 @@ sub run
     my $pipeprocess = $self->pipeprocess();
 
     my @input_pipedatas = $pipeprocess->input_pipedatas();
+    my $pipeprocess_id = $pipeprocess->pipeprocess_id();
+
     if (@input_pipedatas > 1) {
-      croak ("pipeprocess ", $pipeprocess->pipeprocess_id(),
+      croak ("pipeprocess ", $pipeprocess_id,
              " has more than one input pipedata\n");
     }
+
     my $input_pipedata = $input_pipedatas[0];
 
     my @samples = $input_pipedata->samples();
@@ -82,24 +85,30 @@ sub run
 
     my $genome_aligned_srna_reads = 'genome_aligned_srna_reads';
     my $data_dir = $self->config()->data_directory();
-    my $detail = $pipeprocess->process_conf()->detail();
+    my $process_conf = $pipeprocess->process_conf();
+    my $detail = $process_conf->detail();
+
+    my @process_conf_inputs = $process_conf->process_conf_inputs();
+
+    if (@process_conf_inputs != 1) {
+      croak("process conf for process #", $pipeprocess_id,
+            " has more than one input configured\n");
+    }
 
     if ($detail =~ /component: (\S+)/) {
       my $component = $1;
       my @sample_ecotypes = $sample->ecotypes();
 
-      my $org_config = undef;
+      my $target_organism = $process_conf_inputs[0]->ecotype()->organism();
 
-      my $org_full_name = undef;
+      my $org_full_name = $target_organism->full_name();
+      $org_full_name =~ s/ /_/g;
 
-      for my $ecotype (@sample_ecotypes) {
-        $org_full_name = $ecotype->organism()->full_name();
-        $org_full_name =~ s/ /_/g;
-        $org_config = $c->{organisms}{$org_full_name};
+      my $org_config = $c->{organisms}{$org_full_name};
 
-        if (defined $org_config) {
-          last;
-        }
+      if (!defined $org_config) {
+        croak("no configuration found for $org_full_name for process #",
+              $pipeprocess_id, "\n");
       }
 
       if (!defined $org_config) {
@@ -110,7 +119,8 @@ sub run
         die "can't find configuration for component: $component\n";
       }
 
-      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$component};
+      my $db_file_name = $c->{root} . '/' .
+        $org_config->{database_files}{$component};
 
       my $ssaha_path = $c->{path};
 
@@ -136,8 +146,7 @@ sub run
                             content_type_name => $genome_aligned_srna_reads);
 
     } else {
-      croak ("can't understand detail: $1 for pipeprocess: ",
-             $pipeprocess->pipeprocess_id());
+      croak ("can't understand detail: $1 for pipeprocess: ", $pipeprocess_id);
     }
 
   };
