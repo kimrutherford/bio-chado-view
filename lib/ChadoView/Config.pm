@@ -103,17 +103,4 @@ sub setup
   }
 }
 
-=head2 data_directory
-
- Usage   : my $dir = ChadoView::Config->data_directory();
- Function: Return the directory for storing pipeline data
- Args    : none
-
-=cut
-sub data_directory
-{
-  my $self = shift;
-  return $self->{pipeline_directory} . '/process';
-}
-
 1;

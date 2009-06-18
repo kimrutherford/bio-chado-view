@@ -43,10 +43,6 @@ __PACKAGE__->setup();
 
 my $config = __PACKAGE__->config();
   
-$config->{data_directory} = 
-  $config->{pipeline_directory} . '/' .
-  $config->{data_sub_directory};
-
 # this is hacky, but allow us to call methods on the config object
 bless $config, 'ChadoView::Config';
 
