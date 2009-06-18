@@ -14,7 +14,7 @@ ChadoView::Web->run;
 
 =head1 NAME
 
-smallrna_web_cgi.pl - Catalyst CGI
+chadoview_web_cgi.pl - Catalyst CGI
 
 =head1 SYNOPSIS
 

@@ -38,11 +38,11 @@ pod2usage(1) unless $helper->mk_component( 'ChadoView::Web', @ARGV );
 
 =head1 NAME
 
-smallrna_web_create.pl - Create a new Catalyst Component
+chadoview_web_create.pl - Create a new Catalyst Component
 
 =head1 SYNOPSIS
 
-smallrna_web_create.pl [options] model|view|controller name [helper] [options]
+chadoview_web_create.pl [options] model|view|controller name [helper] [options]
 
  Options:
    -force        don't create a .new file where a file to be created exists
@@ -50,16 +50,16 @@ smallrna_web_create.pl [options] model|view|controller name [helper] [options]
    -help         display this help and exits
 
  Examples:
-   smallrna_web_create.pl controller My::Controller
-   smallrna_web_create.pl controller My::Controller BindLex
-   smallrna_web_create.pl -mechanize controller My::Controller
-   smallrna_web_create.pl view My::View
-   smallrna_web_create.pl view MyView TT
-   smallrna_web_create.pl view TT TT
-   smallrna_web_create.pl model My::Model
-   smallrna_web_create.pl model SomeDB DBIC::Schema MyApp::Schema create=dynamic\
+   chadoview_web_create.pl controller My::Controller
+   chadoview_web_create.pl controller My::Controller BindLex
+   chadoview_web_create.pl -mechanize controller My::Controller
+   chadoview_web_create.pl view My::View
+   chadoview_web_create.pl view MyView TT
+   chadoview_web_create.pl view TT TT
+   chadoview_web_create.pl model My::Model
+   chadoview_web_create.pl model SomeDB DBIC::Schema MyApp::Schema create=dynamic\
    dbi:SQLite:/tmp/my.db
-   smallrna_web_create.pl model AnotherDB DBIC::Schema MyApp::Schema create=static\
+   chadoview_web_create.pl model AnotherDB DBIC::Schema MyApp::Schema create=static\
    dbi:Pg:dbname=foo root 4321
 
  See also:

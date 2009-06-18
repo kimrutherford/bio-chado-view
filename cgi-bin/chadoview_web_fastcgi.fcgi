@@ -1,1 +1,1 @@
-../script/smallrna_web_fastcgi.pl
+../script/chadoview_web_fastcgi.pl

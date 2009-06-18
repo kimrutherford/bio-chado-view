@@ -17,9 +17,9 @@ my $debug             = 0;
 my $fork              = 0;
 my $help              = 0;
 my $host              = undef;
-my $port              = $ENV{SMALLRNA_WEB_PORT} || $ENV{CATALYST_PORT} || 3000;
+my $port              = $ENV{CHADOVIEW_WEB_PORT} || $ENV{CATALYST_PORT} || 3000;
 my $keepalive         = 0;
-my $restart           = $ENV{SMALLRNA_WEB_RELOAD} || $ENV{CATALYST_RELOAD} || 0;
+my $restart           = $ENV{CHADOVIEW_WEB_RELOAD} || $ENV{CATALYST_RELOAD} || 0;
 my $restart_delay     = 1;
 my $restart_regex     = '(?:/|^)(?!\.#).+(?:\.yml$|\.yaml$|\.conf|\.pm)$';
 my $restart_directory = undef;
@@ -69,11 +69,11 @@ ChadoView::Web->run( $port, $host, {
 
 =head1 NAME
 
-smallrna_web_server.pl - Catalyst Testserver
+chadoview_web_server.pl - Catalyst Testserver
 
 =head1 SYNOPSIS
 
-smallrna_web_server.pl [options]
+chadoview_web_server.pl [options]
 
  Options:
    -d -debug          force debug mode

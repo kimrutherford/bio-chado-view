@@ -42,7 +42,7 @@ use YAML qw(LoadFile);
 use Carp;
 
 my @config_dirs = ('.', $ENV{HOME}, '/etc/');
-my $default_file_name = 'smallrna_web.yaml';
+my $default_file_name = 'chadoview_web.yaml';
 
 =head2 new
 

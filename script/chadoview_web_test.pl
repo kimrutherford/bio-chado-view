@@ -20,18 +20,18 @@ print request($ARGV[0])->content . "\n";
 
 =head1 NAME
 
-smallrna_web_test.pl - Catalyst Test
+chadoview_web_test.pl - Catalyst Test
 
 =head1 SYNOPSIS
 
-smallrna_web_test.pl [options] uri
+chadoview_web_test.pl [options] uri
 
  Options:
    -help    display this help and exits
 
  Examples:
-   smallrna_web_test.pl http://localhost/some_action
-   smallrna_web_test.pl /some_action
+   chadoview_web_test.pl http://localhost/some_action
+   chadoview_web_test.pl /some_action
 
  See also:
    perldoc Catalyst::Manual

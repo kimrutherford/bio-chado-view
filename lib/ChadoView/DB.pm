@@ -54,19 +54,19 @@ use Carp;
  Usage   : my $schema = ChadoView::DB->schema($c->config());
  Function: Return a new database connection (schema)
  Args    : $config - if null use the config file from the current directory
-                     or some other default location (eg. /etc/smallrna.yaml)
+                     or some other default location (eg. /etc/chadoview.yaml)
 
 =cut
 sub schema
 {
   my $self = shift;
-  my $smallrna_config = shift;
+  my $chadoview_config = shift;
 
-  if (!defined $smallrna_config) {
+  if (!defined $chadoview_config) {
     croak "schema() needs a config hash as argument\n";
   }
 
-  my $config = $smallrna_config->{'Model::ChadoViewModel'}{connect_info};
+  my $config = $chadoview_config->{'Model::ChadoViewModel'}{connect_info};
 
   return $self->connect($config->[0], $config->[1], $config->[2],
                         {

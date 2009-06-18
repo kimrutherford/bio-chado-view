@@ -28,7 +28,7 @@ if (!defined $login) {
 
 __PACKAGE__->config(name => 'ChadoView::Web',
                     'Plugin::ConfigLoader' => {
-                      file                => __PACKAGE__->path_to('smallrna_web'),
+                      file                => __PACKAGE__->path_to('chadoview_web'),
                       config_local_suffix => $login . '_' . $host,
                     },
                     'View::Graphics::Primitive' => {
@@ -64,15 +64,11 @@ sub schema
 
 =head1 NAME
 
-ChadoView::Web - PlantSci smallRNA application
+ChadoView::Web - Chado View application
 
 =head1 SYNOPSIS
 
-    script/smallrna_web_server.pl
-
-=head1 DESCRIPTION
-
-The University of Cambridge Department of Plant Sciences smallRNA application.
+    script/chadoview_web_server.pl
 
 =head1 SEE ALSO
 

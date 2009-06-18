@@ -39,11 +39,11 @@ ChadoView::Web->run(
 
 =head1 NAME
 
-smallrna_web_fastcgi.pl - Catalyst FastCGI
+chadoview_web_fastcgi.pl - Catalyst FastCGI
 
 =head1 SYNOPSIS
 
-smallrna_web_fastcgi.pl [options]
+chadoview_web_fastcgi.pl [options]
 
  Options:
    -? -help      display this help and exits
