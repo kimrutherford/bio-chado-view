@@ -83,8 +83,6 @@ sub get_field_value
 
   my $field_db_column = $field_label;
 
-  my $field_value = $object->$field_db_column();
-
   if (defined $field_info) {
     my $field_conf = $field_info->{field_conf};
     if (defined $field_conf) {
@@ -94,6 +92,7 @@ sub get_field_value
 
   $field_db_column =~ s/_id$//;
 
+  my $field_value = $object->$field_db_column();
   my $field_type = 'attribute';
 
   if ($field_label eq "${type}_id") {
