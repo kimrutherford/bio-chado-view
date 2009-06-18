@@ -1,20 +1,8 @@
 name: ChadoView::Web
 long_name: ChadoView tracking
-pipeline_directory: /tmp/pipeline-test
 "Model::ChadoViewModel":
     schema_class: 'ChadoView::DB'
     connect_info:
-       - "dbi:Pg:dbname=pipeline-test;host=localhost"
+       - "dbi:Pg:dbname=chadoview-test;host=localhost"
        - 'kmr44'
        - 'kmr'
-programs:
-  ssaha:
-    path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
-    root: t/data
-    organisms:
-      Arabidopsis_thaliana:
-        database_files:
-          genome: arabidopsis_thaliana_test_genome.fasta
-      Chlamydomonas_reinhardtii:
-        database_files:
-          genome: chlamydomonas_reinhardtii_test_genome.fasta
