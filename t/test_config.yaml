@@ -14,7 +14,7 @@ programs:
     organisms:
       Arabidopsis_thaliana:
         database_files:
-          nuclear_genome: arabidopsis_thaliana_test_genome.fasta
+          genome: arabidopsis_thaliana_test_genome.fasta
       Chlamydomonas_reinhardtii:
         database_files:
-          nuclear_genome: chlamydomonas_reinhardtii_test_genome.fasta
+          genome: chlamydomonas_reinhardtii_test_genome.fasta

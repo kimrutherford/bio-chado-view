@@ -71,6 +71,18 @@ sub _make_bit
   # samples where there is a pipedata of the appropriate type for this
   # input, but there isn't an existing pipeprocess for the process_conf
 
+  my $org_constraint = '';
+
+  if (defined $input->ecotype()) {
+    my $organism_full_name = $input->ecotype()->organism()->full_name();
+    $org_constraint =
+      "AND me.sample_id IN
+        (SELECT sample FROM sample_ecotype, ecotype, organism
+          WHERE sample_ecotype.ecotype = ecotype.ecotype_id
+            AND ecotype.organism = organism.organism_id
+            AND organism.genus || ' ' || organism.species = '$organism_full_name')";
+  }
+
   return qq{
     me.sample_id in (
       SELECT sample_pipedata.sample
@@ -78,6 +90,7 @@ sub _make_bit
        WHERE sample_pipedata.pipedata = pipedata.pipedata_id
          AND pipedata.content_type = $content_type_id
          AND pipedata.format_type = $format_type_id
+$org_constraint
          AND NOT pipedata.pipedata_id IN (
            SELECT pipeprocess_in_pipedata.pipedata
              FROM pipeprocess_in_pipedata, pipeprocess
