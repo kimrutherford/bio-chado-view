@@ -1,20 +1,6 @@
 # ChadoView config file
 name: ChadoView::Web
 long_name: Chado view
-pipeline_directory: /data/pipeline
-data_sub_directory: process
-authentication:
-  default_realm: 'friends'
-  realms:
-    friends:
-      credential:
-        class: 'Password'
-        password_field: 'password'
-        password_type: 'clear'
-      store:
-        class: DBIx::Class
-        user_class: DB::Person
-        id_field: identifier
 # There needs to be a class_info entry for each class that will be displayed.
 # Class flags:
 #   editable: an edit link and edit page will be created for this class
@@ -52,28 +38,3 @@ class_info:
      - "dbi:Pg:dbname=kmr-chado-test;host=hydrogen"
      - 'kmr44'
      - 'kmr'
-plugins:
-  object_page:
-    sample:
-      - name: Size distribution graph
-        path: /plugins/sizedists.mhtml
-programs:
-  ssaha:
-    path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
-    root: /data/public_data
-    organisms:
-      Arabidopsis_thaliana:
-        database_files:
-          genome: arabidopsis/TAIR_8/arabidopsis_nuclear_genome
-      Carmovirus_turnip_crinkle_virus:
-        database_files:
-          genome: TCV/TCV.fa
-      Oryza_sativa:
-        database_files:
-          genome: rice/Oryza_sativa/IRGSP_Build5/nuclear_genome.fasta
-      Benyvirus_rice_stripe_virus:
-        database_files:
-          genome: viruses/Benyvirus/rice_stripe_virus_isolate_Zhejiang.fasta
-      Chlamydomonas_reinhardtii:
-        database_files:
-          genome: chlamydomonas/20090120_chlamy_assembly4/C_reinhardtii.main_genome.scaffolds_plus_unmapped_scaffolds.fasta
