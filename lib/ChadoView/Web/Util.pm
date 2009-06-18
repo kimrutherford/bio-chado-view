@@ -90,14 +90,16 @@ sub get_field_value
     }
   }
 
-  $field_db_column =~ s/_id$//;
-
-  my $field_value = $object->$field_db_column();
   my $field_type = 'attribute';
 
   if ($field_label eq "${type}_id") {
     $field_type = 'table_id';
+    return ($object->$field_db_column(), $field_type);
   } else {
+    $field_db_column =~ s/_id$//;
+
+    my $field_value = $object->$field_db_column();
+
     my $info_ref = $parent_class_name->relationship_info($field_db_column);
 
     if (!defined $info_ref) {
@@ -131,8 +133,8 @@ sub get_field_value
         $field_type = 'key_field';
       }
     }
+    return ($field_value, $field_type);
   }
-  return ($field_value, $field_type);
 }
 
 1;
