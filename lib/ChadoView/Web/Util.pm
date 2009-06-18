@@ -83,7 +83,7 @@ sub get_field_value
 
   my $field_db_column = $field_label;
 
-  my $field_value;
+  my $field_value = $object->$field_db_column();
 
   if (defined $field_info) {
     my $field_conf = $field_info->{field_conf};
@@ -92,11 +92,7 @@ sub get_field_value
     }
   }
 
-  if (!defined $field_value) {
-    $field_value = '';
-  }
-
-  $field_value = $object->$field_db_column();
+  $field_db_column =~ s/_id$//;
 
   my $field_type = 'attribute';
 
@@ -104,6 +100,13 @@ sub get_field_value
     $field_type = 'table_id';
   } else {
     my $info_ref = $parent_class_name->relationship_info($field_db_column);
+
+    if (!defined $info_ref) {
+      my $short_field = $field_db_column;
+      $short_field =~ s/_id//;
+      $info_ref = $parent_class_name->relationship_info($short_field);
+    }
+
     if (defined $info_ref) {
       my %info = %{$info_ref};
       my $referenced_object = $object->$field_db_column();
