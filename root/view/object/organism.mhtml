@@ -5,21 +5,3 @@ $object
 <div>
 <& /view/field_list.mhtml, object => $object, field_labels => [qw|abbreviation genus species common_name|] &>
 </div>
-
-<div>
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu for this organism" &></td>
-</div>
-<div>
-  <& /view/collection.mhtml, type => 'ecotype', object => $object, collection_name => 'ecotypes',
-    collection_title => "The ecotype$ecotype_plu for this organism" &></td>
-</div>
-
-<%init>
-my $samples_rs = $object->ecotypes()->search_related('samples');
-my $samples_count = $samples_rs->count();
-my $sample_plu = $samples_count !=  1 ? 's' : '';
-my $ecotypes_count = $object->ecotypes()->count();
-my $ecotype_plu = $ecotypes_count !=  1 ? 's' : '';
-</%init>
-
