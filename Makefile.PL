@@ -14,7 +14,6 @@ requires 'YAML';
 requires 'DBIx::Class';
 requires 'Text::CSV';
 requires 'IO::All';
-requires 'YAML';
 requires 'DBIx::Class';
 requires 'DBIx::Class::Schema';
 requires 'DBD::Pg';
