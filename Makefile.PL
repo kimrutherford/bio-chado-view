@@ -19,7 +19,8 @@ requires 'DBIx::Class';
 requires 'DBIx::Class::Schema';
 requires 'DBD::Pg';
 requires 'DateTime';
-requires 'Params::Validate'
+requires 'Params::Validate';
+requires 'File::Copy::Recursive';
 
 requires 'parent';
 requires 'Config::General'; # This should reflect the config file format you've chosen
