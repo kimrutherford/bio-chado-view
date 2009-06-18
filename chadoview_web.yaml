@@ -34,6 +34,8 @@ class_info:
     display_field: uniquename
   dbxref:
     display_field: accession
+  db:
+    display_field: name
 "Model::ChadoViewModel":
   schema_class: 'ChadoView::DB'
   connect_info:
