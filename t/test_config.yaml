@@ -1,5 +1,5 @@
 name: ChadoView::Web
-long_name: ChadoView tracking
+long_name: ChadoView test
 "Model::ChadoViewModel":
     schema_class: 'ChadoView::DB'
     connect_info:
