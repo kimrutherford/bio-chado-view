@@ -293,6 +293,7 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
       $c->schema()->txn_do(sub {
                              my $object = _create_object($c->schema(), $type, $form);
                              my $table_id_column = $type . '_id';
+                             # get the id so we can redirect below
                              $object_id = $object->$table_id_column();
                            });
     } else {
