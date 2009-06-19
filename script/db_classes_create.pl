@@ -9,10 +9,9 @@ BEGIN {
 use strict;
 use warnings;
 
-use ChadoView::Web;
+use ChadoView::Config;
 
-my $c = ChadoView::Web->commandline();
-my $config = $c->config();
+my $config = ChadoView::Config->new('chadoview_web.yaml');
 
 my @connect_info = @{$config->{"Model::ChadoViewModel"}{connect_info}};
 
